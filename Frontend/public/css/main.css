@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Roboto-flex';
+    src: url('../fonts/RobotoFlex-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Roboto-flex';
+    overflow-x: hidden;
+}
+
+#root {
+    width: 100vw;
+    min-height: 100vh;
+}

@@ -1,0 +1,113 @@
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(316deg, #0D5872 0%, #207796 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mainHeader {
+    margin-top: 3.14815vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 92%;
+    height: min(3.33333vw, 5.92593vh);
+    overflow: visible;
+}
+
+.mainHeader>h1 {
+    font-size: min(3.33333vw, 5.92593vh);
+    font-weight: 500;
+    color: #E7EDF3;
+}
+
+.hamburger {
+    width: 2.60417vw;
+    height: 4.44444vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hamburger>div {
+    width: 100%;
+    height: 0.55556vh;
+    border-radius: min(0.20833vw, 0.37037vh);
+    background-color: #E7EDF3;
+}
+
+.mainContent {
+    display: flex;
+    width: 92%;
+    justify-content: space-between;
+    height: 80.0vh;
+    margin-top: 3.98148vh;
+}
+
+
+.widget {
+    width: 44.53125vw;
+    height: 100%;
+    border-radius: min(0.41667vw, 0.74074vh);
+    background-color: rgb(255, 255, 255, 0.15);
+    border: solid #E7EDF3 min(0.05208vw, 0.09259vh);
+}
+
+.widget>h1 {
+    font-size: min(2.5vw, 4.44444vh);
+    color: #FBFDFF;
+    margin-top: 3.51852vh;
+    margin-left: 2.60417vw;
+}
+
+.widget>div {
+    height: 64.07407vh;
+    margin-top: 4.90741vh;
+    margin-left: 2.60417vw;
+    width: 39.27083vw;
+    position: relative;
+}
+
+.hLine{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0.05208vw;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0) 100%);
+}
+
+.widgetIcon{
+    position: absolute;
+    right: 0;
+    bottom: 3%;
+    width: min(10.72917vw, 19.07407vh);
+    height:  min(10.72917vw, 19.07407vh);
+}
+
+.option{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 36.71875vw;
+    margin-left: 2.55208vw;
+    color: #FBFDFF;
+    font-size: min(1.875vw, 3.33333vh);
+    font-weight: lighter;
+}
+
+.option > img{
+    width: min(2.5vw, 4.44444vh);
+    height: min(2.5vw, 4.44444vh);
+}
+
+.option:first-of-type{
+    margin-top: 4.53704vh;
+}
+
+.option:not(:first-of-type){
+    margin-top: 6.2963vh;
+}
