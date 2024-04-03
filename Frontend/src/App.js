@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import StartPage from './Pages/StartPage/StartPage';
+import Repository from './Pages/Repository/Repository';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<StartPage/>} />
+        <Route path="/" element={<StartPage />} />
+        <Route path="/repository/" element={<Repository />} />
       </Routes>
     </BrowserRouter>
   );

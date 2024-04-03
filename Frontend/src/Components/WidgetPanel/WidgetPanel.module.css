@@ -1,0 +1,22 @@
+.skin{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: visible;
+}
+
+.widget{
+    background-color: rgb(231, 237, 243, 0.15);
+    border: #E7EDF3 min(0.10417vw, 0.18519vh) solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16.6%;
+    cursor: pointer;
+    box-shadow: 0.15625vw 0.37037vh min(0.20833vw, 0.37037vh) 0 rgb(0, 0, 0, 0.35);
+}
+
+.widget > img{
+    width: 60%;
+    height: 60%;
+}
