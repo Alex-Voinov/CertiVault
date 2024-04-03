@@ -1,0 +1,12 @@
+.skin{
+    width: 100vw;
+}
+
+.row{
+    display: flex;
+    margin-top: 20px;
+}
+
+input{
+    border: 1px solid black;
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './RepositoryTable.module.css'
+import WidgetPanelVertical from '../WidgetPanelVertical/WidgetPanelVertical';
 
 const category = [
     'Номер сертификата',
@@ -72,9 +73,9 @@ const RepositoryTable = () => {
     return (
         <section className={styles.skin}>
             <section className={styles.wrapperTablet} onMouseLeave={() => {
-                        setActiveColumn(-1);
-                        setActiveRow(-1)
-                    }}>
+                setActiveColumn(-1);
+                setActiveRow(-1)
+            }}>
                 <section className={styles.title}>
                     {titleCategory}
                 </section>
@@ -84,6 +85,7 @@ const RepositoryTable = () => {
                     </div>
                 </main>
             </section>
+            <WidgetPanelVertical side='min(4.16667vw, 7.40741vh)' gap='1.85185vh' />
         </section>
     )
 }

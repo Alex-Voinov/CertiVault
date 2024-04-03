@@ -1,0 +1,18 @@
+.widget{
+    background-color: #3AACBB;
+    border-radius: 10%;
+    box-shadow: 0.20833vw 0.37037vh min(0.20833vw, 0.37037vh) 0 rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.widget > img{
+    width: 60%;
+    height: 60%;
+}
+
+.skin{
+    overflow: visible;
+}
