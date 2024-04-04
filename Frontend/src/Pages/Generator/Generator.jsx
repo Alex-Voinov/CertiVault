@@ -2,8 +2,20 @@ import { useState } from 'react'
 import styles from './Generator.module.css'
 import { postDataSend } from '../../utilities/serverRequest'
 
-const Generator = () => {
+const activeButton = {
+    backgroundColor: '#317187',
+    cursor: 'pointer',
+    color: 'white',
+}
 
+const passiveButton = {
+    backgroundColor: '#7CA3B3',
+    cursor: 'not-allowed',
+    color: '#E7EDF3',
+    '--select': '#7CA3B3'
+}
+
+const Generator = () => {
     // Создаем состояние для хранения значений всех инпутов
     const [inputValues, setInputValues] = useState({
         county: '',
@@ -36,6 +48,30 @@ const Generator = () => {
         сustomerCounty: '',
     });
 
+    const [activeStep, setStep] = useState(0);
+
+    const progressPoints = [];
+    for (let i = 0; i < 5; i++) {
+        const newPoint = <div
+            className={styles.menuPoint}
+            style={{
+                left: 17.5 + i * 15 + '%',
+            }}>
+            {i < activeStep
+                ? <img
+                    src={`/img/svg/complete.svg`}
+                    alt={`complete point №${i + 1}`}
+                />
+                : i === activeStep && <div className={styles.selectStepPoint} />
+            }
+        </div>
+        progressPoints.push(newPoint);
+    }
+
+    const canBack = activeStep > 0;
+    const canForward = activeStep < 5;
+
+
     // Обработчик изменения значения инпута
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -48,12 +84,39 @@ const Generator = () => {
     // Обработчик отправки формы
     const handleSubmit = (event) => {
         event.preventDefault();
-        postDataSend(event, 'repository-generate' ,inputValues);
+        postDataSend(event, 'repository-generate', inputValues);
     };
+    const previousStep = (e) => {
+        e.preventDefault()
+        setStep(activeStep - 1);
+    }
 
+    const nextStep = (e) => {
+        e.preventDefault();
+        setStep(activeStep + 1);
+    }
     return (
         <section className={styles.skin}>
-            <form onSubmit={handleSubmit}>
+            <header className={styles.header}>
+                <h1>DCC CERTIFICATE</h1>
+            </header>
+            <main className={styles.main}>
+
+            </main>
+            <footer className={styles.footer}>
+                <button onClick={previousStep} disabled={!canBack} style={canBack ? activeButton : passiveButton}>
+                    ПРЕДЫДУЩИЙ ШАГ
+                </button>
+                <div className={styles.progressBar}>
+                    <div className={styles.backLine} />
+                    <div className={styles.frontLine} style={{ width: activeStep < 5 ? 17.5 + activeStep * 15 + '%' : '100%' }} />
+                    {progressPoints}
+                </div>
+                <button onClick={nextStep} disabled={!canForward} style={canForward ? activeButton : passiveButton}>
+                    СЛЕДУЮЩИЙ ШАГ
+                </button>
+            </footer>
+            {/* <form onSubmit={handleSubmit}>
                 <h1>Основная информация</h1>
                 <div className={styles.row}>
                     <h1>Код страны</h1>
@@ -178,7 +241,7 @@ const Generator = () => {
                     чекбокс
                 </div>
                 <button type='submit'>ОК</button>
-            </form>
+            </form> */}
         </section>
     )
 }
