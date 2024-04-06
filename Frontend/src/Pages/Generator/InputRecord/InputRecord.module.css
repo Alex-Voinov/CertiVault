@@ -1,0 +1,55 @@
+.skin {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blocked {
+    user-select: none!important;
+    cursor: default!important;
+}
+
+
+.skin>h1 {
+    font-size: min(1.04167vw, 1.85185vh);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    color: #1D1D1D;
+    width: 25.52083vw;
+    text-align: left;
+    transition: color 0.3s ease-in-out;
+}
+
+.skin>h1.blocked {
+    color: #848484;
+}
+
+.skin>h1.notMandatory {
+    font-weight: 200;
+}
+
+.skin>input {
+    width: 24.84375vw;
+    border: none;
+    border-bottom: #000 min(0.05208vw, 0.09259vh) solid;
+    background-color: none;
+}
+
+.skin>input.blocked {
+    border-bottom: #848484 min(0.05208vw, 0.09259vh) solid;
+}
+
+.skin>svg {
+    max-width: 1.35417vw;
+    max-height: 1.35417vw;
+    cursor: pointer;
+}
+
+.skin>svg>circle {
+    transition: fill 0.3s ease-in-out;
+}
+
+.skin>svg.blocked>circle {
+    fill: #6392A3;
+}

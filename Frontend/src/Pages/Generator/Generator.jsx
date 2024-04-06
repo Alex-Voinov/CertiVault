@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Generator.module.css'
 import { postDataSend } from '../../utilities/serverRequest'
+import GeneratorGist from './GeneratorGist'
 
 const activeButton = {
     backgroundColor: '#317187',
@@ -49,7 +50,7 @@ const Generator = () => {
     });
 
     const [activeStep, setStep] = useState(0);
-
+    const [isCorrectStep, setCorrectStep] = useState(false);
     const progressPoints = [];
     for (let i = 0; i < 5; i++) {
         const newPoint = <div
@@ -69,7 +70,7 @@ const Generator = () => {
     }
 
     const canBack = activeStep > 0;
-    const canForward = activeStep < 5;
+    const canForward = isCorrectStep && activeStep < 5;
 
 
     // Обработчик изменения значения инпута
@@ -101,7 +102,7 @@ const Generator = () => {
                 <h1>DCC CERTIFICATE</h1>
             </header>
             <main className={styles.main}>
-
+                <GeneratorGist step={activeStep} setComplete={setCorrectStep}/>
             </main>
             <footer className={styles.footer}>
                 <button onClick={previousStep} disabled={!canBack} style={canBack ? activeButton : passiveButton}>
