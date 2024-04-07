@@ -1,8 +1,11 @@
 import React from 'react'
 
+
 const Composition1SubmenuPoint2 = () => {
     return (
-        <div>Composition1SubmenuPoint2</div>
+        <div>
+            
+        </div>
     )
 }
 
