@@ -73,10 +73,28 @@ const CalendarDropdown = ({ className }) => {
         </div>
         years.push(rowYearBlock);
     }
-    const calendar = selectedDate&&generateCalendar(selectedDate[2], selectedDate[1]).map(
-        week => <div className={styles.calendarWeek}>{
+    const calendar = selectedDate && generateCalendar(selectedDate[2], selectedDate[1]).map(
+        (week, numberWeek) => <div className={styles.calendarWeek}>{
             week.map(
-                day => <div>{day}</div>
+                day => {
+                    const isActiveTablet = !((numberWeek < 2 && day > 14) || (numberWeek > 3 && day < 14))
+                    return <div
+                        className={
+                            isActiveTablet ? styles.activeTablteDay : styles.dissabledTablteDay
+                        }
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if (isActiveTablet) {
+                                setActive(false);
+                                setSelectedDate([day, selectedDate[1], selectedDate[2]]);   
+                            }
+                        }
+                        }
+                    >
+                        {day}
+                    </div>
+                }
             )}
         </div>
     )
