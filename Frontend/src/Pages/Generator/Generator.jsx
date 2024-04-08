@@ -102,7 +102,9 @@ const Generator = () => {
                 <h1>DCC CERTIFICATE</h1>
             </header>
             <main className={styles.main}>
-                <GeneratorGist step={activeStep} setComplete={setCorrectStep}/>
+                <div className={styles.innerMain}>
+                    <GeneratorGist step={activeStep} setComplete={setCorrectStep} />
+                </div>
             </main>
             <footer className={styles.footer}>
                 <button onClick={previousStep} disabled={!canBack} style={canBack ? activeButton : passiveButton}>

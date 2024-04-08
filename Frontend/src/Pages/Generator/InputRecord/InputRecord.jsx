@@ -33,7 +33,7 @@ const InputRecord = ({
             }
             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" className={isBlocked ? styles.blocked : ''}>
                 <circle cx="13" cy="13" r="13" fill="#1D728F" />
-                <path d="M13 11.5V19M13 7V7.5" stroke="#E7EDF3" stroke-width="3" stroke-linecap="round" />
+                <path d="M13 11.5V19M13 7V7.5" stroke="#E7EDF3" strokeWidth="3" strokeLinecap="round" />
             </svg>
         </div>
     )

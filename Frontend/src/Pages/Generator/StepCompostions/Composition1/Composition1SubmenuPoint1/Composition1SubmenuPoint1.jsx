@@ -80,6 +80,7 @@ const Composition1SubmenuPoint1 = () => {
             isDropdawn={data.isDropdawn}
             isMandatory={data.isMandatory}
             isDate={data.isDate}
+            key={`input-${data.title}`}
         />
     )
     const dropdawnsAdditional = recordDataAdditional.map(
@@ -88,6 +89,7 @@ const Composition1SubmenuPoint1 = () => {
             title={data.title}
             isDropdawn={data.isDropdawn}
             isBlocked={!isActiveAdditionalBlock}
+            key={`input-${data.title}`}
         />
     )
     return (

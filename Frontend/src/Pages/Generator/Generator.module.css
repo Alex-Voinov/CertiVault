@@ -32,7 +32,16 @@ input {
     text-shadow: 0 0.37037vh min(0.20833vw, 0.37037vh) rgba(0, 0, 0, 0.35);
 }
 
-.main {
+.main{
+    width: 100%;
+    background-color: #D9E5F0;
+    height: 85.18518vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.innerMain {
     width: 58.33333vw;
     height: 75.92593vh;
     border: #1D728F solid min(0.05208vw, 0.09259vh);
