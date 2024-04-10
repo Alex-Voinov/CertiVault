@@ -5,6 +5,10 @@
     align-items: center;
     overflow: visible;
     height: 2.40741vh;
+    font-size: min(1.04167vw, 1.85185vh);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    color: #1D1D1D;
 }
 
 .blocked {
@@ -14,17 +18,13 @@
 
 
 .skin>h1 {
-    font-size: min(1.04167vw, 1.85185vh);
-    font-weight: 300;
-    letter-spacing: -0.015em;
-    color: #1D1D1D;
     width: 25.52083vw;
     text-align: left;
     transition: color 0.3s ease-in-out;
 }
 
-.skin>h1.blocked {
-    color: #848484;
+.skin>.blocked {
+    color: #848484!important;
 }
 
 .skin>h1.notMandatory {

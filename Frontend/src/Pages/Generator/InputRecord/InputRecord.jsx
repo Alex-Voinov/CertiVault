@@ -20,9 +20,10 @@ const InputRecord = ({
     const infoRef = useRef(null);
     const [inputValue, setInputValue] = inputState;
     useEffect(() => {
-        if ((!isMandatory || isBlocked) && !inputValue) setCorrectnessInputs(true)
-        else if (isMandatory && inputValue) {
-            setCorrectnessInputs(true)
+        if (!isMandatory || isBlocked) setCorrectnessInputs(true)
+        else if (isMandatory) {
+            if(inputValue) setCorrectnessInputs(true)
+            else setCorrectnessInputs(false)
         }
     }, [inputValue])
     return (
@@ -38,11 +39,11 @@ const InputRecord = ({
             >
                 {`${title}${!isMandatory ? '*' : ''}`}
             </h1>
-            {isDate ? <CalendarDropdown
+            {isDate&&!isBlocked ? <CalendarDropdown
                 inputState={inputState}
                 className={styles.alternativeInput}
             />
-                : isDropdawn
+                : isDropdawn&&!isBlocked
                     ? <DropDown
                         reciveData={isDropdawn}
                         inputState={inputState}
