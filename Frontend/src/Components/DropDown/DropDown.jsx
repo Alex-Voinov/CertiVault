@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './DropDown.module.css'
+import {capitalize} from '../../utilities/helperFunction.js'
 
 const generatePossibleList = (enteredText, setPossibleValue, type) => {
     if (type === 'countryCode') {
@@ -10,7 +11,7 @@ const generatePossibleList = (enteredText, setPossibleValue, type) => {
     }
     //type default
     const setPossibleValueLowerCase = setPossibleValue.map(element => element.toLowerCase())
-    return setPossibleValue.filter(possibleValue => setPossibleValueLowerCase.includes(possibleValue));
+    return setPossibleValueLowerCase.filter(possibleValue => possibleValue.includes(enteredText.toLowerCase()));
 }
 
 
@@ -33,7 +34,7 @@ const DropDown = ({ reciveData, inputState, className = '' }) => {
             <div className={`${styles.wrapper} ${className}`}>
                 <input
                     type="text"
-                    value={inputValue}
+                    value={capitalize(inputValue)}
                     onChange={
                         (e) => {
                             setInputValue(e.target.value);
@@ -57,7 +58,7 @@ const DropDown = ({ reciveData, inputState, className = '' }) => {
                             setInputValue(possibleOption);
                         }}
                     >
-                        {possibleOption}
+                        {capitalize(possibleOption)}
                     </div>)}
                 </div>}
             </div>

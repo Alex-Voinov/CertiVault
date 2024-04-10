@@ -8,3 +8,6 @@ export const  replaceElementAtIndex = (a, i, v) => {
 
     return newArray;
 }
+
+export const capitalize = string =>  string.charAt(0).toUpperCase() + string.slice(1);
+  

@@ -73,11 +73,11 @@ export const coreDataAdditionaly = [
         isDropdawn: {
             type: 'default',
             data: [
-                'manufacturer',
-                'calibrationLaboratory',
-                'customer',
-                'owner',
-                'other',
+                'Лаборатория',
+                'Клиент',
+                'Лабораторный филиал',
+                'Клиентский отдел',
+                'Другое',
             ]
         },
         isDate: false,
