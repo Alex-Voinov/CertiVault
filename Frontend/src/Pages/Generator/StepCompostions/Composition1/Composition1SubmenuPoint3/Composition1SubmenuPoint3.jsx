@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Composition1SubmenuPoint3 = () => {
+const Composition1SubmenuPoint3 = ({correctnessSubParagraphsState}) => {
     return (
         <div>Composition1SubmenuPoint3</div>
     )

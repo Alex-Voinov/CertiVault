@@ -15,6 +15,7 @@ const passiveButton = {
     backgroundColor: '#7CA3B3',
     cursor: 'not-allowed',
     color: '#E7EDF3',
+    borderWidth: 0,
     '--select': '#7CA3B3'
 }
 

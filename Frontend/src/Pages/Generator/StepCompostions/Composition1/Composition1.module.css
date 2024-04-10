@@ -8,7 +8,7 @@
     height: 4.16667vh;
     width: 100%;
     display: flex;
-    border-top: min(0.05208vw, 0.09259vh) solid #E7EDF3;
+    border-top: min(0.05208vw, 0.09259vh) solid #cde4fc;
 }
 
 .submenu {
@@ -26,7 +26,7 @@
 
 .submenu:not(:last-of-type) {
     width: 32%;
-    border-right: min(0.05208vw, 0.09259vh) solid #E7EDF3;
+    border-right: min(0.05208vw, 0.09259vh) solid #cde4fc;
 }
 
 .submenu:last-of-type {

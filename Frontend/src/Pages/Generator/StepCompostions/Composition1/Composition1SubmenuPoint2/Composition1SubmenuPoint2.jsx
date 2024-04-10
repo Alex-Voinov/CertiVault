@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-const Composition1SubmenuPoint2 = () => {
+const Composition1SubmenuPoint2 = ({correctnessSubParagraphsState}) => {
     return (
         <div>
             

@@ -95,7 +95,7 @@ export const coreDataAdditionaly = [
         title: 'Дополнительная информация об идентификаторе',
         isDropdawn: false,
         isDate: false,
-        descriptionHint: 'Имеет один дочерний элемент – dcc:content, в который указывается дополнительная информация об идентификаторе. Например: Order no.',
+        descriptionHint: 'Имеет один дочерний элемент – dcc:content, в который указывается дополнительная информация об идентификаторе.',
         example: 'Order no',
     },
 ]

@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import InputRecord from '../../../InputRecord/InputRecord'
 import styles from './Composition1SubmenuPoint1.module.css'
 import { coreDataMain, coreDataAdditionaly } from '../../../../../dataSets/inputRecords.js'
 
 
-const Composition1SubmenuPoint1 = ({ setHint, inputsState }) => {
+const Composition1SubmenuPoint1 = ({ setHint, inputsState, correctnessSubParagraphsState }) => {
+    const correctnessInputState = new Array(coreDataMain.length + coreDataAdditionaly.length).fill(false).map(useState);
+    const [correctnessSubParagraphs, setCorrectnessSubParagraphs] = correctnessSubParagraphsState;
     const [isActiveAdditionalBlock, setActiveAdditionalBlock] = useState(false);
+    useEffect(() => {
+        console.log(correctnessInputState);
+        const correctnes = correctnessInputState.every(value => value[0] === true)
+        if (correctnes !== correctnessSubParagraphs[0]) {
+            const actualityCorrectnes = [correctnes, correctnessSubParagraphs[1], correctnessSubParagraphs[2]];
+            setCorrectnessSubParagraphs(actualityCorrectnes)
+        }
+    }, [correctnessInputState.map(state => state[0])])
     const dropdawns = coreDataMain.map(
         (data, number) => <InputRecord
             setHint={setHint}
@@ -18,6 +28,7 @@ const Composition1SubmenuPoint1 = ({ setHint, inputsState }) => {
             exampleHint={data.example}
             key={`input-${data.title}`}
             inputState={inputsState[number]}
+            setCorrectnessInputs={correctnessInputState[number][1]}
         />
     )
     const dropdawnsAdditional = coreDataAdditionaly.map(
@@ -31,6 +42,7 @@ const Composition1SubmenuPoint1 = ({ setHint, inputsState }) => {
             exampleHint={data.example}
             descriptionHint={data.descriptionHint}
             inputState={inputsState[coreDataMain.length + number]}
+            setCorrectnessInputs={correctnessInputState[coreDataMain.length + number][1]}
         />
     )
     return (

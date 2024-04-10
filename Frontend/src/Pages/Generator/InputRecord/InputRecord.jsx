@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import styles from './InputRecord.module.css'
 import CalendarDropdown from '../../../Components/CalendarDropdown/CalendarDropdown'
 import DropDown from '../../../Components/DropDown/DropDown';
@@ -11,6 +11,7 @@ const InputRecord = ({
     descriptionHint,
     exampleHint,
     inputState,
+    setCorrectnessInputs,
     isMandatory = true,
     isDropdawn = false,
     isBlocked = false,
@@ -18,6 +19,12 @@ const InputRecord = ({
 }) => {
     const infoRef = useRef(null);
     const [inputValue, setInputValue] = inputState;
+    useEffect(() => {
+        if ((!isMandatory || isBlocked) && !inputValue) setCorrectnessInputs(true)
+        else if (isMandatory && inputValue) {
+            setCorrectnessInputs(true)
+        }
+    }, [inputValue])
     return (
         <div
             className={`${styles.skin} ${isBlocked ? styles.blocked : ''}`}
