@@ -15,7 +15,7 @@ const amountWidgetItems = widgetItems.length;
 const WidgetPanel = ({ side, gap }) => {
     const widgets = widgetItems.map(widgetName => <Link to={`/${widgetName}/`} style={{overflow: 'visible'}}>
         <div className={styles.widget} style={{ width: side, height: side }}>
-            <img src={`img/svg/${widgetName}.svg`} alt={`${widgetName} widget`} />
+            <img src={`/img/svg/${widgetName}.svg`} alt={`${widgetName} widget`} />
         </div>
     </Link>)
     return (

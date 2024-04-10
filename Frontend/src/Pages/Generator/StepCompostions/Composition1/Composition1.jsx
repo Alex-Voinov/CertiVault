@@ -4,7 +4,7 @@ import Composition1SubmenuPoint1 from './Composition1SubmenuPoint1/Composition1S
 import Composition1SubmenuPoint2 from './Composition1SubmenuPoint2/Composition1SubmenuPoint2';
 import Composition1SubmenuPoint3 from './Composition1SubmenuPoint3/Composition1SubmenuPoint3';
 
-const Composition1 = ({setHint}) => {
+const Composition1 = ({setHint, inputsState}) => {
     const [activeSubmenu, setActiveSubmenu] = useState(0);
     return (
         <section className={styles.skin}>
@@ -28,7 +28,7 @@ const Composition1 = ({setHint}) => {
                     Замена, изменения, предыдущие DCC
                 </div>
             </header>
-            {activeSubmenu === 0 && <Composition1SubmenuPoint1 setHint={setHint}/>}
+            {activeSubmenu === 0 && <Composition1SubmenuPoint1 setHint={setHint} inputsState={inputsState[0]}/>}
             {activeSubmenu === 1 && <Composition1SubmenuPoint2 />}
             {activeSubmenu === 2 && <Composition1SubmenuPoint3 />}
         </section>

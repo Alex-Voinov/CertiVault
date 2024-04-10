@@ -10,7 +10,7 @@ const WidgetPanelVertical = ({ side, gap }) => {
     const widgets = widgetSet.map(widgetName => {
         return <Link to={`/repository/${widgetName}/`} style={{ overflow: 'visible' }}>
             <div className={styles.widget} style={{ width: side, height: side, marginBottom: gap }}>
-                <img src={`img/svg/${widgetName}.svg`} alt={`widget ${widgetName}`} />
+                <img src={`/img/svg/${widgetName}.svg`} alt={`widget ${widgetName}`} />
             </div>
         </Link>
     })

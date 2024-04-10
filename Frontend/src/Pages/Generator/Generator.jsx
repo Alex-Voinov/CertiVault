@@ -3,6 +3,7 @@ import styles from './Generator.module.css'
 import { postDataSend } from '../../utilities/serverRequest'
 import GeneratorGist from './GeneratorGist'
 import { motion, AnimatePresence } from 'framer-motion';
+import { coreDataAdditionaly, coreDataMain } from '../../dataSets/inputRecords';
 
 const activeButton = {
     backgroundColor: '#317187',
@@ -18,6 +19,9 @@ const passiveButton = {
 }
 
 const windowHeight = window.innerHeight;
+const generateINputs = (amount) => {
+    return new Array(amount).fill("").map(useState);
+}
 
 const Generator = () => {
 
@@ -27,7 +31,15 @@ const Generator = () => {
     const progressPoints = [];
     const hintText = useRef(null);
     const [hintTextHeight, setHintTextHeight] = useState(null);
-
+    const setInputs = [
+        [
+            generateINputs(coreDataMain.length + coreDataAdditionaly.length),
+        ],
+        [],
+        [],
+        [],
+        [],
+    ]
     const adjustHeight = () => {
         if (hintText.current) {
             const hintTextHeight = parseFloat(hintText.current.clientHeight);
@@ -82,7 +94,12 @@ const Generator = () => {
             </header>
             <main className={styles.main}>
                 <div className={styles.innerMain}>
-                    <GeneratorGist step={activeStep} setComplete={setCorrectStep} setHint={setHint} />
+                    <GeneratorGist
+                        step={activeStep}
+                        setComplete={setCorrectStep}
+                        setHint={setHint}
+                        inputsState={setInputs}
+                    />
                 </div>
                 <AnimatePresence>
                     {hint && <motion.div

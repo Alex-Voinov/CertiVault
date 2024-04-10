@@ -4,7 +4,7 @@ import Composition1 from './StepCompostions/Composition1/Composition1'
 
 
 
-const GeneratorGist = ({ step, setComplete, setHint }) => {
+const GeneratorGist = ({ step, setComplete, setHint, inputsState }) => {
     return (
         <section className={styles.skin}>
             <header>
@@ -14,7 +14,7 @@ const GeneratorGist = ({ step, setComplete, setHint }) => {
                 </div>
             </header>
             <main>
-                {step === 0 && <Composition1 setHint={setHint}/>}
+                {step === 0 && <Composition1 setHint={setHint} inputsState={inputsState[0]} setComplete={setComplete}/>}
             </main>
         </section>
     )

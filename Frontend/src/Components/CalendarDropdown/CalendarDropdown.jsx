@@ -11,8 +11,8 @@ const yearPerColumn = 3;
 const addZerro = (date) => (date / 10 < 1 ? '0' : '') + date;
 const currentYear = getCurrentDate()[2];
 
-const CalendarDropdown = ({ className }) => {
-    const [selectedDate, setSelectedDate] = useState(null);
+const CalendarDropdown = ({ className, inputState }) => {
+    const [selectedDate, setSelectedDate] = inputState;
     const [isActive, setActive] = useState(false);
     const [acitveMode, setActiveMode] = useState(0);
     const [deltaYearTimeline, setDeltaYearTimeline] = useState(0);
@@ -87,7 +87,7 @@ const CalendarDropdown = ({ className }) => {
                             e.preventDefault();
                             if (isActiveTablet) {
                                 setActive(false);
-                                setSelectedDate([day, selectedDate[1], selectedDate[2]]);   
+                                setSelectedDate([day, selectedDate[1], selectedDate[2]]);
                             }
                         }
                         }
@@ -101,7 +101,12 @@ const CalendarDropdown = ({ className }) => {
 
     return (
         <>
-            {isActive && <div className={styles.outside} onClick={() => setActive(false)} />}
+            {isActive && <div className={styles.outside} onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setActive(false)
+            }
+            } />}
             <div
                 onClick={() => {
                     setActive(true);

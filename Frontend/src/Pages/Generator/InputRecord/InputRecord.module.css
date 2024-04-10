@@ -34,8 +34,10 @@
 .skin>input, .alternativeInput {
     width: 24.84375vw;
     border: none;
-    border-bottom: #000 min(0.05208vw, 0.09259vh) solid;
+    border-bottom: #848484 min(0.05208vw, 0.09259vh) solid;
     background-color: none;
+    text-align: left;
+    padding-left: 1em;
 }
 
 .skin>input.blocked {
