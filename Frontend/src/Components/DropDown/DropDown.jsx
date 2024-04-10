@@ -9,7 +9,7 @@ const generatePossibleList = (enteredText, setPossibleValue, type) => {
         return findCountry.map(country => `${country.name} (${country.code})`)
     }
     //type==='default
-    const setPossibleValueLowerCase = setPossibleValue.map(element=>element.toLowerCase())
+    const setPossibleValueLowerCase = setPossibleValue.map(element => element.toLowerCase())
     return setPossibleValue.filter(possibleValue => setPossibleValueLowerCase.includes(possibleValue));
 }
 
@@ -50,10 +50,13 @@ const DropDown = ({ reciveData, inputState, className = '' }) => {
                         height: `calc(${possibleList.length * 5}vh + min(0.15625vw, 0.27778vh))`
                     }}
                 >
-                    {possibleList.map(possibleOption => <div onClick={() => {
-                        setPossibleList([]);
-                        setInputValue(possibleOption);
-                    }}>
+                    {possibleList.map(possibleOption => <div
+                        key={possibleOption}
+                        onClick={() => {
+                            setPossibleList([]);
+                            setInputValue(possibleOption);
+                        }}
+                    >
                         {possibleOption}
                     </div>)}
                 </div>}

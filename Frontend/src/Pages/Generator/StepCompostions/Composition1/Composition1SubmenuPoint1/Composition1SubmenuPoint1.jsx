@@ -9,7 +9,6 @@ const Composition1SubmenuPoint1 = ({ setHint, inputsState, correctnessSubParagra
     const [correctnessSubParagraphs, setCorrectnessSubParagraphs] = correctnessSubParagraphsState;
     const [isActiveAdditionalBlock, setActiveAdditionalBlock] = useState(false);
     useEffect(() => {
-        console.log(correctnessInputState);
         const correctnes = correctnessInputState.every(value => value[0] === true)
         if (correctnes !== correctnessSubParagraphs[0]) {
             const actualityCorrectnes = [correctnes, correctnessSubParagraphs[1], correctnessSubParagraphs[2]];

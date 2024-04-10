@@ -58,6 +58,7 @@ const Generator = () => {
 
     for (let i = 0; i < 5; i++) {
         const newPoint = <div
+            key={`generator-point-№${i}`}
             className={styles.menuPoint}
             style={{
                 left: 17.5 + i * 15 + '%',

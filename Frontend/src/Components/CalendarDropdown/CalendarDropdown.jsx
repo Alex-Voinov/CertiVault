@@ -23,6 +23,7 @@ const CalendarDropdown = ({ className, inputState }) => {
         for (let columnNumber = 0; columnNumber < monthPerColumn; columnNumber++) {
             const monthNumber = rowNumber * monthPerColumn + columnNumber;
             const monthTablet = <div
+                key={`month-tablet-${rowNumber}-${columnNumber}`}
                 onClick={() => {
                     setSelectedDate([selectedDate[0], monthNumber, selectedDate[2]])
                     setActiveMode(0);
@@ -36,6 +37,7 @@ const CalendarDropdown = ({ className, inputState }) => {
             rowMonths.push(monthTablet);
         }
         const rowMonthsBlock = <div
+            key={`row-months-${rowNumber}`}
             className={styles.rowMonths}
             style={{
                 height: 100 / monthPerRow + '%'
@@ -51,6 +53,7 @@ const CalendarDropdown = ({ className, inputState }) => {
         for (let columnNumber = 0; columnNumber < yearPerColumn; columnNumber++) {
             const yearNumber = (rowNumber - 1 + deltaYearTimeline) * monthPerColumn + columnNumber + currentYear;
             const yearTablet = <div
+                key={`year-tablet-${rowNumber}-${columnNumber}`}
                 onClick={() => {
                     setSelectedDate([selectedDate[0], selectedDate[1], yearNumber])
                     setActiveMode(0);
@@ -64,6 +67,7 @@ const CalendarDropdown = ({ className, inputState }) => {
             rowYears.push(yearTablet);
         }
         const rowYearBlock = <div
+            key={`row-year-${rowNumber}`}
             className={styles.rowMonths}
             style={{
                 height: 100 / monthPerRow + '%'
@@ -74,28 +78,32 @@ const CalendarDropdown = ({ className, inputState }) => {
         years.push(rowYearBlock);
     }
     const calendar = selectedDate && generateCalendar(selectedDate[2], selectedDate[1]).map(
-        (week, numberWeek) => <div className={styles.calendarWeek}>{
-            week.map(
-                day => {
-                    const isActiveTablet = !((numberWeek < 2 && day > 14) || (numberWeek > 3 && day < 14))
-                    return <div
-                        className={
-                            isActiveTablet ? styles.activeTablteDay : styles.dissabledTablteDay
-                        }
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            if (isActiveTablet) {
-                                setActive(false);
-                                setSelectedDate([day, selectedDate[1], selectedDate[2]]);
+        (week, numberWeek) => <div
+            className={styles.calendarWeek}
+            key={`week №${numberWeek}`}
+        >{
+                week.map(
+                    (day, numberDay) => {
+                        const isActiveTablet = !((numberWeek < 2 && day > 14) || (numberWeek > 3 && day < 14))
+                        return <div
+                            key={`day ${numberWeek}-${numberDay}`}
+                            className={
+                                isActiveTablet ? styles.activeTablteDay : styles.dissabledTablteDay
                             }
-                        }
-                        }
-                    >
-                        {day}
-                    </div>
-                }
-            )}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (isActiveTablet) {
+                                    setActive(false);
+                                    setSelectedDate([day, selectedDate[1], selectedDate[2]]);
+                                }
+                            }
+                            }
+                        >
+                            {day}
+                        </div>
+                    }
+                )}
         </div>
     )
 
@@ -124,7 +132,7 @@ const CalendarDropdown = ({ className, inputState }) => {
                     </div>}
                     {!acitveMode && <div className={styles.calendarBlock}>
                         <header>
-                            {weekdaysShort.map(dayName => <div>{dayName}</div>)}
+                            {weekdaysShort.map((dayName, number) => <div key={`day name ${number}`}>{dayName}</div>)}
                         </header>
                         <main>
                             {calendar}
