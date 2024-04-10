@@ -4,6 +4,9 @@
   overflow: visible;
   cursor: pointer;
   border-bottom: #848484 min(0.05208vw, 0.09259vh) solid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .calendarWrapper {
@@ -110,7 +113,7 @@
   background-color: #F3F8FF;
 }
 
-.calendarWeek>div.activeTablteDay:hover{
+.calendarWeek>div.activeTablteDay:hover {
   background-color: #a7e4f8;
 }
 
@@ -184,12 +187,34 @@
   width: 35%;
 }
 
-.activeTablteDay{
+.activeTablteDay {
   cursor: pointer;
   color: #000000;
 }
 
-.dissabledTablteDay{
+.dissabledTablteDay {
   cursor: default;
   color: #6C6C6C;
+}
+
+.close {
+  margin-left: 0.5em;
+  margin-bottom: 0.025em;
+  width: min(1.04167vw, 1.85185vh);
+  height: min(1.04167vw, 1.85185vh);
+  overflow: visible;
+}
+
+.close>svg {
+  width: 100%;
+  height: 100%;
+}
+
+.close>svg>path:first-of-type {
+  transition: fill 0.5s ease-in-out;
+}
+
+
+.close>svg:hover>path:first-of-type {
+  fill: rgb(196, 106, 106);
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from './CalendarDropdown.module.css';
 import { getCurrentDate, monthNamesByNumber, weekdaysShort, generateCalendar } from '../../utilities/datetime.js'
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const monthPerRow = 4;
 const monthPerColumn = 3;
@@ -16,6 +18,7 @@ const CalendarDropdown = ({ className, inputState }) => {
     const [isActive, setActive] = useState(false);
     const [acitveMode, setActiveMode] = useState(0);
     const [deltaYearTimeline, setDeltaYearTimeline] = useState(0);
+    const [isVisibleClose, setVisibleClose] = useState(false);
     const months = []
     const textContent = selectedDate && `${addZerro(selectedDate[0])}.${addZerro(selectedDate[1] + 1)}.${selectedDate[2]}`;
     for (let rowNumber = 0; rowNumber < monthPerRow; rowNumber++) {
@@ -120,9 +123,35 @@ const CalendarDropdown = ({ className, inputState }) => {
                     setActive(true);
                     if (!selectedDate) setSelectedDate(getCurrentDate());
                 }}
+                onMouseEnter={() => {
+                    if (selectedDate) setVisibleClose(true);
+                }}
+                onMouseLeave={() => setVisibleClose(false)}
                 className={`${styles.skin} ${className}`}
             >
-                {textContent}
+                <p>{textContent}</p>
+                <AnimatePresence>
+                    {isVisibleClose && <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className={styles.close}
+                        onClick={(e)=>{
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setVisibleClose();
+                            setActive(false);
+                            setSelectedDate('');
+                        }}
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 19" fill="none">
+                            <path d="M7.048 17.785H12.232C16.552 17.785 18.28 16.1065 18.28 11.9102V6.87475C18.28 2.6785 16.552 1 12.232 1H7.048C2.728 1 1 2.6785 1 6.87475V11.9102C1 16.1065 2.728 17.785 7.048 17.785Z" fill="#D9D9D9" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7.51733 11.515L11.7623 7.27002" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M11.7623 11.515L7.51733 7.27002" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </motion.div>}
+                </AnimatePresence>
                 {isActive && <div className={styles.calendarWrapper}>
                     {(acitveMode === 1) && <div className={styles.selectMonth}>
                         {months}
