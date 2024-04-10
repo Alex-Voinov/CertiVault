@@ -99,6 +99,7 @@ const CalendarDropdown = ({ className, inputState }) => {
                                 if (isActiveTablet) {
                                     setActive(false);
                                     setSelectedDate([day, selectedDate[1], selectedDate[2]]);
+                                    setVisibleClose(false);
                                 }
                             }
                             }

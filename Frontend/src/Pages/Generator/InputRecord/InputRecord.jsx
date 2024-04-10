@@ -20,10 +20,23 @@ const InputRecord = ({
     const infoRef = useRef(null);
     const [inputValue, setInputValue] = inputState;
     useEffect(() => {
-        if (!isMandatory || isBlocked) setCorrectnessInputs(true)
-        else if (isMandatory) {
-            if(inputValue) setCorrectnessInputs(true)
-            else setCorrectnessInputs(false)
+        let correctValue = true;
+        if (isDropdawn && (isMandatory || inputValue)) {
+            const { type, data } = isDropdawn;
+            const acceptableValues = data.map(
+                el => type === 'default' ? el.toLowerCase() : `${el.name.toLowerCase()} (${el.code.toLowerCase()})`
+            )
+            correctValue = acceptableValues.includes(inputValue.toLowerCase());
+        }
+        if (!isMandatory && !inputValue || isBlocked) setCorrectnessInputs(true); //не обязательное поле без значения или заблокировано - коректно
+        else if(!isMandatory && inputValue) {//заполненное не обязательное поле 
+            if(correctValue)setCorrectnessInputs(true) //с коррекнтым занчением - коректно
+            else setCorrectnessInputs(false) //с не коррекнтым занчением - не коректно
+        } 
+        else if (isMandatory) { // обязательное поле
+            if (inputValue && correctValue) { // с коректным значением - ок
+                setCorrectnessInputs(true)
+            } else setCorrectnessInputs(false) // с некоректным или без значения - не ок
         }
     }, [inputValue])
     return (
@@ -39,11 +52,11 @@ const InputRecord = ({
             >
                 {`${title}${!isMandatory ? '*' : ''}`}
             </h1>
-            {isDate&&!isBlocked ? <CalendarDropdown
+            {isDate && !isBlocked ? <CalendarDropdown
                 inputState={inputState}
                 className={styles.alternativeInput}
             />
-                : isDropdawn&&!isBlocked
+                : isDropdawn && !isBlocked
                     ? <DropDown
                         reciveData={isDropdawn}
                         inputState={inputState}

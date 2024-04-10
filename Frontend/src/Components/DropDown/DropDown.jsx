@@ -8,7 +8,7 @@ const generatePossibleList = (enteredText, setPossibleValue, type) => {
         );
         return findCountry.map(country => `${country.name} (${country.code})`)
     }
-    //type==='default
+    //type default
     const setPossibleValueLowerCase = setPossibleValue.map(element => element.toLowerCase())
     return setPossibleValue.filter(possibleValue => setPossibleValueLowerCase.includes(possibleValue));
 }
