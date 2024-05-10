@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './RepositoryTable.module.css'
-import WidgetPanelVertical from '../WidgetPanelVertical/WidgetPanelVertical';
+import WidgetPanelVertical from '../../../Components/WidgetPanelVertical/WidgetPanelVertical';
 
 const category = [
     'Номер сертификата',

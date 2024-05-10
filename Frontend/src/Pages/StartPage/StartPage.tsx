@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import styles from './StartPage.module.css'
+import { useState } from 'react'
 import { Link } from 'react-router-dom';
+import styles from './StartPage.module.css';
 
 const StartPage = () => {
     const [isActiveTools, setActiveTools] = useState(false);

@@ -1,9 +1,9 @@
-import React from 'react'
-import styles from './Repository.module.css'
+import {FC} from 'react'
 import WidgetPanel from '../../Components/WidgetPanel/WidgetPanel';
-import RepositoryTable from '../../Components/RepositoryTable/RepositoryTable';
+import RepositoryTable from './RepositoryTable/RepositoryTable';
+import styles from './Repository.module.css';
 
-const Repository = () => {
+const Repository: FC = () => {
     return (
         <section className={styles.skin}>
             <header className={styles.skin__header}>
