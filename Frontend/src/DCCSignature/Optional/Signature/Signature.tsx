@@ -14,7 +14,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
             setSignature(file);
-            store.setupSigFiles('name1', file)
+            store.downloadSigFiles('name1', file)
             store.setValueByPath(path, nameKey, '123');
         }
     };
