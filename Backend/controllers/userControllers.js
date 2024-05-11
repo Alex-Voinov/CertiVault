@@ -1,4 +1,6 @@
 const multer = require('multer');
+const sigResolution = require('../middlewere/sigResolution')
+
 
 const storageSigFiles = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -9,10 +11,10 @@ const storageSigFiles = multer.diskStorage({
     }
 });
 
-const uploadStorageSigFiles = multer({ storage: storageSigFiles }).single('file');
+const uploadStorageSigFiles = multer({ storage: storageSigFiles, fileFilter: sigResolution }).single('file');
 
 class UserController {
-    async getSigFiels(req, res, next) {
+    async getSigFiels(req, res) {
         try {
             uploadStorageSigFiles(req, res, function (err) {
                 if (err) {
