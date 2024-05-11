@@ -1,0 +1,125 @@
+.wrapper {
+    width: 100vw;
+    height: 86.57407vh;
+    padding: 3.7037vh 6.25vw 2.31481vh 6.25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mandatoryWrapper {
+    width: 42.70833vw;
+    height: 40.74074vh;
+    background-color: #1D728F;
+    border-radius: min(0.20833vw, 0.37037vh);
+    cursor: pointer;
+    position: relative;
+}
+
+.mandatoryWrapper>h1 {
+    position: absolute;
+    top: min(1.04167vw, 1.85185vh);
+    left: min(1.04167vw, 1.85185vh);
+    color: #E7EDF3;
+    font-weight: 700;
+    font-size: min(1.30208vw, 2.31481vh);
+}
+
+.content {
+    position: relative;
+    user-select: none;
+    top: min(3.59375vw, 6.38889vh);
+    left: min(1.04167vw, 1.85185vh);
+    height: 32.5vh;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.mandatoryWrapper:hover>.content {
+    opacity: 1;
+}
+
+.content>h1 {
+    margin-left: min(1.04167vw, 1.85185vh);
+    margin-bottom: 3.7037vh;
+    color: #E7EDF3;
+    font-weight: 400;
+    font-size: min(0.9375vw, 1.66667vh);
+}
+
+.animateLine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0.05208vw;
+    background-image: linear-gradient(180deg, #FFFFFF00 0%, #FFFFFFFF 25%, #FFFFFFFF 50%, #FFFFFF00 100%);
+}
+
+.content>h1:first-of-type {
+    margin-top: 1.94444vh;
+}
+
+.mandatoryWrapper>img {
+    --side: min(10.72917vw, 19.07407vh);
+    position: absolute;
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+    right: 2.08333vw;
+    top: calc(50% - var(--side) / 2);
+    width: var(--side);
+    filter: blur(0);
+    transition: filter 0.3s ease-in-out;
+}
+
+.mandatoryWrapper:hover>img {
+    filter: blur(min(0.20833vw, 0.37037vh));
+}
+
+.nextStep {
+    position: absolute;
+    user-select: none;
+    right: min(1.04167vw, 1.85185vh);
+    bottom: min(1.04167vw, 1.85185vh);
+    min-width: 5.3125vw;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    height: min(1.04167vw, 1.85185vh);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.mandatoryWrapper:hover>.nextStep {
+    opacity: 1;
+}
+
+.nextStep>h1 {
+    color: #fff;
+    font-weight: 400;
+    font-size: min(1.04167vw, 1.85185vh);
+}
+
+.nextStep>img {
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+    width: min(1.04167vw, 1.85185vh);
+}
+
+
+.optionalWrapper {
+    width: 31.78571428571429%;
+    height: 36.11111vh;
+    background-color: transparent;
+    border: #1D728F min(0.05208vw, 0.09259vh) solid;
+    border-radius: min(0.20833vw, 0.37037vh);
+    cursor: pointer;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

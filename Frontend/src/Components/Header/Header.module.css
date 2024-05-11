@@ -1,0 +1,15 @@
+.mainHeader{
+    width: 100vw;
+    height: 7.40741vh;
+    background-color: #00536F;
+    display: flex;
+    align-items: center;
+    padding-left: 7.40741vh;
+}
+
+.mainHeader >h1{
+    font-weight: 500;
+    color: #E7EDF3;
+    font-size: min(1.66667vw, 2.96296vh);
+    text-shadow: 0 0.37037vh min(0.20833vw, 0.37037vh) rgba(0, 0, 0, 0.35);
+}
