@@ -20,7 +20,10 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
     };
 
     return (
-        <input type="file" onChange={handleFileInputChange} />
+        <>
+            <h1>Цифровая подпись</h1>
+            <input type="file" onChange={handleFileInputChange} />
+        </>
     )
 }
 

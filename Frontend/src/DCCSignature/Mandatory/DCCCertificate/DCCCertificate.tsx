@@ -33,8 +33,23 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                         <img src="/img/svg/transition.svg" alt="transition" />
                     </div>
                 </div>
-                <div className={styles.mandatoryWrapper}>
-                    <MeasurementResults path={path} />
+                <div className={styles.mandatoryWrapper} onClick={
+                    () => toStep(<MeasurementResults />)}
+                >
+                    <h1>Результаты измерений</h1>
+                    <div className={styles.content}>
+                        <div className={styles.animateLine} />
+                        <h1>Наименование элемента DCC</h1>
+                        <h1>Используемое ПО</h1>
+                        <h1>Метод калибровки</h1>
+                        <h1>Результат измерений</h1>
+                        <h1>...</h1>
+                    </div>
+                    <img src="/img/svg/resultsCalculations.svg" alt="administrative handle" />
+                    <div className={styles.nextStep}>
+                        <h1>Открыть</h1>
+                        <img src="/img/svg/transition.svg" alt="transition" />
+                    </div>
                 </div>
             </div>
             <div className={styles.row}>
