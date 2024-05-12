@@ -3,6 +3,7 @@ import styles from './Authorization.module.css'
 import Header from '../../Components/Header/Header'
 import { useNavigate } from 'react-router-dom';
 import UserService from '../../Servies/UserServise';
+import checkPassword from '../../Utilities/password';
 
 const modificateHeaderStyle: CSSProperties = {
     backgroundColor: 'transparent',
@@ -52,7 +53,6 @@ enum InputRow {
 
 const Authorization: FC = () => {
     const navigate = useNavigate();
-    const correctField = false;
     const usernamesUsed = useRef<string[]>([]);
     const inputsSet = Array(inputsData.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][];
     useEffect(() => {
@@ -66,6 +66,11 @@ const Authorization: FC = () => {
             }
         )
     }, []);
+    const isUniqeLogin = inputsSet[InputRow.login][0] && !usernamesUsed.current.includes(inputsSet[InputRow.login][0])
+    const fillingMandatoryField = inputsSet[InputRow.name][0].length >= 2 && inputsSet[InputRow.surName][0].length >= 2;
+    const statusEtnteredPassword = checkPassword(inputsSet[InputRow.password][0]);
+    const equlEnteredPass = inputsSet[InputRow.password][0] === inputsSet[InputRow.repeatPassword][0];
+    const correctField = !statusEtnteredPassword && equlEnteredPass && fillingMandatoryField && isUniqeLogin;
     return (
         <div className={styles.wrapper}>
             <Header visibleAuthLogo={false} wrapperStyles={modificateHeaderStyle} />
@@ -87,7 +92,14 @@ const Authorization: FC = () => {
                             />
                         </Fragment>
                     })}
-                    <button disabled={!correctField} className={correctField ? styles.active : styles.blocked}>
+                    <button 
+                    disabled={!correctField} 
+                    className={correctField ? styles.active : styles.blocked}
+                    onClick={(e)=>{
+                        e.preventDefault();
+                        
+                    }}
+                    >
                         Регистрация
                     </button>
                 </form>
