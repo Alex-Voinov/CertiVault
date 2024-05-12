@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const router = require('./router')
 
 const corsOptions = {
-    origin: 'http://localhost:3001'
+    origin: 'http://localhost:3001',
+    credentials: true,
 };
-
 
 
 const app = express();
@@ -15,8 +15,13 @@ app.use(bodyParser.json());
 
 app.use('/api', router);
 
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+});
 
-const PORT = process.env.PORT || 3000;
+const PORT =  3000;
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
 });

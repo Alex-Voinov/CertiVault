@@ -49,10 +49,14 @@ const Authorization: FC = () => {
         UserService.getAllLogin().then(
             result => {
                 usernamesUsed.current = result.data;
+                console.log(1)
                 console.log(result.data)
             }
         ).catch(
-            er => console.log(er)
+            er => {
+                console.log(2)
+                console.log(er)
+            }
         )
     }, []);
     return (
