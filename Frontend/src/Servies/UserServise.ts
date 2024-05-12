@@ -9,6 +9,10 @@ export default class UserService {
         return $api.get<ISigFiels>('/fetch_sig_fiels')
     }
 
+    static getAllLogin(): Promise<AxiosResponse<string[]>> {
+        return $api.get<string[]>('/get_all_login')
+    }
+
     static sendSigFiels(formData: FormData) {
         return $api.post(
             '/get_sig_fiels',
@@ -17,7 +21,9 @@ export default class UserService {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            })
+            }
+        )
     }
+
 
 }

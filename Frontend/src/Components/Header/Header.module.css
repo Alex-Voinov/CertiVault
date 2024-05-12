@@ -4,7 +4,9 @@
     background-color: #00536F;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 7.40741vh;
+    padding-right: 4.16667vw;
 }
 
 .mainHeader >h1{
@@ -12,4 +14,12 @@
     color: #E7EDF3;
     font-size: min(1.66667vw, 2.96296vh);
     text-shadow: 0 0.37037vh min(0.20833vw, 0.37037vh) rgba(0, 0, 0, 0.35);
+}
+
+.authLogo{
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+    cursor: pointer;
+    width: min(1.97917vw, 3.51852vh);
 }

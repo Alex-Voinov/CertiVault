@@ -5,6 +5,7 @@ const createUserTableQuery = `
     id SERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     surName VARCHAR(20) NOT NULL,
+    login VARCHAR(20) NOT NULL,
     password VARCHAR NOT NULL,
     accessToken TEXT,
     refreshToken TEXT
@@ -14,7 +15,6 @@ const createUserTableQuery = `
 pool.query(createUserTableQuery)
     .then((res) => {
         console.log('Таблица "user" успешно создана');
-        pool.end(); // Закрыть соединение с базой данных после выполнения запроса
     })
     .catch((err) => {
         console.error('Ошибка при создании таблицы "user":', err);
