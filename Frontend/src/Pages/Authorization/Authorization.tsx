@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect, useRef } from 'react'
+import { CSSProperties, FC, useEffect, useRef, useState, Dispatch, SetStateAction, Fragment } from 'react'
 import styles from './Authorization.module.css'
 import Header from '../../Components/Header/Header'
 import { useNavigate } from 'react-router-dom';
@@ -41,20 +41,27 @@ const inputsData = [
     },
 ]
 
+enum InputRow {
+    surName,
+    name,
+    mail,
+    login,
+    password,
+    repeatPassword
+}
+
 const Authorization: FC = () => {
     const navigate = useNavigate();
     const correctField = false;
     const usernamesUsed = useRef<string[]>([]);
+    const inputsSet = Array(inputsData.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][];
     useEffect(() => {
         UserService.getAllLogin().then(
             result => {
                 usernamesUsed.current = result.data;
-                console.log(1)
-                console.log(result.data)
             }
         ).catch(
             er => {
-                console.log(2)
                 console.log(er)
             }
         )
@@ -68,10 +75,18 @@ const Authorization: FC = () => {
                         <img src="/img/svg/formClose.svg" alt="close" onClick={() => navigate(-1)} />
                     </div>
                     <h1>Регистрация пользователя</h1>
-                    {inputsData.map(inputData => <>
-                        <h1>{inputData.title}</h1>
-                        <input type={inputData.type} placeholder={inputData.placeholder} />
-                    </>)}
+                    {inputsData.map((inputData, indexRow) => {
+                        const [text, setText] = inputsSet[indexRow];
+                        return <Fragment key={`input-row-${indexRow}`}>
+                            <h1>{inputData.title}</h1>
+                            <input
+                                type={inputData.type}
+                                placeholder={inputData.placeholder}
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                            />
+                        </Fragment>
+                    })}
                     <button disabled={!correctField} className={correctField ? styles.active : styles.blocked}>
                         Регистрация
                     </button>
