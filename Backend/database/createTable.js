@@ -7,6 +7,7 @@ const createUserTableQuery = `
     surName VARCHAR(20) NOT NULL,
     login VARCHAR(20) NOT NULL,
     password VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
     accessToken TEXT,
     refreshToken TEXT
   )

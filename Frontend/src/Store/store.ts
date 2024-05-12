@@ -11,6 +11,10 @@ export default class Store {
         makeAutoObservable(this);
     }
 
+    async registration(data: string[]){
+        UserService.createUser(data)
+    }
+
     async downloadSigFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл
         if (this.sigFiles.hasOwnProperty(name)) { //файл с таким именем уже загружен
             return false
@@ -27,26 +31,26 @@ export default class Store {
         return true;
     }
 
-getOldSigFiles(){
+    getOldSigFiles() {
 
-}
+    }
 
-setValueByPath(path: string[], nameKey: string, value: any): void {
-    let currentLink = this.currentStruct;
-    path.forEach(
-        intermediateKey => {
-            if (!currentLink.hasOwnProperty(intermediateKey)) {
-                currentLink.intermediateKey = {};
+    setValueByPath(path: string[], nameKey: string, value: any): void {
+        let currentLink = this.currentStruct;
+        path.forEach(
+            intermediateKey => {
+                if (!currentLink.hasOwnProperty(intermediateKey)) {
+                    currentLink.intermediateKey = {};
+                }
+                currentLink = currentLink.intermediateKey
             }
-            currentLink = currentLink.intermediateKey
+        )
+        if (Array.isArray(value) && value.length === 2 && value[0] === 'array') {
+            if (!currentLink[nameKey]) currentLink[nameKey] = [];
+            currentLink[nameKey].push(value)
+        } else {
+            currentLink[nameKey] = value;
         }
-    )
-        if(Array.isArray(value) && value.length === 2 && value[0] === 'array') {
-    if (!currentLink[nameKey]) currentLink[nameKey] = [];
-    currentLink[nameKey].push(value)
-} else {
-    currentLink[nameKey] = value;
-}
     }
 }
 
