@@ -20,8 +20,8 @@ class DataBaseController {
     }
     async createUser(req, res) {
         try {
-            const { name, surName, login, password, email } = req.query;
-            if (!(name && surName && login && password && email)) throw new Error('Не корректно заполненные поля');
+            const { name, surName, email, login, password } = req.body;
+            if (!(name && surName && login && password && email)) throw new Error('Некорректно заполненные поля');
             const checkExistingUserQuery = `
     SELECT login, email
     FROM "user"
@@ -37,7 +37,7 @@ class DataBaseController {
                 }
             }
             const regex = /^[a-zA-Zа-яА-Я\s]+$/;
-            if (!(regex.test(name) && regex.test(surName) && name.length <= 20 && surName.length <= 20 && login.length <= 20)) throw new Error('Не корректно заполненные поля');
+            if (!(regex.test(name) && regex.test(surName) && name.length <= 20 && surName.length <= 20 && login.length <= 20)) throw new Error('Некорректно заполненные поля');
             const hashPass = CryptoJS.SHA256(password).toString();
             const hashLogin = CryptoJS.SHA256(login).toString();
             const createUserQuery = `
@@ -45,7 +45,7 @@ class DataBaseController {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
-            const {accessToken, refreshToken} = tokenServise.generateTokens({name, surName, login, email});
+            const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
             await mailService.sendActivationMail(email, hashLogin)
             await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
             res.status(200);
@@ -54,6 +54,32 @@ class DataBaseController {
             console.log(error)
         }
     }
+
+    async editEmail(req, res) {
+        try {
+            const { login, password, email } = req.body;
+            const query = `
+            UPDATE "user"
+            SET email = $2
+            WHERE login = $1
+              AND isactivate = false
+              AND password = $3
+            RETURNING *;
+          `;
+            const result = await pool.query(query, [login, email, CryptoJS.SHA256(password).toString()]);
+
+            if (result.rowCount > 0) {
+                await mailService.sendActivationMail(email, CryptoJS.SHA256(login).toString())
+            } else {
+                console.log('Пользователь с указанным логином не найден или уже активирован');
+                return null;
+            }
+        } catch (error) {
+            console.error('Ошибка при обновлении почты пользователя:', error);
+            throw error;
+        }
+    }
+
 }
 
 module.exports = new DataBaseController();

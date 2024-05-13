@@ -5,7 +5,8 @@ const router = new Router();
 
 
 router.get('/get_all_login',  dataBaseController.get_all_login)
-router.get('/create_user', dataBaseController.createUser)
+router.post('/create_user', dataBaseController.createUser)
+router.post('/edit_email', dataBaseController.editEmail)
 router.post('/get_sig_fiels',  userControllers.getSigFiels)
 
 

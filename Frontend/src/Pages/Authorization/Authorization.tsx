@@ -128,7 +128,14 @@ const Authorization: FC = () => {
                             onClick={(e) => {
                                 e.preventDefault();
                                 if (!(statusErrorList && statusErrorList.length > 0))
-                                    store.registration(inputsSet.map(state => state[0])).then(() => { setActivateAccaunt(true); setEditEmail(inputsSet[InputRow.mail][0]) })
+                                    store.registration(inputsSet.map(state => state[0])).then(
+                                        (correctness) => {
+                                            if (correctness) {
+                                                setActivateAccaunt(true);
+                                                setEditEmail(inputsSet[InputRow.mail][0])
+                                            }
+                                        }
+                                    )
                             }}
                             onMouseEnter={() => {
                                 if (statusErrorList && statusErrorList.length > 0) store.setNotification(statusErrorList[0][0], statusErrorList[0][1])
@@ -158,12 +165,17 @@ const Authorization: FC = () => {
                                 e.preventDefault();
                                 if (editModeEmail) {
                                     if (editEmail === inputsSet[InputRow.mail][0])
-                                        store.setNotification(
+                                        return store.setNotification(
                                             'Изменения отклонены',
                                             'Новая почта совпадает с предыдущей.'
-                                        ); else {
-                                        //Отправка запроса на смену почты
-                                    }
+                                        );
+                                    if (!editEmail)
+                                        return store.setNotification(
+                                            'Изменения отклонены',
+                                            'Новая почта указана пустой.'
+                                        );
+                                    UserService.editEmail(inputsSet[InputRow.login][0], inputsSet[InputRow.password][0], editEmail)
+
                                 }
                                 setEditModeEmail(!editModeEmail);
                             }}>

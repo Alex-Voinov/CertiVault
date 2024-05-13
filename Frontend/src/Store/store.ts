@@ -18,8 +18,8 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
-    async registration(data: string[]) {
-        UserService.createUser(data).then(response => {
+    async registration(data: string[]): Promise<boolean> {
+        return UserService.createUser(data).then(response => {
             return true;
         }).catch(error => {
             if (error.response) {
@@ -29,6 +29,7 @@ export default class Store {
                 this.setNotification("Сервер не отвечает", 'Попробуйте делать запрос позже');
             } else {
                 this.setNotification("Произошла неизвестная ошибка", '...');
+                console.log(error);
             }
             return false;
         });

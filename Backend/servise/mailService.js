@@ -16,7 +16,7 @@ class MailService {
     async sendActivationMail(to, link) {
         const htmlContent = `
             <div >   
-                <a href="${link}">Активировать аккаунт</a>         
+                <a href="${process.env.API_URL}/activate_link/${link}">Активировать аккаунт</a>         
             </div>
         `;
 
