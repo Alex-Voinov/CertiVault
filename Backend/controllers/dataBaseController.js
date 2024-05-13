@@ -1,5 +1,7 @@
 const pool = require('../database/dbConfig');
 const CryptoJS = require("crypto-js");
+const tokenServise = require('../servise/tokenService');
+const mailService = require('../servise/mailService');
 
 
 class DataBaseController {
@@ -37,12 +39,15 @@ class DataBaseController {
             const regex = /^[a-zA-Zа-яА-Я\s]+$/;
             if (!(regex.test(name) && regex.test(surName) && name.length <= 20 && surName.length <= 20 && login.length <= 20)) throw new Error('Не корректно заполненные поля');
             const hashPass = CryptoJS.SHA256(password).toString();
+            const hashLogin = CryptoJS.SHA256(login).toString();
             const createUserQuery = `
-        INSERT INTO "user" (name, surname, login, password, email, accessToken, refreshToken)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO "user" (name, surname, login, password, email, accessToken, refreshToken, linkactivate)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
-            await pool.query(createUserQuery, [name, surName, login, hashPass, email, '1', '2']);
+            const {accessToken, refreshToken} = tokenServise.generateTokens({name, surName, login, email});
+            await mailService.sendActivationMail(email, hashLogin)
+            await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
             res.status(200);
         } catch (error) {
             res.status(400).json({ message: error.message });
