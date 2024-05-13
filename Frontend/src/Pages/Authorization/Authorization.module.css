@@ -112,3 +112,84 @@
     color: #6D9CAF;
     border-color: #6D9CAF;
 }
+
+.mailConfirmationSection{
+    margin-top: 20.64815vh;
+    height: 47.77778vh;
+    margin-left: 36.97917vw;
+    width: 51.82292vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mailConfirmationSection > div{
+    height: 100%;
+    width: 26.875vw;
+    border-radius: min(0.41667vw, 0.74074vh);
+    background-color: rgba(255, 255, 255, 0.15);
+    border: #E7EDF3 solid min(0.05208vw, 0.09259vh);
+    padding: min(0.72917vw, 1.2963vh);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mailConfirmationSection > img{
+    width: min(20.83333vw, 37.03704vh);
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+}
+
+.mailConfirmationSection > div > h1{
+    text-align: center;
+    font-size: 1.5625vw;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.mailConfirmationSection > div > p{
+    width: 20.3125vw;
+    text-align: justify;
+    font-size: 1.04167vw;
+    font-weight: 400;
+    margin-top: 3.61111vh;
+    color: #FFFFFF;
+}
+
+.mailConfirmationSection > div > input{
+    width: 20.3125vw;
+    height: 4.62963vh;
+    font-size: min(0.9375vw, 1.66667vh);
+    font-weight: 400;
+    margin-top: 3.61111vh;
+    color: #00536F;
+    background-color: #D6E2EA;
+    border-radius: min(0.41667vw, 0.74074vh);
+    display: flex;
+    align-items: center;
+    padding-left: 0.72917vw;
+}
+
+.buttonBlock{
+    width: 20.3125vw;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3.61111vh;
+    height: 4.62963vh;
+}
+
+.buttonBlock > button{
+    height: 100%;
+    width: 9vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #D6E2EA;
+    font-size: min(0.9375vw, 1.66667vh);
+    cursor: pointer;
+    border: #D6E2EA solid min(0.10417vw, 0.18519vh);
+    border-radius: min(0.41667vw, 0.74074vh);
+}
