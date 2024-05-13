@@ -71,6 +71,7 @@
     padding-left: 0.72917vw;
     border-radius: min(0.41667vw, 0.74074vh);
     color: #00536F;
+    font-size: min(0.9375vw, 1.66667vh);
 }
 
 .contentBlock>form>input::placeholder {

@@ -42,8 +42,10 @@ class DataBaseController {
         VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `;
-            const newUser = await pool.query(createUserQuery, [name, surName, login, hashPass, email, '1', '2']);
+            await pool.query(createUserQuery, [name, surName, login, hashPass, email, '1', '2']);
+            res.status(200);
         } catch (error) {
+            res.status(400).json({ message: error.message });
             console.log(error)
         }
     }

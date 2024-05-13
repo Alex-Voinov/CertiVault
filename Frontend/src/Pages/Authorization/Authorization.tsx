@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import UserService from '../../Servies/UserServise';
 import checkPassword from '../../Utilities/password';
 import { GlobalData } from '../..';
+import { capitalize } from '../../Utilities/string';
 
 
 const modificateHeaderStyle: CSSProperties = {
@@ -69,11 +70,24 @@ const Authorization: FC = () => {
             }
         )
     }, []);
-    const isUniqeLogin = inputsSet[InputRow.login][0] && !usernamesUsed.current.includes(inputsSet[InputRow.login][0])
-    const fillingMandatoryField = inputsSet[InputRow.name][0].length >= 2 && inputsSet[InputRow.name][0].length <= 20 && inputsSet[InputRow.surName][0].length >= 2 && inputsSet[InputRow.surName][0].length <= 20 && inputsSet[InputRow.login][0].length >= 2 && inputsSet[InputRow.login][0].length <= 20;
-    const statusEtnteredPassword = checkPassword(inputsSet[InputRow.password][0]);
-    const equlEnteredPass = inputsSet[InputRow.password][0] === inputsSet[InputRow.repeatPassword][0];
-    const correctField = !statusEtnteredPassword && equlEnteredPass && fillingMandatoryField && isUniqeLogin;
+
+    const defineUncorectnessStauts = (text: string, indexRow: number): [string, string] | undefined => {
+        if (!text)
+            return ['Вы пропустили поле', 'Все поля обязательны для заполнения.'];
+        if ([InputRow.name, InputRow.surName, InputRow.login].includes(indexRow) && (text.length < 2 || text.length > 20))
+            return ['Неккоректное поле', 'Допустимая длина имени, фамилии и логина от 2 до 20 символов.'];
+        if (InputRow.password === indexRow) {
+            const statusPass = checkPassword(text);
+            if (statusPass) return ['Ненадежный пароль', statusPass];
+        }
+        if (InputRow.repeatPassword === indexRow && text !== inputsSet[InputRow.password][0])
+            return ['Неккоректное поле', 'Повторно введеный пароль не совпадает с изначальным.'];
+        if (InputRow.login === indexRow && usernamesUsed.current.includes(text))
+            return ['Не допустимый логин', 'Пользователь с таким логином уже существует.'];
+    }
+
+    const statusErrorList = inputsSet.map((state, index) => defineUncorectnessStauts(state[0], index)).filter(el => el !== undefined) as ([string, string][] | undefined);
+
     return (
         <div className={styles.wrapper}>
             <Header visibleAuthLogo={false} wrapperStyles={modificateHeaderStyle} />
@@ -89,22 +103,31 @@ const Authorization: FC = () => {
                             <h1>{inputData.title}</h1>
                             <input
                                 type={inputData.type}
+                                autoComplete="off"
                                 placeholder={inputData.placeholder}
                                 value={text}
                                 onChange={(e) => {
                                     if (
-                                        !(e.target.value && [InputRow.name, InputRow.surName].includes(indexRow) && /\d/.test(e.target.value))
-                                    ) setText(e.target.value);
+                                        !(e.target.value && [InputRow.name, InputRow.surName].includes(indexRow) && !/^[a-zA-Zа-яА-Я\s]+$/.test(e.target.value))
+                                    ) setText(capitalize(e.target.value));
                                 }}
+                                onBlur={() => {
+                                    const potentionalError = defineUncorectnessStauts(text, indexRow);
+                                    if (potentionalError) store.setNotification(potentionalError[0], potentionalError[1])
+                                }
+                                }
                             />
                         </Fragment>
                     })}
                     <button
-                        disabled={!correctField}
-                        className={correctField ? styles.active : styles.blocked}
+                        className={!(statusErrorList && statusErrorList.length > 0) ? styles.active : styles.blocked}
                         onClick={(e) => {
                             e.preventDefault();
-                            store.registration(inputsSet.map(state => state[0]));
+                            //if (!(statusErrorList && statusErrorList.length > 0))
+                                store.registration(inputsSet.map(state => state[0]))
+                        }}
+                        onMouseEnter={() => {
+                            if (statusErrorList && statusErrorList.length > 0) store.setNotification(statusErrorList[0][0], statusErrorList[0][1])
                         }}
                     >
                         Регистрация

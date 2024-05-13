@@ -4,6 +4,8 @@ import UserService from "../Servies/UserServise";
 
 export default class Store {
     user = {} as IUser;
+    notificationTitle: string = '';
+    notificationDesc: string = '';
     currentStruct: { [key: string]: any } = {}
     sigFiles: { [key: string]: File } = {}
 
@@ -11,8 +13,25 @@ export default class Store {
         makeAutoObservable(this);
     }
 
-    async registration(data: string[]){
-        UserService.createUser(data)
+    setNotification(titleNtf: string, descNtf: string) {
+        this.notificationTitle = titleNtf;
+        this.notificationDesc = descNtf;
+    }
+
+    async registration(data: string[]) {
+        UserService.createUser(data).then(response => {
+            return true;
+        }).catch(error => {
+            if (error.response) {
+                const errorMessage = error.response.data.message || "Неизвестная ошибка";
+                this.setNotification("Ошибка регистрации", errorMessage);
+            } else if (error.request) {
+                this.setNotification("Сервер не отвечает", 'Попробуйте делать запрос позже');
+            } else {
+                this.setNotification("Произошла неизвестная ошибка", '...');
+            }
+            return false;
+        });
     }
 
     async downloadSigFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл

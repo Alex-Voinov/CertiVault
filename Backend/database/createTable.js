@@ -9,15 +9,17 @@ const createUserTableQuery = `
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     accessToken TEXT,
-    refreshToken TEXT
+    refreshToken TEXT,
+    isActivate BOOLEAN DEFAULT FALSE,
+    linkActivate VARCHAR DEFAULT ''
   )
 `;
 
 pool.query(createUserTableQuery)
-    .then((res) => {
-        console.log('Таблица "user" успешно создана');
-    })
-    .catch((err) => {
-        console.error('Ошибка при создании таблицы "user":', err);
-        pool.end(); // Закрыть соединение с базой данных в случае ошибки
-    });
+  .then((res) => {
+    console.log('Таблица "user" успешно создана');
+  })
+  .catch((err) => {
+    console.error('Ошибка при создании таблицы "user":', err);
+    pool.end(); // Закрыть соединение с базой данных в случае ошибки
+  });
