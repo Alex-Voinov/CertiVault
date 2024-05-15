@@ -9,6 +9,7 @@ import { useContext } from "react";
 import Notification from "./Components/Notification/Notification";
 import { AnimatePresence } from "framer-motion";
 import SEmailConfirmation from "./Pages/SEmailConfirmation/SEmailConfirmation";
+import NonExisten from "./Pages/NonExisten/NonExisten";
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/repository/" element={<Repository />} />
           <Route path="/repository/create/" element={<GeneratorDCC />} />
           <Route path="/successful_email_confirmation/" element={<SEmailConfirmation />} />
+          <Route path="*" element={<NonExisten />} />
         </Routes>
       </BrowserRouter>
     </>
