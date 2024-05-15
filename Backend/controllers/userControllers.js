@@ -38,11 +38,25 @@ class UserController {
             if (!user) {
                 throw new Error('Неккоректная ссылка активации');
             }
-            const {name, surname, accesstoken, refreshtoken} = user;
+            const { name, surname, accesstoken, refreshtoken } = user;
             const redirectURL = `${process.env.CLIENT_URL}/successful_email_confirmation/?name=${name}&surName=${surname}&accessToken=${accesstoken}&refreshToken=${refreshtoken}`;
             return res.redirect(redirectURL)
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    async checkConfirmEmail(req, res) {
+        try {
+            const {login, password} = req.query;            
+            const {accesstoken, refreshtoken} = await dataBaseController.checkConfirmEmail(login, password)
+            res.status(200).json({ 
+                accessToken: accesstoken,
+                refreshToken: refreshtoken,
+            });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+            console.error('Ответ подтверждения', error);
         }
     }
 }

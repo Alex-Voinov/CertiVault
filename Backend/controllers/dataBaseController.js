@@ -113,6 +113,30 @@ class DataBaseController {
         }
     }
 
+    async checkConfirmEmail(login, password) {
+        try {
+            // Поиск пользователя по ссылке активации
+            const result = await pool.query(
+                `SELECT accesstoken, refreshtoken, isactivate
+                FROM "user"
+                WHERE login = $1 AND password = $2;`,
+                [login, CryptoJS.SHA256(password).toString()]
+            );
+            // Если пользователь найден и обновлен успешно, вернуть его данные
+            if (result.rows.length > 0) {
+                const user = result.rows[0];
+                if (user.isactivate) return user;
+                throw new Error('Почта ещё не активирована.')
+            }
+
+            throw new Error('По введеным данным пользователей в базе данных нет')
+        } catch (error) {
+            // Обработка ошибок
+            console.error(error);
+            throw error;
+        }
+    }
+
 }
 
 module.exports = new DataBaseController();

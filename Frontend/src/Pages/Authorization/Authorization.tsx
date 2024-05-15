@@ -263,7 +263,27 @@ const Authorization: FC = () => {
                             </button>
                             <button onClick={(e) => {
                                 e.preventDefault();
-                                //Проверка подвтерждения почты
+                                UserService.checkConfirmEmail(
+                                    inputsSet[InputRow.login][0],
+                                    inputsSet[InputRow.password][0]
+                                ).then(
+                                    response => {
+                                        const { accessToken, refreshToken } = response.data;
+                                        navigate(`/successful_email_confirmation/?name=${inputsSet[InputRow.name][0]}&surName=${inputsSet[InputRow.surName][0]}&accessToken=${accessToken}&refreshToken=${refreshToken}`)
+                                    }
+                                ).catch(
+                                    error => {
+                                        if (error.response) {
+                                            const errorMessage = error.response.data.message || "Неизвестная ошибка";
+                                            store.setNotification("Неудачно", errorMessage);
+                                        } else if (error.request) {
+                                            store.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
+                                        } else {
+                                            store.setNotification("Произошла неизвестная ошибка", '...');
+                                            console.log(error);
+                                        }
+                                    }
+                                )
                             }}>
                                 Проверить
                             </button>

@@ -1,6 +1,7 @@
 import $api from "../HTTP/index";
 import { AxiosResponse } from 'axios';
 import ISigFiels from "../Models/SifFiels";
+import IAuthResponse from "../Models/AuthResponse";
 
 
 export default class UserService {
@@ -28,6 +29,17 @@ export default class UserService {
 
     static getUniqeData(): Promise<AxiosResponse<[string[], string[]]>> {
         return $api.get<[string[], string[]]>('/get_uniqe_data')
+    }
+
+    static checkConfirmEmail(login: string, password: string): Promise<AxiosResponse<IAuthResponse>> {
+        return $api.get<IAuthResponse>('/check_confirm_email',
+            {
+                params:{
+                    login,
+                    password
+                }
+            }
+        )
     }
 
     static sendSigFiels(formData: FormData) {
