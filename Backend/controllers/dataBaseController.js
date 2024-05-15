@@ -51,7 +51,7 @@ class DataBaseController {
         RETURNING *;
     `;
             const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
-            await mailService.sendActivationMail(email, hashLogin)
+            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${hashLogin}`)
             await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
             res.status(200).send("User created successfully");
         } catch (error) {
@@ -74,7 +74,7 @@ class DataBaseController {
             const result = await pool.query(query, [login, email, CryptoJS.SHA256(password).toString()]);
 
             if (result.rowCount > 0) {
-                await mailService.sendActivationMail(email, CryptoJS.SHA256(login).toString())
+                await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login).toString()}`)
                 res.status(200).send("Email edit successfully");
             } else {
                 throw new Error('Пользователь с указанным логином не найден или уже активирован');
@@ -82,6 +82,33 @@ class DataBaseController {
         } catch (error) {
             res.status(400).json({ message: error.message });
             console.error('Ошибка при обновлении почты пользователя:', error);
+            throw error;
+        }
+    }
+
+    async activateUser(activationLink) {
+        try {
+            // Поиск пользователя по ссылке активации
+            const result = await pool.query(
+                `UPDATE "user"
+               SET isActivate = TRUE,
+                   linkActivate = ''
+               WHERE linkActivate = $1
+               RETURNING name, surName, accessToken, refreshToken;`,
+                [activationLink]
+            );
+
+            // Если пользователь найден и обновлен успешно, вернуть его данные
+            if (result.rows.length > 0) {
+                const user = result.rows[0];
+                return user;
+            } else {
+                // Если пользователь не найден
+                return null;
+            }
+        } catch (error) {
+            // Обработка ошибок
+            console.error('Ошибка при поиске и обновлении пользователя:', error);
             throw error;
         }
     }

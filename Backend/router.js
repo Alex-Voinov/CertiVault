@@ -5,6 +5,8 @@ const router = new Router();
 
 
 router.get('/get_uniqe_data',  dataBaseController.getUniqeData)
+router.get('/activate/:link', userControllers.activate);
+
 router.post('/create_user', dataBaseController.createUser)
 router.post('/edit_email', dataBaseController.editEmail)
 router.post('/get_sig_fiels',  userControllers.getSigFiels)

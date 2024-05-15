@@ -1,5 +1,6 @@
 const multer = require('multer');
-const sigResolution = require('../middlewere/sigResolution')
+const sigResolution = require('../middlewere/sigResolution');
+const dataBaseController = require('./dataBaseController');
 
 
 const storageSigFiles = multer.diskStorage({
@@ -27,6 +28,21 @@ class UserController {
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    async activate(req, res) {
+        try {
+            const activationLink = req.params.link;
+            const user = await dataBaseController.activateUser(activationLink);
+            if (!user) {
+                throw new Error('Неккоректная ссылка активации');
+            }
+            const {name, surname, accesstoken, refreshtoken} = user;
+            const redirectURL = `${process.env.CLIENT_URL}/successful_email_confirmation/?name=${name}&surName=${surname}&accessToken=${accesstoken}&refreshToken=${refreshtoken}`;
+            return res.redirect(redirectURL)
+        } catch (error) {
+            console.error(error);
         }
     }
 }

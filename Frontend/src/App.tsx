@@ -8,6 +8,7 @@ import { GlobalData } from ".";
 import { useContext } from "react";
 import Notification from "./Components/Notification/Notification";
 import { AnimatePresence } from "framer-motion";
+import SEmailConfirmation from "./Pages/SEmailConfirmation/SEmailConfirmation";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/authorization/" element={<Authorization />} />
           <Route path="/repository/" element={<Repository />} />
           <Route path="/repository/create/" element={<GeneratorDCC />} />
+          <Route path="/successful_email_confirmation/" element={<SEmailConfirmation />} />
         </Routes>
       </BrowserRouter>
     </>

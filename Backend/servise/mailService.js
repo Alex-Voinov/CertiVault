@@ -13,13 +13,12 @@ class MailService {
         });
     }
 
-    async sendActivationMail(to, link) {
+    async sendActivationMail(to, link) {   
         const htmlContent = `
             <div >   
-                <a href="${process.env.API_URL}/activate_link/${link}">Активировать аккаунт</a>         
+                <a href="${link}">Активировать аккаунт</a>         
             </div>
         `;
-
         const message = {
             from: process.env.SMTP_USER,
             to,
