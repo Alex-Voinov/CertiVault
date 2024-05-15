@@ -3,6 +3,7 @@ import StartPage from "./Pages/StartPage/StartPage";
 import Repository from "./Pages/Repository/Repository";
 import GeneratorDCC from "./Pages/GeneratorDCC/GeneratorDCC";
 import Authorization from "./Pages/Authorization/Authorization";
+import Registration from "./Pages/Registration/Registration";
 import { observer } from 'mobx-react-lite';
 import { GlobalData } from ".";
 import { useContext } from "react";
@@ -23,6 +24,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/authorization/" element={<Authorization />} />
+          <Route path="/registration/" element={<Registration />} />
           <Route path="/repository/" element={<Repository />} />
           <Route path="/repository/create/" element={<GeneratorDCC />} />
           <Route path="/successful_email_confirmation/" element={<SEmailConfirmation />} />

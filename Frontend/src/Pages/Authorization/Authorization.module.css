@@ -4,197 +4,105 @@
     background: linear-gradient(144deg, #0d5872 0%, #207796 100%);
 }
 
-.contentBlock {
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    min-height: calc(65.74074vh + min(9.0625vw, 16.11111vh) + 1.875vw);
-}
-
-.contentBlock>form {
-    --formWidth: 26.04167vw;
-    width: var(--formWidth);
-    height: 100%;
-    margin-left: calc(50% - var(--formWidth) / 2);
-    background-color: rgba(255, 255, 255, 0.15);
-    border: solid #E7EDF3 min(0.05208vw, 0.09259vh);
-    border-radius: min(0.41667vw, 0.74074vh);
-    padding-left: 2.86458vw;
-}
-
-.contentBlock>svg {
+.content {
     position: absolute;
-    width: min(20.83333vw, 37.03704vh);
-    object-position: center center;
-    object-fit: contain;
-    overflow: visible;
-    pointer-events: none;
-    right: 11.19792vw;
-    top: calc(50% - min(20.83333vw, 37.03704vh) / 2);
-}
-
-.closeWrapper {
-    width: 100%;
-    height: 2.77778vh;
-    margin-top: 1.2963vh;
-    padding-right: 0.72917vw;
+    top: calc(50% - 12.421775vw);
+    left: calc(36.97917vw);
+    width: 26.04167vw;
+    height: 24.84375vw;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: #E7EDF3 solid min(0.05208vw, 0.09259vh);
+    border-radius: min(0.41667vw, 0.74074vh);
+    padding: 0.72917vw;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: center;
 }
 
-.closeWrapper>img {
-    height: 100%;
+.close {
+    align-self: flex-end;
     object-fit: contain;
     object-position: center center;
+    overflow: visible;
     cursor: pointer;
+    width: 1.5625vw;
 }
 
-.contentBlock>form>h1:first-of-type {
-    margin-top: 0.18519vh;
+.content>h1 {
+    text-align: center;
+    margin-top: 0.10417vw;
+    color: #fff;
     font-size: 1.5625vw;
     font-weight: 700;
-    color: #fff;
 }
 
-.contentBlock>form>h1:not(:first-of-type) {
-    margin-top: 2.77778vh;
-    color: #fff;
-    font-size: min(1.30208vw, 2.31481vh);
-    font-weight: 400;
-}
-
-.contentBlock>form>input {
-    margin-top: 0.92593vh;
+.content>h2 {
+    margin-top: 1.5625vw;
     width: 20.3125vw;
-    height: 4.72222vh;
+    text-align: left;
+    font-weight: 400;
+    font-size: 1.30208vw;
+    color: #fff;
+}
+
+.content>input {
+    margin-top: 0.52083vw;
+    width: 20.3125vw;
+    height: 2.65625vw;
+    border: none;
     background-color: #D6E2EA;
     display: flex;
     align-items: center;
     padding-left: 0.72917vw;
-    border-radius: min(0.41667vw, 0.74074vh);
-    color: #00536F;
-    font-size: min(0.9375vw, 1.66667vh);
-}
-
-.contentBlock>form>input::placeholder {
+    font-weight: 400;
     color: #6D9CAF;
+    font-size: 0.9375vw;
+    border-radius: 0.41667vw;
 }
 
-.contentBlock>form>button:focus {
-    outline: none;
-}
-
-.contentBlock>form>button {
+.content>button {
+    margin-top: 1.5625vw;
     width: 10.41667vw;
-    height: 4.62963vh;
-    margin-left: 4.94792vw;
+    height: 2.60417vw;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: min(0.9375vw, 1.66667vh);
-    font-weight: 700;
-    margin-top: 2.77778vh;
+    align-items: center;
+    border-radius: 0.41667vw;
+    border-width: 0.10417vw;
     border-style: solid;
-    border-width: min(0.05208vw, 0.09259vh);
-    border-radius: min(0.41667vw, 0.74074vh);
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
-    margin-bottom: 4.16667vh;
+    font-weight: 700;
+    font-size: 0.9375vw;
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .active {
-    background-color: #00536F;
     cursor: pointer;
-    color: #D9E5F0;
-    border-color: #E7EDF3;
+    color: #00536F;
+    border-color: #D9E5F0;
+    background-color: #D9E5F0;
 }
 
-.blocked {
-    background-color: transparent;
+.disable {
     cursor: not-allowed;
     color: #6D9CAF;
     border-color: #6D9CAF;
+    background-color: transparent;
 }
 
-.mailConfirmationSection {
-    margin-top: 20.64815vh;
-    height: 47.77778vh;
-    margin-left: 36.97917vw;
-    width: 51.82292vw;
+.content>div {
+    margin-top: 0.52083vw;
+    width: 10.41667vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.mailConfirmationSection>div {
-    height: 100%;
-    width: 26.875vw;
-    border-radius: min(0.41667vw, 0.74074vh);
-    background-color: rgba(255, 255, 255, 0.15);
-    border: #E7EDF3 solid min(0.05208vw, 0.09259vh);
-    padding: min(0.72917vw, 1.2963vh);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.mailConfirmationSection>svg {
-    position: absolute;
-    top: calc(50% - min(20.83333vw, 37.03704vh) / 2);
-    right: 11.19792vw;
-    width: min(20.83333vw, 37.03704vh);
-    object-fit: contain;
-    object-position: center center;
-    overflow: visible;
-}
-
-.mailConfirmationSection>div>h1 {
-    text-align: center;
-    font-size: 1.5625vw;
-    font-weight: 700;
-    color: #FFFFFF;
-}
-
-.mailConfirmationSection>div>p {
-    width: 20.3125vw;
-    text-align: justify;
-    font-size: 1.04167vw;
     font-weight: 400;
-    margin-top: 3.61111vh;
-    color: #FFFFFF;
+    font-size: 0.625vw;
 }
 
-.mailConfirmationSection>div>input {
-    width: 20.3125vw;
-    height: 4.62963vh;
-    font-size: min(0.9375vw, 1.66667vh);
-    font-weight: 400;
-    margin-top: 3.61111vh;
-    color: #00536F;
-    background-color: #D6E2EA;
-    border-radius: min(0.41667vw, 0.74074vh);
-    display: flex;
-    align-items: center;
-    padding-left: 0.72917vw;
+.content>div>p{
+    color: #fff;
 }
-
-.buttonBlock {
-    width: 20.3125vw;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 3.61111vh;
-    height: 4.62963vh;
-}
-
-.buttonBlock>button {
-    height: 100%;
-    width: 9vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #D6E2EA;
-    font-size: min(0.9375vw, 1.66667vh);
+.content>div>a{
     cursor: pointer;
-    border: #D6E2EA solid min(0.10417vw, 0.18519vh);
-    border-radius: min(0.41667vw, 0.74074vh);
+    color: #2AFFD9;
 }
