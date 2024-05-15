@@ -19,14 +19,14 @@ export default class Store {
     }
 
     async registration(data: string[]): Promise<boolean> {
-        return UserService.createUser(data).then(response => {
-            return true;
-        }).catch(error => {
+        return UserService.createUser(data).then(
+            () => true
+        ).catch (error => {
             if (error.response) {
                 const errorMessage = error.response.data.message || "Неизвестная ошибка";
                 this.setNotification("Ошибка регистрации", errorMessage);
             } else if (error.request) {
-                this.setNotification("Сервер не отвечает", 'Попробуйте делать запрос позже');
+                this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
             } else {
                 this.setNotification("Произошла неизвестная ошибка", '...');
                 console.log(error);

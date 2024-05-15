@@ -5,14 +5,19 @@ const mailService = require('../servise/mailService');
 
 
 class DataBaseController {
-    async get_all_login(req, res) {
+    async getUniqeData(req, res) {
         const getAllLoginsQuery = `
-            SELECT login
+            SELECT login, email
             FROM "user";
         `;
         try {
             const { rows } = await pool.query(getAllLoginsQuery);
-            res.json(rows.map(row => row.login));
+            res.json(
+                [
+                    rows.map(row => CryptoJS.SHA256(row.login).toString()),
+                    rows.map(row => CryptoJS.SHA256(row.email).toString()),
+                ]
+            );
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: 'Ошибка сервера' });
@@ -48,7 +53,7 @@ class DataBaseController {
             const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
             await mailService.sendActivationMail(email, hashLogin)
             await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
-            res.status(200);
+            res.status(200).send("User created successfully");
         } catch (error) {
             res.status(400).json({ message: error.message });
             console.log(error)
@@ -70,11 +75,12 @@ class DataBaseController {
 
             if (result.rowCount > 0) {
                 await mailService.sendActivationMail(email, CryptoJS.SHA256(login).toString())
+                res.status(200).send("Email edit successfully");
             } else {
-                console.log('Пользователь с указанным логином не найден или уже активирован');
-                return null;
+                throw new Error('Пользователь с указанным логином не найден или уже активирован');
             }
         } catch (error) {
+            res.status(400).json({ message: error.message });
             console.error('Ошибка при обновлении почты пользователя:', error);
             throw error;
         }

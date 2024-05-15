@@ -6,7 +6,7 @@ import UserService from '../../Servies/UserServise';
 import checkPassword from '../../Utilities/password';
 import { GlobalData } from '../..';
 import { capitalize } from '../../Utilities/string';
-
+import CryptoJS from 'crypto-js';
 
 const modificateHeaderStyle: CSSProperties = {
     backgroundColor: 'transparent',
@@ -54,22 +54,31 @@ enum InputRow {
     repeatPassword
 }
 
+enum UniqeData {
+    login,
+    email
+}
+
 const Authorization: FC = () => {
     const { store } = useContext(GlobalData);
     const navigate = useNavigate();
-    const usernamesUsed = useRef<string[]>([]);
+    const usernamesUsed = useRef<[string[], string[]]>([[], []]);
     const inputsSet = Array(inputsData.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][];
     const [activateAccaunt, setActivateAccaunt] = useState(false);
     const [editModeEmail, setEditModeEmail] = useState(false);
     const [editEmail, setEditEmail] = useState('');
     useEffect(() => {
-        UserService.getAllLogin().then(
+        UserService.getUniqeData().then(
             result => {
                 usernamesUsed.current = result.data;
             }
         ).catch(
             er => {
-                console.log(er)
+                store.setNotification(
+                    'Ошибка уникальных полей',
+                    er
+                );
+                console.log(er);
             }
         )
     }, []);
@@ -85,7 +94,9 @@ const Authorization: FC = () => {
         }
         if (InputRow.repeatPassword === indexRow && text !== inputsSet[InputRow.password][0])
             return ['Неккоректное поле', 'Повторно введеный пароль не совпадает с изначальным.'];
-        if (InputRow.login === indexRow && usernamesUsed.current.includes(text))
+        if (InputRow.mail === indexRow && usernamesUsed.current[UniqeData.email].includes(CryptoJS.SHA256(text).toString()))
+            return ['Не допустимый email', 'Пользователь с таким email уже существует.'];
+        if (InputRow.login === indexRow && usernamesUsed.current[UniqeData.login].includes(CryptoJS.SHA256(text).toString()))
             return ['Не допустимый логин', 'Пользователь с таким логином уже существует.'];
     }
 
@@ -107,7 +118,7 @@ const Authorization: FC = () => {
                                 <h1>{inputData.title}</h1>
                                 <input
                                     type={inputData.type}
-                                    autoComplete="off"
+                                    autoComplete="new-password"
                                     placeholder={inputData.placeholder}
                                     value={text}
                                     onChange={(e) => {
@@ -125,18 +136,21 @@ const Authorization: FC = () => {
                         })}
                         <button
                             className={!(statusErrorList && statusErrorList.length > 0) ? styles.active : styles.blocked}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                if (!(statusErrorList && statusErrorList.length > 0))
-                                    store.registration(inputsSet.map(state => state[0])).then(
-                                        (correctness) => {
-                                            if (correctness) {
-                                                setActivateAccaunt(true);
-                                                setEditEmail(inputsSet[InputRow.mail][0])
+                            onClick={
+                                (e) => {
+                                    e.preventDefault();
+                                    if (!(statusErrorList && statusErrorList.length > 0))
+                                        store.registration(inputsSet.map(state => state[0])).then(
+                                            (correctness) => {
+                                                console.log(correctness);
+                                                if (correctness) {
+                                                    setActivateAccaunt(true);
+                                                    setEditEmail(inputsSet[InputRow.mail][0])
+                                                }
                                             }
-                                        }
-                                    )
-                            }}
+                                        )
+                                }
+                            }
                             onMouseEnter={() => {
                                 if (statusErrorList && statusErrorList.length > 0) store.setNotification(statusErrorList[0][0], statusErrorList[0][1])
                             }}
@@ -174,7 +188,22 @@ const Authorization: FC = () => {
                                             'Изменения отклонены',
                                             'Новая почта указана пустой.'
                                         );
-                                    UserService.editEmail(inputsSet[InputRow.login][0], inputsSet[InputRow.password][0], editEmail)
+                                    UserService.editEmail(inputsSet[InputRow.login][0], inputsSet[InputRow.password][0], editEmail).then(
+                                        result => {
+                                            inputsSet[InputRow.mail][1](editEmail);
+                                            store.setNotification("Успешно", `Проверьте новую почту: ${editEmail}`);
+                                        }
+                                    ).catch(error => {
+                                        if (error.response) {
+                                            const errorMessage = error.response.data.message || "Неизвестная ошибка";
+                                            store.setNotification("Ошибка регистрации", errorMessage);
+                                        } else if (error.request) {
+                                            store.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
+                                        } else {
+                                            store.setNotification("Произошла неизвестная ошибка", '...');
+                                            console.log(error);
+                                        }
+                                    })
 
                                 }
                                 setEditModeEmail(!editModeEmail);

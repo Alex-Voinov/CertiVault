@@ -26,10 +26,8 @@ export default class UserService {
         })
     }
 
-
-
-    static getAllLogin(): Promise<AxiosResponse<string[]>> {
-        return $api.get<string[]>('/get_all_login')
+    static getUniqeData(): Promise<AxiosResponse<[string[], string[]]>> {
+        return $api.get<[string[], string[]]>('/get_uniqe_data')
     }
 
     static sendSigFiels(formData: FormData) {
