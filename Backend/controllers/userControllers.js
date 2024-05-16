@@ -1,6 +1,7 @@
 const multer = require('multer');
 const sigResolution = require('../middlewere/sigResolution');
 const dataBaseController = require('./dataBaseController');
+const tokenService = require('../servise/tokenService');
 
 
 const storageSigFiles = multer.diskStorage({
@@ -15,6 +16,30 @@ const storageSigFiles = multer.diskStorage({
 const uploadStorageSigFiles = multer({ storage: storageSigFiles, fileFilter: sigResolution }).single('file');
 
 class UserController {
+
+    async refresh(req, res, next) {
+        try {
+            const { refreshToken } = req.cookies;
+            if (!refreshToken) {
+                throw new Error('Не получено токена для поиска');
+            }
+            const userData = tokenService.validateRefreshToken(refreshToken);
+            const tokenFromDb = dataBaseController.findRefreshToken(refreshToken);
+            if (!userData || !tokenFromDb) {
+                throw ApiError.UnauthorizedError();
+            }
+            const user = await dataBaseController.findUserByLogin(userData.login);
+            const { email, login, name, surname } = user;
+            const tokens = tokenService.generateTokens({ email, login, name, surname });
+            await dataBaseController.saveRefreshToken(user.login, tokens.refreshToken);
+            res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+            return res.json(userData);
+        } catch (error) {
+            res.status(401).json({ message: error.message });
+            next(error);
+        }
+    }
+
     async getSigFiels(req, res) {
         try {
             uploadStorageSigFiles(req, res, function (err) {

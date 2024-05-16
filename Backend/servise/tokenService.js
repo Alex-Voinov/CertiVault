@@ -9,6 +9,15 @@ class TokenService {
             refreshToken
         }
     }
+    validateRefreshToken(token){
+        try{
+            const tokenData = startsWith(token, 'Bearer ')? token.split(' ')[1] : token;
+            const userData = jwt.verify(tokenData, process.env.JWT_REFRESH_SECRET);
+            return userData;
+        }catch(e){
+            return null;
+        }
+    }  
 }
 
 module.exports = new TokenService();
