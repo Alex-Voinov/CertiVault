@@ -1,11 +1,15 @@
 import { makeAutoObservable } from "mobx";
 import { IUser } from "../Models/User";
 import UserService from "../Servies/UserServise";
+import Cookies from 'js-cookie';
+
 
 export default class Store {
     user = {} as IUser;
     notificationTitle: string = '';
     notificationDesc: string = '';
+    accessToken: string = localStorage.getItem('accessToken') || '';
+    refreshToken: string = Cookies.get('refreshToken') || '';
     currentStruct: { [key: string]: any } = {}
     sigFiles: { [key: string]: File } = {}
 
@@ -18,10 +22,36 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
+    async login(logOrEmail: string, pass: string): Promise<boolean> {
+        return UserService.login(logOrEmail, pass).then(
+            response => {
+                const { accessToken, refreshToken, user } = response.data;
+                this.accessToken = accessToken;
+                this.refreshToken = refreshToken;
+                this.user = user;
+                localStorage.setItem('accessToken', accessToken);
+                Cookies.set('refreshToken', refreshToken)
+                return true;
+            }
+        ).catch(error => {
+            if (error.response) {
+                const errorMessage = error.response.data.message || "Неизвестная ошибка";
+                this.setNotification("Ошибка авторизации", errorMessage);
+            } else if (error.request) {
+                this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
+            } else {
+                this.setNotification("Произошла неизвестная ошибка", '...');
+                console.log(error);
+            }
+            return false;
+        }
+        )
+    }
+
     async registration(data: string[]): Promise<boolean> {
         return UserService.createUser(data).then(
             () => true
-        ).catch (error => {
+        ).catch(error => {
             if (error.response) {
                 const errorMessage = error.response.data.message || "Неизвестная ошибка";
                 this.setNotification("Ошибка регистрации", errorMessage);

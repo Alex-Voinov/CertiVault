@@ -2,6 +2,8 @@ import $api from "../HTTP/index";
 import { AxiosResponse } from 'axios';
 import ISigFiels from "../Models/SifFiels";
 import IAuthResponse from "../Models/AuthResponse";
+import IRegResponse from "../Models/RegResponse";
+
 
 
 export default class UserService {
@@ -27,14 +29,23 @@ export default class UserService {
         })
     }
 
+    static login(logOrEmail: string, password: string): Promise<AxiosResponse<IAuthResponse>> {
+        return $api.get<IAuthResponse>('/login', {
+            params: {
+                logOrEmail,
+                password
+            }
+        })
+    }
+
     static getUniqeData(): Promise<AxiosResponse<[string[], string[]]>> {
         return $api.get<[string[], string[]]>('/get_uniqe_data')
     }
 
-    static checkConfirmEmail(login: string, password: string): Promise<AxiosResponse<IAuthResponse>> {
-        return $api.get<IAuthResponse>('/check_confirm_email',
+    static checkConfirmEmail(login: string, password: string): Promise<AxiosResponse<IRegResponse>> {
+        return $api.get<IRegResponse>('/check_confirm_email',
             {
-                params:{
+                params: {
                     login,
                     password
                 }

@@ -48,11 +48,26 @@ class UserController {
 
     async checkConfirmEmail(req, res) {
         try {
-            const {login, password} = req.query;            
-            const {accesstoken, refreshtoken} = await dataBaseController.checkConfirmEmail(login, password)
-            res.status(200).json({ 
+            const { login, password } = req.query;
+            const { accesstoken, refreshtoken } = await dataBaseController.checkConfirmEmail(login, password)
+            res.status(200).json({
                 accessToken: accesstoken,
                 refreshToken: refreshtoken,
+            });
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+            console.error('Ответ подтверждения', error);
+        }
+    }
+
+    async login(req, res) {
+        try {
+            const { logOrEmail, password } = req.query;
+            const { accesstoken, refreshtoken, name, surname, login, email } = await dataBaseController.login(logOrEmail, password)
+            res.status(200).json({
+                accessToken: accesstoken,
+                refreshToken: refreshtoken,
+                user: { name, surname, login, email }
             });
         } catch (error) {
             res.status(400).json({ message: error.message });

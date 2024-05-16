@@ -55,9 +55,13 @@
     align-items: center;
     padding-left: 0.72917vw;
     font-weight: 400;
-    color: #6D9CAF;
+    color: #00536F;
     font-size: 0.9375vw;
     border-radius: 0.41667vw;
+}
+
+.content>input::placeholder {
+    color: #6D9CAF;
 }
 
 .content>button {
@@ -99,10 +103,22 @@
     font-size: 0.625vw;
 }
 
-.content>div>p{
+.content>div>p {
     color: #fff;
 }
-.content>div>a{
+
+.content>div>a {
     cursor: pointer;
     color: #2AFFD9;
+}
+
+.wrapper>svg {
+    position: absolute;
+    width: min(20.83333vw, 37.03704vh);
+    object-position: center center;
+    object-fit: contain;
+    overflow: visible;
+    pointer-events: none;
+    right: 11.19792vw;
+    top: calc(50% - min(20.83333vw, 37.03704vh) / 2);
 }

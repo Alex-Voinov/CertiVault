@@ -114,7 +114,10 @@ const Registration: FC = () => {
                 ? <div className={styles.contentBlock}>
                     {!isLoading && <form>
                         <div className={styles.closeWrapper}>
-                            <img src="/img/svg/formClose.svg" alt="close" onClick={() => navigate(-1)} />
+                            <img src="/img/svg/formClose.svg" alt="close" onClick={() => {
+                                if (window.history.length > 2) navigate(-1);
+                                else navigate('/')
+                            }} />
                         </div>
                         <h1>Регистрация пользователя</h1>
                         {inputsData.map((inputData, indexRow) => {
@@ -201,7 +204,10 @@ const Registration: FC = () => {
                 : <section className={styles.mailConfirmationSection}>
                     <div>
                         <div className={styles.closeWrapper}>
-                            <img src="/img/svg/formClose.svg" alt="close" onClick={() => navigate(-1)} />
+                            <img src="/img/svg/formClose.svg" alt="close" onClick={() => {
+                                if (window.history.length > 2) navigate(-1);
+                                else navigate('/')
+                            }} />
                         </div>
                         <h1>Регистрация пользователя <br />
                             прошла успешно</h1>

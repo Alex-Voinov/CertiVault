@@ -137,6 +137,26 @@ class DataBaseController {
         }
     }
 
+    async login(logOrEmail, password) {
+        try {
+            const result = await pool.query(
+                `SELECT accesstoken, refreshtoken, name, surname, login, email
+            FROM "user"
+            WHERE (login = $1 OR email = $1) AND password = $2;`,
+                [logOrEmail, CryptoJS.SHA256(password).toString()]
+            );
+            if (result.rows.length > 0) {
+                const user = result.rows[0];
+                return user; 
+            }
+            throw new Error('Пользователь не найден')
+        } catch (error) {
+            // Обработка ошибок
+            console.error(error);
+            throw error;
+        }
+    }
+
 }
 
 module.exports = new DataBaseController();
