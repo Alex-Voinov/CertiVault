@@ -27,8 +27,8 @@ const createUserTableQuery = `
 const createJwtTableQuery = `
   CREATE TABLE IF NOT EXISTS "jwt" (
     login VARCHAR PRIMARY KEY,
-    access VARCHAR NOT NULL,
-    refresh VARCHAR NOT NULL,
+    accesstoken VARCHAR NOT NULL,
+    refreshtoken VARCHAR NOT NULL,
     FOREIGN KEY (login) REFERENCES "user" (login)
   )
 `;

@@ -24,19 +24,20 @@ class UserController {
                 throw new Error('Не получено токена для поиска');
             }
             const userData = tokenService.validateRefreshToken(refreshToken);
-            const tokenFromDb = dataBaseController.findRefreshToken(refreshToken);
+            const tokenFromDb = await dataBaseController.findRefreshToken(refreshToken);
+            console.log(2222222222, tokenFromDb)
             if (!userData || !tokenFromDb) {
-                throw ApiError.UnauthorizedError();
+                throw new Error('Нет данных о токене или его подтверждения в базе данных');
             }
             const user = await dataBaseController.findUserByLogin(userData.login);
             const { email, login, name, surname } = user;
             const tokens = tokenService.generateTokens({ email, login, name, surname });
             await dataBaseController.saveRefreshToken(user.login, tokens.refreshToken);
-            res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+            res.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
             return res.json(userData);
         } catch (error) {
+            console.log(error)
             res.status(401).json({ message: error.message });
-            next(error);
         }
     }
 
@@ -88,10 +89,11 @@ class UserController {
     async login(req, res) {
         try {
             const { logOrEmail, password } = req.query;
-            const { accesstoken, refreshtoken, name, surname, login, email } = await dataBaseController.login(logOrEmail, password)
+            const { accessToken, refreshToken, name, surname, login, email } = await dataBaseController.login(logOrEmail, password)
+            res.cookie('refreshToken', refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
             res.status(200).json({
-                accessToken: accesstoken,
-                refreshToken: refreshtoken,
+                refreshToken,
+                accessToken,
                 user: { name, surname, login, email }
             });
         } catch (error) {
@@ -99,6 +101,21 @@ class UserController {
             console.error('Ответ подтверждения', error);
         }
     }
+
+    async verify(req, res) {
+        try {
+            console.log(1)
+            const { user } = req;
+            //console.log(user)
+            const { name, surname, login, email } = user;
+            console.log(12345, user)
+            res.status(200).json({ name, surname, login, email });
+        } catch (error) {
+            res.status(401).json({ message: error.message });
+            console.error('Не авторизованный пользователь', error);
+        }
+    }
+
 }
 
 module.exports = new UserController();

@@ -22,16 +22,30 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
+    async verify() {
+        try {
+            const response = await UserService.verify();
+            if (response.data) {
+                this.user = response?.data;
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
     async login(logOrEmail: string, pass: string): Promise<boolean> {
         return UserService.login(logOrEmail, pass).then(
             response => {
                 const { accessToken, refreshToken, user } = response.data;
-                this.accessToken = accessToken;
-                this.refreshToken = refreshToken;
-                this.user = user;
-                localStorage.setItem('accessToken', accessToken);
-                Cookies.set('refreshToken', refreshToken)
-                return true;
+                if (accessToken && refreshToken && user) {
+                    this.accessToken = accessToken;
+                    this.refreshToken = refreshToken;
+                    this.user = user;
+                    localStorage.setItem('accessToken', accessToken);
+                    return true;
+                }
+                return false;
             }
         ).catch(error => {
             if (error.response) {

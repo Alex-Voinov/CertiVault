@@ -52,13 +52,13 @@ class DataBaseController {
     `;
             const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
             await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${hashLogin}`);
-            const user = await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
+            await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
             const createJWTQuery = `
             INSERT INTO "jwt" (login, accesstoken, refreshtoken)
             VALUES ($1, $2, $3)
             RETURNING *;
         `;
-            await pool.query(createJWTQuery, [user.login, accessToken, refreshToken])
+            await pool.query(createJWTQuery, [login, accessToken, refreshToken])
             res.status(200).send("User created successfully");
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -122,7 +122,7 @@ class DataBaseController {
     async findRefreshToken(refreshToken) {
         try {
             const result = await pool.query(
-                `SELECT id, accesstoken, refreshtoken
+                `SELECT accesstoken, refreshtoken
             FROM "jwt"
             WHERE refreshtoken = $1;`,
                 [refreshToken]
@@ -133,9 +133,8 @@ class DataBaseController {
             }
             throw new Error('Токен не найден')
         } catch (error) {
-            // Обработка ошибок
             console.error(error);
-            throw error;
+            return null
         }
     }
 
@@ -163,19 +162,23 @@ class DataBaseController {
         }
     }
 
+
     async login(logOrEmail, password) {
         try {
             const result = await pool.query(
-                `SELECT accesstoken, refreshtoken, name, surname, login, email
+                `SELECT name, surname, login, email
             FROM "user"
             WHERE (login = $1 OR email = $1) AND password = $2;`,
                 [logOrEmail, CryptoJS.SHA256(password).toString()]
             );
-            if (result.rows.length > 0) {
-                const user = result.rows[0];
-                return user;
-            }
-            throw new Error('Пользователь не найден')
+            if (!result.rows.length > 0) throw new Error('Пользователь не найден')
+            const { email, login, name, surname } = result.rows[0];
+            const { accessToken, refreshToken } = tokenServise.generateTokens({ email, login, name, surname });
+            await this.saveRefreshToken(login, refreshToken);
+            await this.saveAccessToken(login, accessToken);
+            return { email, login, name, surname, accessToken, refreshToken };
+
+
         } catch (error) {
             // Обработка ошибок
             console.error(error);
@@ -204,21 +207,48 @@ class DataBaseController {
     }
 
     async saveRefreshToken(login, refreshToken) {
-
         try {
-            const result = await pool.query(
+            const updateJWTTable = await pool.query(
                 `UPDATE "jwt"
-               SET refreshtoken = $2,
-                   linkActivate = ''
+               SET refreshtoken = $2
                WHERE login = $1
-               RETURNING  refreshtoken, accesstoken;`,
+               RETURNING *;`,
                 [login, refreshToken]
             );
-            if (result.rows.length > 0) {
-                const tokens = result.rows[0];
-                return tokens;
-            }
-            throw new Error('токен не найден')
+            if (!(updateJWTTable.rows.length > 0)) throw new Error('Рефреш токен не найден')
+            const updateUserTable = await pool.query(
+                `UPDATE "user"
+                   SET refreshtoken = $2
+                   WHERE login = $1
+                   RETURNING *;`,
+                [login, refreshToken]
+            );
+            if (!(updateUserTable.rows.length > 0)) throw new Error('Пользователь с рефреш токеном не найден')
+        } catch (error) {
+            // Обработка ошибок
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async saveAccessToken(login, accessToken) {
+        try {
+            const updateJWTTable = await pool.query(
+                `UPDATE "jwt"
+               SET accesstoken = $2
+               WHERE login = $1
+               RETURNING *;`,
+                [login, accessToken]
+            );
+            if (!(updateJWTTable.rows.length > 0)) throw new Error('токен доступа не найден')
+            const updateUserTable = await pool.query(
+                `UPDATE "user"
+                   SET accesstoken = $2
+                   WHERE login = $1
+                   RETURNING *;`,
+                [login, accessToken]
+            );
+            if (!(updateUserTable.rows.length > 0)) throw new Error('Пользователь с токеном доступа не найден')
         } catch (error) {
             // Обработка ошибок
             console.error(error);

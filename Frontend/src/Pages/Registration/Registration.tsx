@@ -78,8 +78,8 @@ const Registration: FC = () => {
         ).catch(
             er => {
                 store.setNotification(
-                    'Ошибка уникальных полей',
-                    er
+                    'Ошибка',
+                    'Уникальные поля не получены',
                 );
                 console.log(er);
             }

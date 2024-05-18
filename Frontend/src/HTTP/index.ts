@@ -8,7 +8,7 @@ const $api = axios.create({
 })
 
 $api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
     return config;
 })
 
@@ -16,12 +16,13 @@ $api.interceptors.response.use((config) => {
     return config;
 },
     async (error) => {
-        const originalRequest = error.congig;
-        if (error.response.status == 401 && error.config && !error.config.__isRetry) {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && error.config && !error.config.__isRetry) {
             originalRequest.__isRetry = true;
             try {
                 const response = await axios.get<IAuthResponse>(`${API_URL}/refresh`, { withCredentials: true });
-                localStorage.setItem('accessToken', response.data.accessToken);
+                if (response.data.accessToken)
+                    localStorage.setItem('accessToken', response.data.accessToken);
                 return $api.request(originalRequest);
             } catch (e) {
                 console.log('Не авторизованный пользователь')

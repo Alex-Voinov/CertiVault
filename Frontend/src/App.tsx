@@ -6,7 +6,7 @@ import Authorization from "./Pages/Authorization/Authorization";
 import Registration from "./Pages/Registration/Registration";
 import { observer } from 'mobx-react-lite';
 import { GlobalData } from ".";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Notification from "./Components/Notification/Notification";
 import { AnimatePresence } from "framer-motion";
 import SEmailConfirmation from "./Pages/SEmailConfirmation/SEmailConfirmation";
@@ -15,6 +15,9 @@ import NonExisten from "./Pages/NonExisten/NonExisten";
 
 const App = () => {
   const { store } = useContext(GlobalData)
+  useEffect(()=>{
+    store.verify();
+  },[])
   return (
     <>
       <AnimatePresence>

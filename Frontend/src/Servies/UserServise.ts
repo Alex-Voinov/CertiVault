@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import ISigFiels from "../Models/SifFiels";
 import IAuthResponse from "../Models/AuthResponse";
 import IRegResponse from "../Models/RegResponse";
+import { IUser } from "../Models/User";
 
 
 
@@ -40,6 +41,10 @@ export default class UserService {
 
     static getUniqeData(): Promise<AxiosResponse<[string[], string[]]>> {
         return $api.get<[string[], string[]]>('/get_uniqe_data')
+    }
+
+    static verify(): Promise<AxiosResponse<IUser>> {
+        return $api.get<IUser>('/verify')
     }
 
     static checkConfirmEmail(login: string, password: string): Promise<AxiosResponse<IRegResponse>> {
