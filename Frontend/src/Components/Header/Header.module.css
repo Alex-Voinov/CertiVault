@@ -23,3 +23,27 @@
     cursor: pointer;
     width: min(1.97917vw, 3.51852vh);
 }
+
+.authLabel{
+    display: flex;
+    align-items: center;
+    min-width: 10.41667vw;
+    justify-content: flex-end;
+    overflow: visible;
+}
+
+.authLabel > h1{
+    white-space: nowrap;
+    text-align: right;
+    margin-right: 0.10417vw;
+    color: #D9E5F0;
+    font-weight: 500;
+    font-size: min(1.04167vw, 1.85185vh);
+}
+
+.authLabel > svg{
+    width: 1.97917vw;
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+}

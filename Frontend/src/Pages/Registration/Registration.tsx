@@ -257,7 +257,6 @@ const Registration: FC = () => {
                                             console.log(error);
                                         }
                                     })
-
                                 }
                                 setEditModeEmail(!editModeEmail);
                             }}>

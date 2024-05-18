@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { IUser } from "../Models/User";
 import UserService from "../Servies/UserServise";
 import Cookies from 'js-cookie';
@@ -22,16 +22,18 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
+
     async verify() {
         try {
             const response = await UserService.verify();
-            if (response.data) {
-                this.user = response?.data;
-            }
+            runInAction(() => {
+                if (response.data) {
+                    this.user = response?.data;
+                }
+            })
         } catch (error) {
             console.log(error)
         }
-
     }
 
     async login(logOrEmail: string, pass: string): Promise<boolean> {
@@ -39,24 +41,28 @@ export default class Store {
             response => {
                 const { accessToken, refreshToken, user } = response.data;
                 if (accessToken && refreshToken && user) {
-                    this.accessToken = accessToken;
-                    this.refreshToken = refreshToken;
-                    this.user = user;
-                    localStorage.setItem('accessToken', accessToken);
+                    runInAction(() => {
+                        this.accessToken = accessToken;
+                        this.refreshToken = refreshToken;
+                        this.user = user;
+                        localStorage.setItem('accessToken', accessToken);
+                    });
                     return true;
                 }
                 return false;
             }
         ).catch(error => {
-            if (error.response) {
-                const errorMessage = error.response.data.message || "Неизвестная ошибка";
-                this.setNotification("Ошибка авторизации", errorMessage);
-            } else if (error.request) {
-                this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
-            } else {
-                this.setNotification("Произошла неизвестная ошибка", '...');
-                console.log(error);
-            }
+            runInAction(() => {
+                if (error.response) {
+                    const errorMessage = error.response.data.message || "Неизвестная ошибка";
+                    this.setNotification("Ошибка авторизации", errorMessage);
+                } else if (error.request) {
+                    this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
+                } else {
+                    this.setNotification("Произошла неизвестная ошибка", '...');
+                    console.log(error);
+                }
+            })
             return false;
         }
         )

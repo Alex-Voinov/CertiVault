@@ -1,7 +1,9 @@
-import { CSSProperties, FC, useEffect, useState } from 'react'
+import { CSSProperties, FC, useEffect, useState, useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './SEmailConfirmation.module.css'
 import Header from '../../Components/Header/Header';
+import { GlobalData } from '../..';
+import Cookies from 'js-cookie';
 
 
 const SEmailConfirmation: FC = () => {
@@ -13,7 +15,13 @@ const SEmailConfirmation: FC = () => {
     const surName = searchParams.get('surName');
     const accessToken = searchParams.get('accessToken');
     const refreshToken = searchParams.get('refreshToken');
+    const { store } = useContext(GlobalData);
     const correctness = name && surName && accessToken && refreshToken;
+    useEffect(() => {
+        if (accessToken) localStorage.setItem('accessToken', accessToken);
+        if (refreshToken) Cookies.set('refreshToken', refreshToken);
+        store.verify();
+    }, [])
     useEffect(() => {
         if (correctness)
             if (count > 0) {
@@ -57,8 +65,8 @@ const SEmailConfirmation: FC = () => {
             </div>
             <img
                 src={`/img/svg/authMenStatus${correctness
-                        ? 'Seccess'
-                        : 'Denied'
+                    ? 'Seccess'
+                    : 'Denied'
                     }.svg`}
                 alt={correctness
                     ? 'Seccess'

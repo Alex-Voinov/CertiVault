@@ -104,11 +104,8 @@ class UserController {
 
     async verify(req, res) {
         try {
-            console.log(1)
             const { user } = req;
-            //console.log(user)
             const { name, surname, login, email } = user;
-            console.log(12345, user)
             res.status(200).json({ name, surname, login, email });
         } catch (error) {
             res.status(401).json({ message: error.message });
