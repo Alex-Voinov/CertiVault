@@ -25,16 +25,16 @@ class UserController {
             }
             const userData = tokenService.validateRefreshToken(refreshToken);
             const tokenFromDb = await dataBaseController.findRefreshToken(refreshToken);
-            console.log(2222222222, tokenFromDb)
             if (!userData || !tokenFromDb) {
                 throw new Error('Нет данных о токене или его подтверждения в базе данных');
             }
             const user = await dataBaseController.findUserByLogin(userData.login);
             const { email, login, name, surname } = user;
             const tokens = tokenService.generateTokens({ email, login, name, surname });
-            await dataBaseController.saveRefreshToken(user.login, tokens.refreshToken);
+            await dataBaseController.saveRefreshToken(login, tokens.refreshToken);
+            await dataBaseController.saveAccessToken(login, tokens.accessToken);
             res.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-            return res.json(userData);
+            return res.json({accessToken: tokens.accessToken});
         } catch (error) {
             console.log(error)
             res.status(401).json({ message: error.message });

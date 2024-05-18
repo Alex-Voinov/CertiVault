@@ -18,7 +18,6 @@ module.exports = function (req, res, next) {
         next();
 
     } catch (error) {
-        console.log(11111111111111111111, error)
         res.status(401).send({ message: error.message })
     }
 };
