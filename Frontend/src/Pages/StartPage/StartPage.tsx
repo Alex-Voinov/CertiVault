@@ -1,90 +1,75 @@
-import { useState } from 'react'
+import { CSSProperties, useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import styles from './StartPage.module.css';
+import { defineTimeInterval, curentTimeDMY } from '../../Utilities/date';
+
+
+enum AnimateStep {
+    preparation,
+    appearanceLine,
+    appearanceText,
+    shiftText,
+    completion,
+}
+
+const delayByAppearanceMain = 1000;
+const firstStepDelay = 2000;
+const secondStepDelay = 3000;
+const thirdStepDelay = 3000;
+
+const additionalDelayPerAnimation = 7000;
+
+const defintStyleLine = (step: number) => {
+    if (step === AnimateStep.preparation)
+        return {
+            opacity: 0,
+            left: '42vw',
+        }
+    if (step === AnimateStep.appearanceLine)
+        return {
+            opacity: 1,
+            animation: `${styles.lightbeam} 0.8s 0.1s`,
+        }
+    if ([AnimateStep.appearanceText, AnimateStep.shiftText].includes(step))
+        return { opacity: 1 }
+    return { opacity: 0 } as CSSProperties
+}
+
+const defineStyleText = (step: number): CSSProperties => {
+    if (step === AnimateStep.appearanceLine) return {
+        color: '#fff',
+        height: 'min(5.20833vw, 9.25926vh)'
+    }
+
+    return {}
+}
 
 const StartPage = () => {
-    const [isActiveTools, setActiveTools] = useState(false);
-    const [isActiveRepository, setActiveRepository] = useState(false);
+    console.log(styles);
+    const currentWelcomePhrase = defineTimeInterval();
+    const [animateStep, setAnimateStep] = useState(AnimateStep.preparation);
+    const completionDelay = useRef<number>(0);
+    useEffect(() => {
+        if (!completionDelay.current) {
+            completionDelay.current = delayByAppearanceMain; // если уже здоровались
+            const oldWelcomePhrase = localStorage.getItem('welcomePhrase');
+            const currentTimeInterval = curentTimeDMY() + currentWelcomePhrase;
+            if (oldWelcomePhrase !== currentTimeInterval) {
+                localStorage.setItem('welcomePhrase', currentTimeInterval);
+                setTimeout(() => setAnimateStep(AnimateStep.appearanceLine), firstStepDelay);
+                setTimeout(() => setAnimateStep(AnimateStep.appearanceText), firstStepDelay + secondStepDelay);
+                setTimeout(() => setAnimateStep(AnimateStep.shiftText), firstStepDelay + secondStepDelay + thirdStepDelay);
+                completionDelay.current += additionalDelayPerAnimation;
+            }
+            setTimeout(() => setAnimateStep(AnimateStep.completion), completionDelay.current)
+        }
+    }, [])
     return (
         <section className={styles.wrapper}>
-            <header className={styles.mainHeader}>
-                <h1>DCC CERTIFICATE</h1>
-                <div className={styles.hamburger}>
-                    <div />
-                    <div />
-                    <div />
-                </div>
-            </header>
-            <main className={styles.mainContent}>
-                <section
-                    className={styles.widget}
-                    onMouseEnter={() => { setActiveTools(true) }}
-                    onMouseLeave={() => { setActiveTools(false) }}
-                >
-                    <h1 style={{
-                        top: !isActiveTools ? '25%' : '',
-                        left: !isActiveTools ? 'calc(50% - 1.15em)' : '',
-                        fontSize: !isActiveTools ? 'min(5vw, 8.88888vh)' : '',
-                    }}>Tools</h1>
-                    <div>
-                        <div className={styles.hLine} style={{ opacity: !isActiveTools ? '0' : '' }} />
-                        <div className={styles.option} style={{ opacity: !isActiveTools ? '0' : '' }}>
-                            <h1>Uploading</h1>
-                            <img src="img/svg/uploading.svg" alt="uploading icon" />
-                        </div>
-                        <div className={styles.option} style={{ opacity: !isActiveTools ? '0' : '' }}>
-                            <h1>Importing</h1>
-                            <img src="img/svg/importing.svg" alt="importing icon" />
-                        </div>
-                        <div className={styles.option} style={{ opacity: !isActiveTools ? '0' : '' }}>
-                            <h1>Exporting</h1>
-                            <img src="img/svg/exporting.svg" alt="exporting icon" />
-                        </div>
-                        <img
-                            src="img/svg/tools.svg"
-                            alt="tools"
-                            className={styles.widgetIcon}
-                            style={{
-                                right: !isActiveTools ? 'calc(50% - var(--val) / 2)' : '',
-                                bottom: !isActiveTools ? 'calc(40% - var(--val) / 2)' : '',
-                            }}
-                        />
-                    </div>
-                </section>
-                <section
-                    onMouseEnter={() => { setActiveRepository(true) }}
-                    onMouseLeave={() => { setActiveRepository(false) }}
-                    className={styles.widget}
-                >
-                    <h1 style={{
-                        top: !isActiveRepository ? '25%' : '',
-                        left: !isActiveRepository ? 'calc(50% - 2em)' : '',
-                        fontSize: !isActiveRepository ? 'min(5vw, 8.88888vh)' : '',
-                    }}>Repository</h1>
-                    <div>
-                        <div className={styles.hLine}></div>
-                        <Link to="/repository">
-                            <div className={styles.option} style={{ opacity: !isActiveRepository ? '0' : '' }}>
-                                <h1>Open</h1>
-                                <img src="img/svg/door.svg" alt="uploading icon" />
-                            </div>
-                        </Link>
-                        <div className={styles.option} style={{ opacity: !isActiveRepository ? '0' : '' }}>
-                            <h1>Create</h1>
-                            <img src="img/svg/create.svg" alt="importing icon" />
-                        </div>
-                        <img
-                            src="img/svg/db.svg"
-                            alt="repositoriy"
-                            className={styles.widgetIcon}
-                            style={{
-                                right: !isActiveRepository ? 'calc(50% - var(--val) / 2)' : '',
-                                bottom: !isActiveRepository ? 'calc(40% - var(--val) / 2)' : '',
-                            }}
-                        />
-                    </div>
-                </section>
-            </main>
+            <h1 className={styles.animatedText} style={defineStyleText(animateStep)}>
+                {currentWelcomePhrase}
+            </h1>
+            <div className={styles.animatedLine} style={defintStyleLine(animateStep)} />
         </section>
     )
 }
