@@ -7,19 +7,21 @@
 
 
 .animatedText {
+    display: block;
     position: absolute;
     left: 36vw;
     width: 28.125vw;
-    top: 44.44444vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    height: 10vh;
+    height: 7vw;
+    top: 46vh;
+    text-align: center;
+    color: transparent;
+    height: 12vh;
     overflow: hidden;
     user-select: none;
     font-weight: 300;
-    font-size: min(5.20833vw, 9.25926vh);
+    font-size: min(5.0vw, 8.88889vh);
+    white-space: nowrap;
+    text-shadow: 0 0.37037vh min(0.20833vw, 0.37037vh) rgba(0, 0, 0, 0);
     transition: all 0.6s ease-in-out;
 }
 
@@ -27,25 +29,25 @@
     position: absolute;
     opacity: 1;
     top: 61.75926vh;
-    left: 46.71875vw;
-    width: 6.5625vw;
+    left: 32vw;
+    width: 36vw;
     height: 0.27778vh;
     background-image: linear-gradient(to right, transparent, white, transparent);
-    background-size: 200%;
+    background-size: 0%;
+    background-position: 0%;
+    background-repeat: no-repeat;
     animation: none;
     transition: all 0.6s ease-in-out;
+    user-select: none;
 }
 
 @keyframes lightbeam {
     0% {
-        background-position: left;
+        background-position: 0%;
+        background-size: 0%;
     }
-
-    50% {
-        background-position: right;
-    }
-
-    100% {
-        background-position: left;
+    100%{
+        background-position: 100%;
+        background-size: 100%;
     }
 }
