@@ -46,8 +46,156 @@
         background-position: 0%;
         background-size: 0%;
     }
-    100%{
+
+    100% {
         background-position: 100%;
         background-size: 100%;
+    }
+}
+
+.mainSlaise {
+    top: 0;
+    left: 0;
+    position: relative;
+    background-color: transparent;
+    width: 100vw;
+    height: 100vh;
+    opacity: 1;
+}
+
+.toolsWrapper,
+.repoWrapper {
+    --sideWrapper: min(26.04167vw, 46.2963vh);
+    position: absolute;
+    width: var(--sideWrapper);
+    height: var(--sideWrapper);
+    overflow: visible;
+    top: calc(50% - var(--sideWrapper) / 2);
+    z-index: 5;
+    cursor: pointer;
+    border: solid min(0.05208vw, 0.09259vh) transparent;
+    background-color: transparent;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    border-radius: min(0.41667vw, 0.74074vh);
+
+    &:hover {
+        background-color: rgba(217, 229, 240, 0.25);
+        border-color: #E7EDF3;
+    }
+}
+
+.repoGroup {
+    transition: filter 0.3s ease-in-out;
+}
+
+.repoGroup>path {
+    transition: fill 0.3s ease-in-out, fill-opacity 0.3s ease-in-out;
+}
+
+.repoWrapper:hover .repoGroup {
+    filter: none;
+}
+
+.repoWrapper:hover .repoGroup>path {
+    fill: #BDD3E1;
+    fill-opacity: 1;
+}
+
+.toolsGroup {
+    filter: url(#filter0_f_776_2378);
+    transition: filter 0.3s ease-in-out;
+}
+
+.toolsGroup>path {
+    fill: white;
+    fill-opacity: 0.3;
+    transition: fill 0.3s ease-in-out, fill-opacity 0.3s ease-in-out;
+}
+
+.toolsWrapper:hover .toolsGroup {
+    filter: url(#filter0_f_776_2300);
+}
+
+.toolsWrapper:hover .toolsGroup>path {
+    fill: #7CA9B9;
+    fill-opacity: 1;
+}
+
+
+
+.toolsWrapper {
+    left: 18.125vw;
+}
+
+.repoWrapper {
+    right: 18.125vw;
+}
+
+.innerWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.tools,
+.repo {
+    --side: min(10.41667vw, 18.51852vh);
+    position: absolute;
+    object-fit: contain;
+    object-position: center center;
+    width: var(--side);
+    height: var(--side);
+    left: calc(50% - var(--side) / 2);
+    top: calc(50% - var(--side) / 2);
+}
+
+.tile {
+    position: absolute;
+    object-fit: contain;
+    object-position: center center;
+    width: 36.25vw;
+    height: 37.68519vh;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    z-index: 4;
+}
+
+.leftTile {
+    left: 1.66667vw;
+    bottom: 9.25926vh;
+    animation-name: moveLeftTitle;
+}
+
+.rightTile {
+    right: 1.66667vw;
+    top: 9.25926vh;
+    animation-name: moveRightTitle;
+}
+
+@keyframes moveLeftTitle {
+    0% {
+        left: 1.66667vw;
+    }
+
+    50% {
+        left: 2.70833vw;
+    }
+
+    100% {
+        left: 1.66667vw;
+    }
+}
+
+@keyframes moveRightTitle {
+    0% {
+        right: 1.66667vw;
+    }
+
+    50% {
+        right: 2.70833vw;
+    }
+
+    100% {
+        right: 1.66667vw;
     }
 }
