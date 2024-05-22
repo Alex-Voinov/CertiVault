@@ -112,7 +112,7 @@
     width: 31.78571428571429%;
     height: 36.11111vh;
     background-color: transparent;
-    border: #1D728F min(0.05208vw, 0.09259vh) solid;
+    border: #1D728F min(0.15625vw, 0.27778vh) solid;
     border-radius: min(0.20833vw, 0.37037vh);
 }
 

@@ -1,0 +1,133 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+
+    &:hover .interactionBlock,
+    &:hover .nextStep {
+        opacity: 1;
+    }
+
+    &:hover .signatureLogo {
+        filter: blur(min(0.20833vw, 0.37037vh));
+    }
+}
+
+.interactionBlock {
+    position: relative;
+    left: min(1.04167vw, 1.85185vh);
+    top: 6.38889vh;
+    width: 13.02083vw;
+    height: 27.87037vh;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: 4;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0.05208vw;
+        background-image: linear-gradient(180deg, #FFFFFF00 0%, #00536F 25%, #00536F 75%, #FFFFFF00 100%);
+    }
+
+    &>.fileNameWrapper {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        z-index: 5;
+        width: 0vw;
+        overflow: hidden;
+        height: 3.7037vh;
+        left: -0.05208vw;
+        top: 5.64815vh;
+        border: #015470 solid 0.05208vw;
+        border-left-color: #D9E5F0;
+        background-color: transparent;
+        transition: width 0.3s ease-in-out;
+
+        &>input {
+            display: flex;
+            align-items: center;
+            padding-left: 0.41667vw;
+            border: none;
+            height: 100%;
+            width: 10.52083vw;
+            font-weight: 400;
+            font-size: min(0.9375vw, 1.66667vh);
+            color: #015470;
+
+            &::placeholder {
+                color: #6D9CAF;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &>img {
+            object-fit: contain;
+            overflow: visible;
+            object-position: center center;
+            width: min(1.25vw, 2.22222vh);
+        }
+    }
+
+    &>.fileData {
+        display: none;
+    }
+}
+
+.title {
+    top: min(1.04167vw, 1.85185vh);
+    left: min(1.04167vw, 1.85185vh);
+    position: absolute;
+    color: #00536F;
+    font-weight: 600;
+    font-size: min(1.30208vw, 2.31481vh);
+}
+
+.signatureLogo {
+    --side: min(7.8125vw, 13.88889vh);
+    position: absolute;
+    object-fit: contain;
+    overflow: visible;
+    object-position: center center;
+    right: calc(var(--side) / 3);
+    top: calc(50% - var(--side) /2);
+    width: var(--side);
+    filter: blur(0px);
+    transition: filter 0.3s ease-in-out;
+}
+
+.nextStep {
+    position: absolute;
+    right: min(1.04167vw, 1.85185vh);
+    bottom: min(1.04167vw, 1.85185vh);
+    display: flex;
+    align-items: center;
+    min-width: 6.30208vw;
+    justify-content: end;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &>h2 {
+        color: #1D728F;
+        font-weight: 400;
+        font-size: min(1.04167vw, 1.85185vh);
+    }
+
+    &>img {
+        object-fit: contain;
+        overflow: visible;
+        object-position: center center;
+        height: 1em;
+    }
+}

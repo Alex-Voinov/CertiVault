@@ -6,14 +6,19 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
+    transition: background-color 0.3s ease-in-out;
 
-.widget>img {
-    object-fit: contain;
-    object-position: center center;
-    overflow: visible;
-    width: 40%;
-    max-height: 46%;
+    &:hover {
+        background-color: #73FFE6;
+    }
+
+    &>img {
+        object-fit: contain;
+        object-position: center center;
+        overflow: visible;
+        width: 40%;
+        max-height: 46%;
+    }
 }
 
 .skin {
