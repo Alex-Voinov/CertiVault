@@ -21,6 +21,24 @@ const thirdStepDelay = 2000;
 const textAppearanceDelay = 400;
 
 const additionalDelayPerAnimation = firstStepDelay + secondStepDelay + thirdStepDelay + textAppearanceDelay * 2.5;
+const toolsSet = [
+    {
+        title: 'Создать',
+        keyName: 'create',
+    },
+    {
+        title: 'Загрузить',
+        keyName: 'upload',
+    },
+    {
+        title: 'Скачать',
+        keyName: 'download',
+    },
+    {
+        title: 'Отправить',
+        keyName: 'Share',
+    },
+]
 
 const repoSvg = <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.repo}>
     <g filter="url(#filter0_f_776_2375)" className={styles.repoGroup}>
@@ -47,7 +65,7 @@ const toolsSvg = <svg viewBox="0 0 216 216" fill="none" xmlns="http://www.w3.org
             <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
             <feGaussianBlur stdDeviation="4" result="effect1_foregroundBlur_776_2378" />
         </filter>
-        <filter id="filter0_f_776_2300" x="0" y="0" width="220" height="220" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <filter id="filter0_f_776_2300" x="0" y="0" width="220" height="220" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
             <feFlood floodOpacity="0" result="BackgroundImageFix" />
             <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
             <feGaussianBlur stdDeviation="5" result="effect1_foregroundBlur_776_2300" />
@@ -146,6 +164,18 @@ const StartPage = () => {
                         <div className={styles.innerWrapper}>
                             <h1>Инструменты</h1>
                             {toolsSvg}
+                            <div className={styles.toolsBar}>
+                                {toolsSet.map(
+                                    pointData => <Link
+                                        to={`tools/${pointData.keyName}/`}
+                                        key={`startPage-point-${pointData.keyName}`}
+                                        className={styles.toolsBarRow}
+                                    >
+                                        <h2>{pointData.title}</h2>
+                                        <img src={`/img/svg/tools-${pointData.keyName}-logo.svg`} alt={pointData.keyName} />
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <Link to='/repository/'>

@@ -15,6 +15,11 @@
 
 /* Links */
 
+a{
+    color: inherit;
+    text-decoration: none;
+}
+
 a,
 a:link,
 a:visited {

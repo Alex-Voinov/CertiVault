@@ -83,11 +83,15 @@
         border-color: #E7EDF3;
     }
 
-    &:hover h1{
+    &:hover h1 {
         opacity: 1;
     }
 
-    &:hover .repoTransition{
+    &:hover .repoTransition {
+        opacity: 1;
+    }
+
+    &:hover .toolsBar {
         opacity: 1;
     }
 }
@@ -143,7 +147,7 @@
     height: 100%;
 }
 
-.innerWrapper > h1 {
+.innerWrapper>h1 {
     --w_h1: 21.35417vw;
     position: absolute;
     width: var(--w_h1);
@@ -158,7 +162,7 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-.repoTransition{
+.repoTransition {
     --imgSide: min(1.04167vw, 1.85185vh);
     --shift: min(1.5625vw, 2.77778vh);
     width: 6.30208vw;
@@ -174,7 +178,7 @@
     transition: opacity 0.3s ease-in-out;
 }
 
-.repoTransition > h2{
+.repoTransition>h2 {
     width: calc(100% - var(--imgSide));
     text-align: center;
     overflow: visible;
@@ -183,12 +187,53 @@
     font-size: var(--imgSide);
 }
 
-.repoTransition > img{
-   object-fit: contain;
-   object-position: center center;
-   overflow: visible;
-   width: var(--imgSide);
-   height: var(--imgSide);
+.repoTransition>img {
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
+    width: var(--imgSide);
+    height: var(--imgSide);
+}
+
+.toolsBar {
+    --toolsBar_w: 23.90625vw;
+    --toolsBar_h: 23.33333vh;
+    position: absolute;
+    overflow: visible;
+    top: calc(50% - var(--toolsBar_h)/2);
+    left: 0.83333vw;
+    width: var(--toolsBar_w);
+    height: var(--toolsBar_h);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toolsBarRow{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: visible;
+    height: min(2.08333vw, 3.7037vh);
+}
+
+.toolsBarRow > h2{
+    min-width: 7.1875vw;
+    overflow: visible;
+    text-align: left;
+    color: #FBFDFF;
+    font-size: min(1.5625vw, 2.77778vh);
+    font-weight: 300;
+}
+
+.toolsBarRow > img{
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    overflow: visible;
 }
 
 .tools,
