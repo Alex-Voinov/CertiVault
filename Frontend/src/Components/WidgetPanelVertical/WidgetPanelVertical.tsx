@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 const widgetSet = [
     'find',
     'create',
+    'information',
+    'question',
 ]
 
 interface IWidgetPanelVertical {
@@ -15,7 +17,7 @@ const WidgetPanelVertical: FC<IWidgetPanelVertical> = ({ side, gap }) => {
     const widgets = widgetSet.map(widgetName => {
         return <Link to={`/repository/${widgetName}/`} style={{ overflow: 'visible' }}>
             <div className={styles.widget} style={{ width: side, height: side, marginBottom: gap }}>
-                <img src={`/img/svg/${widgetName}.svg`} alt={`widget ${widgetName}`} />
+                <img src={`/img/svg/vertical-panel-${widgetName}-logo.svg`} alt={`widget ${widgetName}`} />
             </div>
         </Link>
     })

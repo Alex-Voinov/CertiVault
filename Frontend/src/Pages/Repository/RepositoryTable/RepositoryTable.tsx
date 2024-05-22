@@ -83,7 +83,7 @@ const RepositoryTable = () => {
                     {mainContent}
                 </main>
             </section>
-            <WidgetPanelVertical side='min(4.16667vw, 7.40741vh)' gap='1.85185vh' />
+            <WidgetPanelVertical side='5.55556vh' gap='2.77778vh' />
         </section>
     )
 }
