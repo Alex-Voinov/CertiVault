@@ -65,7 +65,7 @@
 
 .toolsWrapper,
 .repoWrapper {
-    --sideWrapper: min(26.04167vw, 46.2963vh);
+    --sideWrapper: 26.04167vw;
     position: absolute;
     width: var(--sideWrapper);
     height: var(--sideWrapper);
@@ -218,6 +218,23 @@
     justify-content: space-between;
     overflow: visible;
     height: min(2.08333vw, 3.7037vh);
+    &:hover h2{
+        color: #2AFFD9;
+    }
+    &:hover .animatedElement{
+        stroke: #2AFFD9;
+    }
+    &:hover .animatedElementFill{
+        fill: #2AFFD9;
+    }
+}
+
+.animatedElement{
+    transition: stroke 0.3s ease-in-out;
+}
+
+.animatedElementFill{
+    transition: fill 0.3s ease-in-out;
 }
 
 .toolsBarRow > h2{
@@ -227,13 +244,18 @@
     color: #FBFDFF;
     font-size: min(1.5625vw, 2.77778vh);
     font-weight: 300;
+    transition: color 0.3s ease-in-out;
 }
 
-.toolsBarRow > img{
+.toolsBarRow > svg{
     height: 100%;
     object-fit: contain;
     object-position: center center;
     overflow: visible;
+}
+
+.toolsBarRow > object > path{
+    transition: all 0.3s ease-in-out;
 }
 
 .tools,
