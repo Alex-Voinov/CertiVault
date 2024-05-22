@@ -1,36 +1,38 @@
 .skin {
     width: 100%;
-    height: 83.88889vh;
-    background-color: rgb(255, 255, 255, 0.15);
+    height: 100%;
+    background-color: rgba(217, 229, 240, 0.25);
     border: #E7EDF3 min(0.05208vw, 0.09259vh) solid;
     border-radius: min(0.41667vw, 0.74074vh);
     display: flex;
-    padding: min(2.08333vw, 3.7037vh);
+    padding: min(1.5625vw, 2.77778vh);
     justify-content: space-between;
     overflow: hidden;
 }
 
 .wrapperTablet{
-    width: 83.33333vw;
+    width: 65.10417vw;
     height: 100%;
     overflow: hidden;
 }
 
 .title {
     width: 100%;
-    height: 7.40741vh;
+    height: 5.55556vh;
     border-radius: min(0.41667vw, 0.74074vh);
     display: flex;
+    align-items: center;
+    background-color: #D9E5F0;
 }
 
-.category {   
+.category {  
+    height: 5.0vh; 
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #E7EDF3;
     color: #00536F;
-    font-size: min(1.35417vw, 2.40741vh);
-    font-weight: 600;
+    font-size: min(1.04167vw, 1.85185vh);
+    font-weight: 700;
     cursor: pointer;
 }
 
@@ -38,50 +40,40 @@
     border-right: #327287 min(0.05208vw, 0.09259vh) solid;
 }
 
-
-
 .tabletRow{
-    height: 7.03704vh;
+    height: 4.44444vh;
     width: 100%;
-    background-color: #E7EDF3;
+    background-color: #D9E5F0;
     display: flex;
     align-items: center;
 }
 
 .mainContent{
-    margin-top: 0.74074vh;
+    margin-top: 2.77778vh;
     width: 100%;
-    height: 67.96296vh;
+    height: 60.18519vh;
     border-radius: min(0.41667vw, 0.74074vh);
-}
-
-.scrollable{
     overflow: auto;
-    width: 100%;
-    height: 67.96296vh;
-    border-radius: inherit;
-    overflow-x: hidden;
 }
 
-.scrollable::-webkit-scrollbar {
-    width: 0.625vw; /* Ширина полосы прокрутки для браузеров на основе WebKit (Chrome, Safari, Opera) */
+
+.mainContent::-webkit-scrollbar {
+    width: 0vw; /* Ширина полосы прокрутки для браузеров на основе WebKit (Chrome, Safari, Opera) */
 }
 
-.scrollable::-webkit-scrollbar-track {
-    background: #E7EDF3; /* Цвет фона трека (необязательно) */
+.mainContent::-webkit-scrollbar-track {
+    background: transparent; /* Цвет фона трека (необязательно) */
 }
 
-.scrollable::-webkit-scrollbar-thumb {
-    background: #79ACBE; /* Цвет полосы прокрутки */
+.mainContent::-webkit-scrollbar-thumb {
+    background: transparent; /* Цвет полосы прокрутки */
     border-radius: min(0.41667vw, 0.74074vh); /* Закругленные углы полосы прокрутки */
 }
-
 
 .tabletElement{
     height: 100%;
     transition: 0.3s ease-in-out background-color;
 }
-
 
 .hLine{
     width: 0.05208vw;
@@ -96,7 +88,7 @@
     align-items: center;
     height: 0.09259vh;
     justify-content: space-around;
-    background: #E7EDF3;
+    background: #D9E5F0;
 }
 
 .vLine{

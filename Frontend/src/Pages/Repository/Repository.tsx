@@ -1,16 +1,17 @@
-import {FC} from 'react'
-import WidgetPanel from '../../Components/WidgetPanel/WidgetPanel';
+import { FC } from 'react'
 import RepositoryTable from './RepositoryTable/RepositoryTable';
 import styles from './Repository.module.css';
+import Header from '../../Components/Header/Header';
 
 const Repository: FC = () => {
     return (
-        <section className={styles.skin}>
-            <header className={styles.skin__header}>
-                <h1>DCC CERTIFICATE</h1>
-                <WidgetPanel side='min(2.5vw, 4.44444vh)' gap='1.30208vw' />
-            </header>
-            <RepositoryTable />
+        <section className={styles.wrapper}>
+            <Header wrapperStyles={{ backgroundColor: 'transparent' }} />
+            <section className={styles.tabletWrapper}>
+                <RepositoryTable />
+            </section>
+            <img src="/img/svg/tile.svg" alt="tile-background" className={`${styles.tile} ${styles.leftTile}`} />
+            <img src="/img/svg/tile.svg" alt="tile-background" className={`${styles.tile} ${styles.rightTile}`} />
         </section>
     )
 }

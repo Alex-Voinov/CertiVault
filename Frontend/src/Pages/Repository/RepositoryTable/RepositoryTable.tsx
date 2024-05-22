@@ -5,14 +5,14 @@ import WidgetPanelVertical from '../../../Components/WidgetPanelVertical/WidgetP
 const category = [
     'Номер сертификата',
     'Организация',
-    'Дата каллибровки',
+    'Дата калибровки',
     'Средства измерений',
     'Номер СИ'
 ]
 
 const amountColumn = category.length;
 
-const amountRow = 20;
+const amountRow = 13.5;
 
 const RepositoryTable = () => {
     const [isActiveColumn, setActiveColumn] = useState(-1);
@@ -31,7 +31,7 @@ const RepositoryTable = () => {
                 <div
                     className={styles.tabletElement}
                     style={{
-                        width: `calc( 83.33333vw / ${amountColumn}${j === amountColumn - 1 ? ' - 0.625vw' : ''}`,
+                        width: `calc( 83.33333vw / ${amountColumn}`,
                         backgroundColor: isActiveRow === i && isActiveColumn === j ? 'rgba(178, 207, 220,0.5)' : isActiveRow === i || isActiveColumn === j ? 'rgba(204, 222, 230, 0.40)' : '',
                     }}
                     onMouseEnter={() => {
@@ -54,7 +54,7 @@ const RepositoryTable = () => {
         for (let j = 0; j < amountColumn; ++j) {
             const vLineDiv = <div className={styles.vLine}
                 style={{
-                    width: `calc( ${(i === isActiveRow || i === (isActiveRow - 1)) ? 83.33333 : 80}vw / ${amountColumn}${j === amountColumn - 1 ? ' - 0.625vw' : ''}`
+                    width: `calc( ${(i === isActiveRow || i === (isActiveRow - 1)) ? 100 : 98}% / ${amountColumn}`
                 }}
             />
 
@@ -80,9 +80,7 @@ const RepositoryTable = () => {
                     {titleCategory}
                 </section>
                 <main className={styles.mainContent}>
-                    <div className={styles.scrollable}>
-                        {mainContent}
-                    </div>
+                    {mainContent}
                 </main>
             </section>
             <WidgetPanelVertical side='min(4.16667vw, 7.40741vh)' gap='1.85185vh' />

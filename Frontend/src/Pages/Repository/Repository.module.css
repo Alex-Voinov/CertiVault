@@ -1,24 +1,69 @@
-.skin{
+.wrapper {
     width: 100vw;
     height: 100vh;
-    background-color: #0D5872;
-    padding-left: 3.64583vw;
-    padding-right: 3.64583vw;
-}
-
-.skin__header{
-    width: 100%; 
-    margin-bottom: 2.59259vh;
-    margin-top: 3.14815vh;
+    background-image: linear-gradient(144deg, #0d5872 0%, #207796 100%);
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    overflow: visible;
+    flex-direction: column;
 }
 
-.skin__header > h1{
-    font-weight: 500;
-    color: #E7EDF3;
-    font-size: min(3.33333vw, 5.92593vh);
-    text-shadow: 0.15625vw 0.37037vh min(0.20833vw, 0.37037vh) rgb(0, 0, 0, 0.35);
+.tabletWrapper {
+    margin-top: 7.5vh;
+    width: 72.91667vw;
+    height: 74.07407vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+.tile {
+    position: absolute;
+    object-fit: contain;
+    object-position: center center;
+    width: 36.25vw;
+    height: 37.68519vh;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    z-index: 1;
+}
+
+.leftTile {
+    left: 1.66667vw;
+    bottom: 9.25926vh;
+    animation-name: moveLeftTitle;
+}
+
+.rightTile {
+    right: 1.66667vw;
+    top: 9.25926vh;
+    animation-name: moveRightTitle;
+}
+
+@keyframes moveLeftTitle {
+    0% {
+        left: 1.66667vw;
+    }
+
+    50% {
+        left: 2.70833vw;
+    }
+
+    100% {
+        left: 1.66667vw;
+    }
+}
+
+@keyframes moveRightTitle {
+    0% {
+        right: 1.66667vw;
+    }
+
+    50% {
+        right: 2.70833vw;
+    }
+
+    100% {
+        right: 1.66667vw;
+    }
 }
