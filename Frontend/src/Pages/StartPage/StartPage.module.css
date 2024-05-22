@@ -82,6 +82,14 @@
         background-color: rgba(217, 229, 240, 0.25);
         border-color: #E7EDF3;
     }
+
+    &:hover h1{
+        opacity: 1;
+    }
+
+    &:hover .repoTransition{
+        opacity: 1;
+    }
 }
 
 .repoGroup {
@@ -121,8 +129,6 @@
     fill-opacity: 1;
 }
 
-
-
 .toolsWrapper {
     left: 18.125vw;
 }
@@ -135,6 +141,54 @@
     position: relative;
     width: 100%;
     height: 100%;
+}
+
+.innerWrapper > h1 {
+    --w_h1: 21.35417vw;
+    position: absolute;
+    width: var(--w_h1);
+    text-align: center;
+    left: calc(50% - var(--w_h1) / 2);
+    top: 2.77778vh;
+    color: #D9E5F0;
+    font-size: min(1.875vw, 3.33333vh);
+    font-weight: 500;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.repoTransition{
+    --imgSide: min(1.04167vw, 1.85185vh);
+    --shift: min(1.5625vw, 2.77778vh);
+    width: 6.30208vw;
+    height: 2.22222vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    position: absolute;
+    overflow: visible;
+    right: var(--shift);
+    bottom: var(--shift);
+    transition: opacity 0.3s ease-in-out;
+}
+
+.repoTransition > h2{
+    width: calc(100% - var(--imgSide));
+    text-align: center;
+    overflow: visible;
+    color: #D9E5F0;
+    font-weight: 700;
+    font-size: var(--imgSide);
+}
+
+.repoTransition > img{
+   object-fit: contain;
+   object-position: center center;
+   overflow: visible;
+   width: var(--imgSide);
+   height: var(--imgSide);
 }
 
 .tools,
