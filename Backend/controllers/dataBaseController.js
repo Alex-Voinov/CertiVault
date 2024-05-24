@@ -69,7 +69,7 @@ class DataBaseController {
 
     async editEmail(req, res) {
         try {
-            const { login, password} = req.body;
+            const { login, password } = req.body;
             const email = req.body.email.toLowerCase();
             const query = `
             UPDATE "user"
@@ -255,6 +255,15 @@ class DataBaseController {
             console.error(error);
             throw error;
         }
+    }
+    async addSig(login, name) {
+        const queryText = `
+      INSERT INTO "sig" (login, name)
+      VALUES  ($1, $2)
+      RETURNING id;
+    `;
+        const res = await pool.query(queryText, [login, name]);
+        return `${login}-${res.rows[0].id}-${name}`
     }
 }
 

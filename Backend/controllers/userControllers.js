@@ -8,12 +8,29 @@ const storageSigFiles = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/sigFiles'); // Folder to save files
     },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname); // Keep the original file name
+    filename: async function (req, file, cb) {
+        try {
+            let login = 'anonimus';
+            try {
+                const authorizationHeader = req.headers.authorization;
+                const accsessToken = authorizationHeader.split(' ')[1];
+                const userData = tokenService.validateAccessToken(accsessToken);
+                login = userData.login;
+            } catch (error) {
+                //console.log(error);
+            }
+            const uniqueName = await dataBaseController.addSig(login, file.originalname);
+            cb(null, uniqueName);
+        } catch (er) {
+            console.log(er)
+        }
     }
 });
 
-const uploadStorageSigFiles = multer({ storage: storageSigFiles, fileFilter: sigResolution }).single('file');
+const uploadStorageSigFiles = multer({
+    storage: storageSigFiles,
+    fileFilter: sigResolution
+}).single('file');
 
 class UserController {
 
@@ -34,14 +51,14 @@ class UserController {
             await dataBaseController.saveRefreshToken(login, tokens.refreshToken);
             await dataBaseController.saveAccessToken(login, tokens.accessToken);
             res.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-            return res.json({accessToken: tokens.accessToken});
+            return res.json({ accessToken: tokens.accessToken });
         } catch (error) {
             console.log(error)
             res.status(401).json({ message: error.message });
         }
     }
 
-    async getSigFiels(req, res) {
+    async uploadSigFiels(req, res) {
         try {
             uploadStorageSigFiles(req, res, function (err) {
                 if (err) {

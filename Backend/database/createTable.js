@@ -33,6 +33,15 @@ const createJwtTableQuery = `
   )
 `;
 
+const createSigTableQuery = `
+  CREATE TABLE IF NOT EXISTS "sig" (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR,
+    name VARCHAR NOT NULL,
+    FOREIGN KEY (login) REFERENCES "user" (login)
+  )
+`;
+
 const createTables = async () => {
   try {
     await pool.query(createUserTableQuery);
@@ -47,6 +56,14 @@ const createTables = async () => {
     console.log('Таблица "jwt" успешно создана');
   } catch (err) {
     console.error('Ошибка при создании таблицы "jwt":', err);
+    endPool(); // Закрыть соединение с базой данных в случае ошибки
+  }
+
+  try {
+    await pool.query(createSigTableQuery);
+    console.log('Таблица "sig" успешно создана');
+  } catch (err) {
+    console.error('Ошибка при создании таблицы "sig":', err);
     endPool(); // Закрыть соединение с базой данных в случае ошибки
   }
 };

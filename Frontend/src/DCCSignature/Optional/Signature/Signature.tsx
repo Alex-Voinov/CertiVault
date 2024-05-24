@@ -18,7 +18,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
         if (file) {
             if (file.name.endsWith('.sig')) {
                 setSignature(file);
-                store.downloadSigFiles(fileName, file)
+                store.uploadSigFiles(fileName, file)
                 store.setValueByPath(path, nameKey, '123');
             }
             else store.setNotification(

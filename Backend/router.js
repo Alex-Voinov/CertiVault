@@ -13,7 +13,7 @@ router.get('/verify', authMiddleware, userControllers.verify);
 
 router.post('/create_user', dataBaseController.createUser)
 router.post('/edit_email', dataBaseController.editEmail)
-router.post('/get_sig_fiels',  userControllers.getSigFiels)
+router.post('/upload_sig_fiels',  userControllers.uploadSigFiels)
 
 
 module.exports = router

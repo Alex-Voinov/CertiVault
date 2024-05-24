@@ -58,9 +58,9 @@ export default class UserService {
         )
     }
 
-    static sendSigFiels(formData: FormData) {
+    static uploadSigFiels(formData: FormData) {
         return $api.post(
-            '/get_sig_fiels',
+            '/upload_sig_fiels',
             formData,
             {
                 headers: {

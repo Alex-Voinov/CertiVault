@@ -85,15 +85,19 @@ export default class Store {
         });
     }
 
-    async downloadSigFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл
+    async uploadSigFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл
         if (this.sigFiles.hasOwnProperty(name)) { //файл с таким именем уже загружен
             return false
         }
         this.sigFiles.name = file; // создаем этот файл в сторе у пользователя
         try { // пытаемся отправить его на сервер
+            const renamedFile = new File([file], `${name}.sig`, {
+                type: file.type,
+                lastModified: file.lastModified
+            });
             const formData = new FormData();
-            formData.append('file', file);
-            await UserService.sendSigFiels(formData);
+            formData.append('file', renamedFile);
+            await UserService.uploadSigFiels(formData);
             console.log('File uploaded successfully!');
         } catch (error) {
             console.error('Error uploading file:', error);
