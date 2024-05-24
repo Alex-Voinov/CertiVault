@@ -52,7 +52,7 @@ class DataBaseController {
         RETURNING *;
     `;
             const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
-            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${hashLogin}`);
+            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${hashLogin}`, name, surName);
             await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
             const createJWTQuery = `
             INSERT INTO "jwt" (login, accesstoken, refreshtoken)
@@ -69,7 +69,8 @@ class DataBaseController {
 
     async editEmail(req, res) {
         try {
-            const { login, password, email } = req.body;
+            const { login, password} = req.body;
+            const email = req.body.email.toLowerCase();
             const query = `
             UPDATE "user"
             SET email = $2
@@ -79,9 +80,8 @@ class DataBaseController {
             RETURNING *;
           `;
             const result = await pool.query(query, [login, email, CryptoJS.SHA256(password).toString()]);
-
             if (result.rowCount > 0) {
-                await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login).toString()}`)
+                await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login).toString()}`, result.rows[0].name, result.rows[0].surname)
                 res.status(200).send("Email edit successfully");
             } else {
                 throw new Error('Пользователь с указанным логином не найден или уже активирован');
