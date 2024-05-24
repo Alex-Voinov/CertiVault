@@ -16,16 +16,26 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
-            setSignature(file);
-            store.downloadSigFiles('name1', file)
-            store.setValueByPath(path, nameKey, '123');
+            if (file.name.endsWith('.sig')) {
+                setSignature(file);
+                store.downloadSigFiles(fileName, file)
+                store.setValueByPath(path, nameKey, '123');
+            }
+            else store.setNotification(
+                'Недопустимый файл',
+                'Поддерживаемый формат ввода: .sig'
+            )
         }
     };
 
     return (
         <section className={styles.wrapper} onClick={
             () => {
-                setActive(!isActive);
+                if (!(isActive && fileName && !signature)) setActive(!isActive)
+                else store.setNotification(
+                    'Данные не сохранены',
+                    'Вы задали имя, но не прикрепили файл. Нажмите на скрепку и выбирите файл.'
+                )
             }
         }>
             <h1 className={styles.title}>
@@ -51,7 +61,12 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                         onClick={e => e.stopPropagation()}
                         onChange={
                             (e) => {
-                                setFileName(e.target.value);
+                                if (/^[a-zA-Z0-9]{0,20}$/.test(e.target.value))
+                                    setFileName(e.target.value);
+                                else store.setNotification(
+                                    'Недопустимое имя',
+                                    'Имя может содержать до 20 латинских букв или цифр.',
+                                )
                             }
                         }
                     />
