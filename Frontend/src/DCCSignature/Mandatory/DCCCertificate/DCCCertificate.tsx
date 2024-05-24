@@ -57,10 +57,10 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                     <Comment path={path} />
                 </div>
                 <div className={styles.optionalWrapper}>
-                    <Document path={path} />
+                    <Signature path={path} />
                 </div>
                 <div className={styles.optionalWrapper}>
-                    <Signature path={path} />
+                    <Document path={path} />
                 </div>
             </div>
         </div>

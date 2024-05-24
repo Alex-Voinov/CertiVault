@@ -9,6 +9,7 @@ import { AnimateStep, delayByAppearanceMain, firstStepDelay, secondStepDelay, th
 const StartPage = () => {
     const [currentWelcomePhrase, setWelcomePhrase] = useState(defineTimeInterval());
     const [animateStep, setAnimateStep] = useState(AnimateStep.preparation);
+    const [hasFocuseWrapper, setFocuseWrapper] = useState(false);
     const completionDelay = useRef<number>(0);
     useEffect(() => {
         if (!completionDelay.current) {
@@ -40,9 +41,25 @@ const StartPage = () => {
                     className={styles.mainSlaise}
                 >
                     <Header wrapperStyles={{ backgroundColor: 'transparent' }} />
-                    <img src="/img/svg/tile.svg" alt="tile-background" className={`${styles.tile} ${styles.leftTile}`} />
-                    <img src="/img/svg/tile.svg" alt="tile-background" className={`${styles.tile} ${styles.rightTile}`} />
-                    <div className={styles.toolsWrapper}>
+                    <img
+                        src="/img/svg/tile.svg"
+                        alt="tile-background"
+                        className={`${styles.tile} ${styles.leftTile} ${hasFocuseWrapper ? styles.hasFocusLeft : ''}`}
+                    />
+                    <img
+                        src="/img/svg/tile.svg"
+                        alt="tile-background"
+                        className={`${styles.tile} ${styles.rightTile} ${hasFocuseWrapper ? styles.hasFocusRight : ''}`}
+                    />
+                    <div
+                        className={styles.toolsWrapper}
+                        onMouseEnter={
+                            () => setFocuseWrapper(true)
+                        }
+                        onMouseLeave={
+                            () => setFocuseWrapper(false)
+                        }
+                    >
                         <div className={styles.innerWrapper}>
                             <h1>Инструменты</h1>
                             {toolsSvg}
@@ -61,7 +78,15 @@ const StartPage = () => {
                         </div>
                     </div>
                     <Link to='/repository/'>
-                        <div className={styles.repoWrapper}>
+                        <div
+                            className={styles.repoWrapper}
+                            onMouseEnter={
+                                () => setFocuseWrapper(true)
+                            }
+                            onMouseLeave={
+                                () => setFocuseWrapper(false)
+                            }
+                        >
                             <div className={styles.innerWrapper}>
                                 <h1>Репозиторий</h1>
                                 {repoSvg}

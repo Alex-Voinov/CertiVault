@@ -99,7 +99,7 @@ const Registration: FC = () => {
         }
         if (InputRow.repeatPassword === indexRow && text !== inputsSet[InputRow.password][0])
             return ['Неккоректное поле', 'Повторно введеный пароль не совпадает с изначальным.'];
-        if (InputRow.mail === indexRow && usernamesUsed.current[UniqeData.email].includes(CryptoJS.SHA256(text).toString()))
+        if (InputRow.mail === indexRow && usernamesUsed.current[UniqeData.email].includes(CryptoJS.SHA256(text.toLowerCase()).toString()))
             return ['Не допустимый email', 'Пользователь с таким email уже существует.'];
         if (InputRow.login === indexRow && usernamesUsed.current[UniqeData.login].includes(CryptoJS.SHA256(text).toString()))
             return ['Не допустимый логин', 'Пользователь с таким логином уже существует.'];

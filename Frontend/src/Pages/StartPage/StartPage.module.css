@@ -198,7 +198,7 @@
 .toolsBar {
     --toolsBar_w: 23.90625vw;
     --toolsBar_h: 23.33333vh;
-    position: absolute;
+    position: relative;
     overflow: visible;
     top: calc(50% - var(--toolsBar_h)/2);
     left: 0.83333vw;
@@ -209,35 +209,49 @@
     justify-content: space-between;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+
+    &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0.05208vw;
+        background-image: linear-gradient(180deg, #FFFFFF00 0%, #FFFFFF 75%, #FFFFFF00 100%);
+    }
 }
 
-.toolsBarRow{
+.toolsBarRow {
     width: 100%;
+    padding-left: min(0.83333vw, 1.48148vh);
     display: flex;
     align-items: center;
     justify-content: space-between;
     overflow: visible;
     height: min(2.08333vw, 3.7037vh);
-    &:hover h2{
+
+    &:hover h2 {
         color: #2AFFD9;
     }
-    &:hover .animatedElement{
+
+    &:hover .animatedElement {
         stroke: #2AFFD9;
     }
-    &:hover .animatedElementFill{
+
+    &:hover .animatedElementFill {
         fill: #2AFFD9;
     }
 }
 
-.animatedElement{
+.animatedElement {
     transition: stroke 0.3s ease-in-out;
 }
 
-.animatedElementFill{
+.animatedElementFill {
     transition: fill 0.3s ease-in-out;
 }
 
-.toolsBarRow > h2{
+.toolsBarRow>h2 {
     min-width: 7.1875vw;
     overflow: visible;
     text-align: left;
@@ -247,14 +261,14 @@
     transition: color 0.3s ease-in-out;
 }
 
-.toolsBarRow > svg{
+.toolsBarRow>svg {
     height: 100%;
     object-fit: contain;
     object-position: center center;
     overflow: visible;
 }
 
-.toolsBarRow > object > path{
+.toolsBarRow>object>path {
     transition: all 0.3s ease-in-out;
 }
 
@@ -274,49 +288,63 @@
     position: absolute;
     object-fit: contain;
     object-position: center center;
-    width: 36.25vw;
     height: 37.68519vh;
     animation-duration: 10s;
-    animation-iteration-count: infinite;
+    animation-iteration-count: infinite;   
     z-index: 4;
 }
 
 .leftTile {
-    left: 1.66667vw;
+    left: 0;
     bottom: 9.25926vh;
     animation-name: moveLeftTitle;
+    transition: left 0.3s ease-in-out;
 }
 
+.hasFocusLeft {
+    left: -12.91667vw;
+    animation: none;
+    /* Отключаем анимацию */
+}
+
+
 .rightTile {
-    right: 1.66667vw;
+    right: 0;
     top: 9.25926vh;
     animation-name: moveRightTitle;
+    transition: right 0.3s ease-in-out;
+}
+
+.hasFocusRight {
+    right: -12.91667vw;
+    animation: none;
+    /* Отключаем анимацию */
 }
 
 @keyframes moveLeftTitle {
     0% {
-        left: 1.66667vw;
+        margin-left: 0;
     }
 
     50% {
-        left: 2.70833vw;
+        margin-left: 3.33333vw;
     }
 
     100% {
-        left: 1.66667vw;
+        margin-left: 0;
     }
 }
 
 @keyframes moveRightTitle {
     0% {
-        right: 1.66667vw;
+        margin-right: 0;
     }
 
     50% {
-        right: 2.70833vw;
+        margin-right: 3.33333vw;
     }
 
     100% {
-        right: 1.66667vw;
+        margin-right: 0;
     }
 }

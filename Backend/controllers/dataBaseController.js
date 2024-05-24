@@ -25,7 +25,8 @@ class DataBaseController {
     }
     async createUser(req, res) {
         try {
-            const { name, surName, email, login, password } = req.body;
+            const { name, surName, password, login } = req.body;
+            const email = req.body.email.toLowerCase();
             if (!(name && surName && login && password && email)) throw new Error('Некорректно заполненные поля');
             const checkExistingUserQuery = `
     SELECT login, email
@@ -168,8 +169,8 @@ class DataBaseController {
             const result = await pool.query(
                 `SELECT name, surname, login, email
             FROM "user"
-            WHERE (login = $1 OR email = $1) AND password = $2;`,
-                [logOrEmail, CryptoJS.SHA256(password).toString()]
+            WHERE (login = $1 OR email = $2) AND password = $3;`,
+                [logOrEmail, logOrEmail.toLowerCase(), CryptoJS.SHA256(password).toString()]
             );
             if (!result.rows.length > 0) throw new Error('Пользователь не найден')
             const { email, login, name, surname } = result.rows[0];

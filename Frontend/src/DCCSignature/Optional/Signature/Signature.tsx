@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent, useContext } from 'react'
+import { FC, useState, ChangeEvent, useContext, useRef } from 'react'
 import { GlobalData } from '../../..';
 import styles from './Signature.module.css'
 
@@ -12,6 +12,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
     const [signature, setSignature] = useState<File | null>(null);
     const [isActive, setActive] = useState(false);
     const [fileName, setFileName] = useState('');
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
@@ -50,11 +51,28 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                         onClick={e => e.stopPropagation()}
                         onChange={
                             (e) => {
-                                setFileName(e.target.value)
+                                setFileName(e.target.value);
                             }
                         }
                     />
-                    <img src="/img/svg/paperClip.svg" alt="upload" />
+                    <img
+                        src="/img/svg/paperClip.svg"
+                        alt="upload"
+                        onClick={
+                            e => {
+                                e.stopPropagation();
+                                if (fileName)
+                                    fileInputRef.current?.click();
+                                else store.setNotification(
+                                    'Пожалуйста',
+                                    'Введите название файла до его загрузки.'
+                                )
+                            }
+                        }
+                        style={{
+                            cursor: fileName ? 'pointer' : 'not-allowed'
+                        }}
+                    />
                 </div>
 
                 <input
@@ -62,6 +80,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                     type="file"
                     className={styles.fileData}
                     onChange={handleFileInputChange}
+                    ref={fileInputRef}
                 />
             </div>
             <img
