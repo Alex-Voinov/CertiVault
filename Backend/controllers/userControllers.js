@@ -12,9 +12,9 @@ const storageSigFiles = multer.diskStorage({
         try {
             const initialFileName = file.originalname;
             if (
-                    !/^[a-zA-Z0-9_.]{0,20}\.sig$/.test(initialFileName)
-                    || initialFileName.toLowerCase().includes('user')
-                    || initialFileName.toLowerCase().includes('anonimus')
+                !/^[a-zA-Z0-9_.]{0,20}\.sig$/.test(initialFileName)
+                || initialFileName.toLowerCase().includes('user')
+                || initialFileName.toLowerCase().includes('anonimus')
             )
                 throw new Error('Некорректное имя файла')
             let login = 'anonimus';
@@ -113,11 +113,16 @@ class UserController {
     async login(req, res) {
         try {
             const { logOrEmail, password } = req.query;
-            const { accessToken, refreshToken, name, surname, login, email } = await dataBaseController.login(logOrEmail, password)
+            const { accessToken, refreshToken, name, surname, login, email, isactivate } = await dataBaseController.login(logOrEmail, password)
             res.cookie('refreshToken', refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
-            res.status(200).json({
-                refreshToken,
-                accessToken,
+            if (isactivate)
+                res.status(200).json({
+                    refreshToken,
+                    accessToken,
+                    isactivate,
+                    user: { name, surname, login, email }
+                });
+            else res.status(200).json({
                 user: { name, surname, login, email }
             });
         } catch (error) {

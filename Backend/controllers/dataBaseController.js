@@ -166,17 +166,17 @@ class DataBaseController {
 
     async login(logOrEmail, password) {
         const result = await pool.query(
-            `SELECT name, surname, login, email
+            `SELECT name, surname, login, email, isactivate
             FROM "user"
             WHERE (login = $1 OR email = $2) AND password = $3;`,
             [logOrEmail, logOrEmail.toLowerCase(), CryptoJS.SHA256(password).toString()]
         );
         if (!result.rows.length > 0) throw new Error('Пользователь не найден')
-        const { email, login, name, surname } = result.rows[0];
+        const { email, login, name, surname, isactivate } = result.rows[0];
         const { accessToken, refreshToken } = tokenServise.generateTokens({ email, login, name, surname });
         await this.saveRefreshToken(login, refreshToken);
         await this.saveAccessToken(login, accessToken);
-        return { email, login, name, surname, accessToken, refreshToken };
+        return { email, login, name, surname, accessToken, refreshToken, isactivate };
     }
 
     async findUserByLogin(login) {

@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 
 const SEmailConfirmation: FC = () => {
     const location = useLocation();
-    const [count, setCount] = useState(5);
+    const [count, setCount] = useState(5); //timer
     const navigate = useNavigate();
     const searchParams = new URLSearchParams(location.search);
     const name = searchParams.get('name');

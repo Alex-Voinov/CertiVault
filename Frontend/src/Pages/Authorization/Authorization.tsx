@@ -4,7 +4,7 @@ import Header from '../../Components/Header/Header'
 import { useNavigate, Link } from 'react-router-dom'
 import checkPassword from '../../Utilities/password'
 import { GlobalData } from '../..'
-
+import { LoginStauts } from '../../Store/store'
 
 const Authorization: FC = () => {
     const { store } = useContext(GlobalData);
@@ -55,7 +55,12 @@ const Authorization: FC = () => {
                             if (!statusError) {
                                 setLoading(false)
                                 store.login(logOrMail, pass).then(
-                                    result => result && navigate('/repository/')
+                                    status => {
+                                        if (status === LoginStauts.correct) return navigate('/repository/')
+                                        if (status === LoginStauts.confirmEmail) {
+                                            navigate(`/registration/?activate=true`)
+                                        }
+                                    }
                                 ).finally(
                                     () => setLoading(false)
                                 )

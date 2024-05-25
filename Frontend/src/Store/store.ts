@@ -3,6 +3,11 @@ import { IUser } from "../Models/User";
 import UserService from "../Servies/UserServise";
 import Cookies from 'js-cookie';
 
+export enum LoginStauts {
+    unsuccessfully,
+    correct,
+    confirmEmail
+}
 
 export default class Store {
     user = {} as IUser;
@@ -23,7 +28,7 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
-    verificate(){
+    verificate() {
         this.isAuth = true;
     }
 
@@ -41,21 +46,28 @@ export default class Store {
         }
     }
 
-    async login(logOrEmail: string, pass: string): Promise<boolean> {
+    async login(logOrEmail: string, pass: string): Promise<number> {
         return UserService.login(logOrEmail, pass).then(
             response => {
                 const { accessToken, refreshToken, user } = response.data;
-                if (accessToken && refreshToken && user) {
+
+                if (user && !(accessToken || refreshToken)) {
                     runInAction(() => {
+                        this.user = user;
+                    });
+                    return LoginStauts.confirmEmail;
+                }
+                if (user && accessToken && refreshToken) {
+                    runInAction(() => {
+                        this.user = user;
+                        this.verificate();
                         this.accessToken = accessToken;
                         this.refreshToken = refreshToken;
-                        this.user = user;
-                        this.verificate()
-                        localStorage.setItem('accessToken', accessToken);
                     });
-                    return true;
+                    localStorage.setItem('accessToken', accessToken);
+                    return LoginStauts.correct;
                 }
-                return false;
+                return LoginStauts.unsuccessfully;
             }
         ).catch(error => {
             runInAction(() => {
@@ -69,7 +81,7 @@ export default class Store {
                     console.log(error);
                 }
             })
-            return false;
+            return LoginStauts.unsuccessfully;
         }
         )
     }
