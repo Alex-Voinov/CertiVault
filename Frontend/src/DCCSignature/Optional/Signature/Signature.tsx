@@ -89,7 +89,12 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                         }}
                     />
                 </div>
-
+                <div className={styles.oldFiels}>
+                    {store.isAuth
+                        ? <div>OP</div>
+                        : <div>Авторизуйтесь, чтобы иметь доступ к ранее загруженным файлам.</div>
+                    }
+                </div>
                 <input
                     onClick={e => e.stopPropagation()}
                     type="file"

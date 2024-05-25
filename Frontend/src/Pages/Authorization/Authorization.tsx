@@ -55,9 +55,9 @@ const Authorization: FC = () => {
                             if (!statusError) {
                                 setLoading(false)
                                 store.login(logOrMail, pass).then(
-                                    ()=>navigate('/repository/')
-                                ).catch().finally(
-                                    ()=>setLoading(false)
+                                    result => result && navigate('/repository/')
+                                ).finally(
+                                    () => setLoading(false)
                                 )
                             }
                         }

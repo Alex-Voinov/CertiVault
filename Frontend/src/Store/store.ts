@@ -8,6 +8,7 @@ export default class Store {
     user = {} as IUser;
     notificationTitle: string = '';
     notificationDesc: string = '';
+    isAuth: boolean = false;
     accessToken: string = localStorage.getItem('accessToken') || '';
     refreshToken: string = Cookies.get('refreshToken') || '';
     currentStruct: { [key: string]: any } = {}
@@ -22,6 +23,9 @@ export default class Store {
         this.notificationDesc = descNtf;
     }
 
+    verificate(){
+        this.isAuth = true;
+    }
 
     async verify() {
         try {
@@ -29,6 +33,7 @@ export default class Store {
             runInAction(() => {
                 if (response.data) {
                     this.user = response?.data;
+                    this.verificate()
                 }
             })
         } catch (error) {
@@ -45,6 +50,7 @@ export default class Store {
                         this.accessToken = accessToken;
                         this.refreshToken = refreshToken;
                         this.user = user;
+                        this.verificate()
                         localStorage.setItem('accessToken', accessToken);
                     });
                     return true;
@@ -127,5 +133,3 @@ export default class Store {
         }
     }
 }
-
-//console.log(JSON.stringify(this.currentStruct));
