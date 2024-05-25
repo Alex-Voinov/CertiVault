@@ -130,9 +130,35 @@ const Registration: FC = () => {
                                     placeholder={inputData.placeholder}
                                     value={text}
                                     onChange={(e) => {
-                                        if (
-                                            !(e.target.value && [InputRow.name, InputRow.surName].includes(indexRow) && !/^[a-zA-Zа-яА-Я\s]+$/.test(e.target.value))
-                                        ) setText(capitalize(e.target.value));
+                                        if ([InputRow.name, InputRow.surName].includes(indexRow)) { // для имени/фамилии
+                                            if (
+                                                !(
+                                                    e.target.value
+                                                    && !/^[a-zA-Zа-яА-Я\s]+$/.test(e.target.value)
+                                                )
+                                            ) setText(capitalize(e.target.value));
+                                        }
+                                        else if (indexRow === InputRow.login) { //для логина
+                                            const text = e.target.value;
+                                            if (!text || /^[A-Za-z0-9_]{1,20}$/.test(text)) {
+                                                if (
+                                                    !(
+                                                        text.toLocaleLowerCase().includes('user')
+                                                        || text.toLocaleLowerCase().includes('anonimus')
+                                                    )
+                                                )
+                                                    setText(text);
+                                                else store.setNotification(
+                                                    'Недопустимо',
+                                                    'Логин не может содержать слова user/anonimus.'
+                                                )
+                                            } else store.setNotification(
+                                                'Недопустимо',
+                                                'Логин должен включать до 20 латинских символов, цифр или _.'
+                                            )
+                                        } else { //для пароля/почты
+                                            setText(e.target.value)
+                                        }
                                     }}
                                     onBlur={() => {
                                         const potentionalError = defineUncorectnessStauts(text, indexRow);

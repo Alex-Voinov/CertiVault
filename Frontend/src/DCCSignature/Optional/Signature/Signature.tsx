@@ -61,11 +61,11 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                         onClick={e => e.stopPropagation()}
                         onChange={
                             (e) => {
-                                if (/^[a-zA-Z0-9]{0,20}$/.test(e.target.value))
+                                if (/^[a-zA-Z0-9_]{0,20}$/.test(e.target.value))
                                     setFileName(e.target.value);
                                 else store.setNotification(
                                     'Недопустимое имя',
-                                    'Имя может содержать до 20 латинских букв или цифр.',
+                                    'Введите до 20 латинских букв, цифр или _.',
                                 )
                             }
                         }
