@@ -10,6 +10,13 @@ const storageSigFiles = multer.diskStorage({
     },
     filename: async function (req, file, cb) {
         try {
+            const initialFileName = file.originalname;
+            if (
+                    !/^[a-zA-Z0-9_.]{0,20}\.sig$/.test(initialFileName)
+                    || initialFileName.toLowerCase().includes('user')
+                    || initialFileName.toLowerCase().includes('anonimus')
+            )
+                throw new Error('Некорректное имя файла')
             let login = 'anonimus';
             try {
                 const authorizationHeader = req.headers.authorization;
@@ -19,7 +26,7 @@ const storageSigFiles = multer.diskStorage({
             } catch (error) {
                 //console.log(error);
             }
-            const uniqueName = await dataBaseController.addSig(login, file.originalname);
+            const uniqueName = await dataBaseController.addSig(login, initialFileName);
             cb(null, uniqueName);
         } catch (er) {
             console.log(er)

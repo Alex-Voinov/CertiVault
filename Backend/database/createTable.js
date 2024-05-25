@@ -37,8 +37,7 @@ const createSigTableQuery = `
   CREATE TABLE IF NOT EXISTS "sig" (
     id SERIAL PRIMARY KEY,
     login VARCHAR,
-    name VARCHAR NOT NULL,
-    FOREIGN KEY (login) REFERENCES "user" (login)
+    name VARCHAR NOT NULL
   )
 `;
 
