@@ -15,9 +15,9 @@ const Header: FC<IHeader> = ({ wrapperStyles = {}, visibleAuthLogo = true }) => 
     return (
         <header className={styles.mainHeader} style={wrapperStyles}>
             <h1>DCC CERTIFICATE</h1>
-            {visibleAuthLogo && (store.user.login
+            {visibleAuthLogo && (store.user.name
                 ? <div className={styles.authLabel}>
-                    <h1>{store.user.login}</h1>
+                    <h1>{store.user.name}</h1>
                     <img src="/img/svg/authUserLogo.svg" alt="authorization user" />
                 </div>
                 : <Link to="/authorization">

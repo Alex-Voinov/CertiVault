@@ -7,6 +7,7 @@ import checkPassword from '../../Utilities/password';
 import { GlobalData } from '../..';
 import { capitalize } from '../../Utilities/string';
 import CryptoJS from 'crypto-js';
+import { toJS } from "mobx";
 
 const modificateHeaderStyle: CSSProperties = {
     backgroundColor: 'transparent',
@@ -72,7 +73,7 @@ const Registration: FC = () => {
     const [editModeEmail, setEditModeEmail] = useState(false);
     const [editEmail, setEditEmail] = useState('');
     const [isLoading, setLoading] = useState(false);
-
+    console.log(toJS(store.user))
     useEffect(() => {
         setLoading(true)
         UserService.getUniqeData().then(

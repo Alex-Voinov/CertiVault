@@ -113,17 +113,17 @@ class UserController {
     async login(req, res) {
         try {
             const { logOrEmail, password } = req.query;
-            const { accessToken, refreshToken, name, surname, login, email, isactivate } = await dataBaseController.login(logOrEmail, password)
+            const { accessToken, refreshToken, name, surName, login, email, isactivate } = await dataBaseController.login(logOrEmail, password)
             res.cookie('refreshToken', refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
             if (isactivate)
                 res.status(200).json({
                     refreshToken,
                     accessToken,
                     isactivate,
-                    user: { name, surname, login, email }
+                    user: { name, surName, login, email }
                 });
             else res.status(200).json({
-                user: { name, surname, login, email }
+                user: { name, surName, login, email }
             });
         } catch (error) {
             res.status(400).json({ message: error.message });
@@ -135,7 +135,7 @@ class UserController {
         try {
             const { user } = req;
             const { name, surname, login, email } = user;
-            res.status(200).json({ name, surname, login, email });
+            res.status(200).json({ name, surName: surname, login, email });
         } catch (error) {
             res.status(401).json({ message: error.message });
             console.error('Не авторизованный пользователь', error);

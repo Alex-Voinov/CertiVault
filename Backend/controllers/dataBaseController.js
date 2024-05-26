@@ -176,7 +176,7 @@ class DataBaseController {
         const { accessToken, refreshToken } = tokenServise.generateTokens({ email, login, name, surname });
         await this.saveRefreshToken(login, refreshToken);
         await this.saveAccessToken(login, accessToken);
-        return { email, login, name, surname, accessToken, refreshToken, isactivate };
+        return { email, login, name, surName: surname, accessToken, refreshToken, isactivate };
     }
 
     async findUserByLogin(login) {

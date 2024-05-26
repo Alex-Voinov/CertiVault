@@ -18,7 +18,7 @@ export default class Store {
     refreshToken: string = Cookies.get('refreshToken') || '';
     currentStruct: { [key: string]: any } = {}
     sigFiles: { [key: string]: File } = {}
-
+    
     constructor() {
         makeAutoObservable(this);
     }

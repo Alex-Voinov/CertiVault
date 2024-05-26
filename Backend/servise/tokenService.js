@@ -24,9 +24,7 @@ class TokenService {
     validateAccessToken(token) {
         try {
             const tokenData = startsWith(token, 'Bearer ') ? token.split(' ')[1] : token;
-            console.log(tokenData)
             const userData = jwt.verify(tokenData, process.env.JWT_ACCESS_SECRET);
-            console.log(userData)
             return userData;
         } catch (e) {
             return null;
