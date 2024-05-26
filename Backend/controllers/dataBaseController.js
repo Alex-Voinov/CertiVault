@@ -45,15 +45,15 @@ class DataBaseController {
             const regex = /^[a-zA-Zа-яА-Я\s]+$/;
             if (!(regex.test(name) && regex.test(surName) && name.length <= 20 && surName.length <= 20 && login.length <= 20)) throw new Error('Некорректно заполненные поля');
             const hashPass = CryptoJS.SHA256(password).toString();
-            const hashLogin = CryptoJS.SHA256(login).toString();
+            const activateLink = CryptoJS.SHA256(login + email).toString();
             const createUserQuery = `
         INSERT INTO "user" (name, surname, login, password, email, accessToken, refreshToken, linkactivate)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
             const { accessToken, refreshToken } = tokenServise.generateTokens({ name, surName, login, email });
-            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${hashLogin}`, name, surName);
-            await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, hashLogin]);
+            await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activateLink}`, name, surName);
+            await pool.query(createUserQuery, [name, surName, login, hashPass, email, accessToken, refreshToken, activateLink]);
             const createJWTQuery = `
             INSERT INTO "jwt" (login, accesstoken, refreshtoken)
             VALUES ($1, $2, $3)
@@ -69,20 +69,20 @@ class DataBaseController {
 
     async editEmail(req, res) {
         try {
-            console.log(req.body)
-            const {login, hashPas} = req.body;
+            const { login, hashPas } = req.body;
             const email = req.body.email.toLowerCase();
             const query = `
             UPDATE "user"
-            SET email = $2
+            SET email = $2,
+            linkActivate = $4
             WHERE login = $1
               AND isactivate = false
               AND password = $3
             RETURNING *;
           `;
-            const result = await pool.query(query, [login, email, hashPas]);
+            const result = await pool.query(query, [login, email, hashPas, CryptoJS.SHA256(login + email).toString()]);
             if (result.rowCount > 0) {
-                await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login).toString()}`, result.rows[0].name, result.rows[0].surname)
+                await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login + email).toString()}`, result.rows[0].name, result.rows[0].surname)
                 res.status(200).send("Email edit successfully");
             } else {
                 throw new Error('Пользователь с указанным логином не найден или уже активирован');
