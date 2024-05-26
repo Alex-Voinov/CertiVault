@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import checkPassword from '../../Utilities/password'
 import { GlobalData } from '../..'
 import { LoginStauts } from '../../Store/store'
+import CryptoJS from 'crypto-js';
 
 const Authorization: FC = () => {
     const { store } = useContext(GlobalData);
@@ -58,7 +59,7 @@ const Authorization: FC = () => {
                                     status => {
                                         if (status === LoginStauts.correct) return navigate('/repository/')
                                         if (status === LoginStauts.confirmEmail) {
-                                            navigate(`/registration/?activate=true`)
+                                            navigate(`/registration/?activate=true&key=${CryptoJS.SHA256(pass).toString()}`)
                                         }
                                     }
                                 ).finally(

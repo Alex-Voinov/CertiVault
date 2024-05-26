@@ -22,11 +22,11 @@ export default class UserService {
         })
     }
 
-    static editEmail(login: string, password: string, email: string) {
+    static editEmail(login: string, email: string, hashPas: string) {
         return $api.post('/edit_email', {
             login,
-            password,
             email,
+            hashPas
         })
     }
 

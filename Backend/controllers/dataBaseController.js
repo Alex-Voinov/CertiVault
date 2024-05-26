@@ -69,7 +69,8 @@ class DataBaseController {
 
     async editEmail(req, res) {
         try {
-            const { login, password } = req.body;
+            console.log(req.body)
+            const {login, hashPas} = req.body;
             const email = req.body.email.toLowerCase();
             const query = `
             UPDATE "user"
@@ -79,7 +80,7 @@ class DataBaseController {
               AND password = $3
             RETURNING *;
           `;
-            const result = await pool.query(query, [login, email, CryptoJS.SHA256(password).toString()]);
+            const result = await pool.query(query, [login, email, hashPas]);
             if (result.rowCount > 0) {
                 await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${CryptoJS.SHA256(login).toString()}`, result.rows[0].name, result.rows[0].surname)
                 res.status(200).send("Email edit successfully");
@@ -89,7 +90,6 @@ class DataBaseController {
         } catch (error) {
             res.status(400).json({ message: error.message });
             console.error('Ошибка при обновлении почты пользователя:', error);
-            throw error;
         }
     }
 
@@ -146,7 +146,7 @@ class DataBaseController {
                 `SELECT accesstoken, refreshtoken, isactivate
                 FROM "user"
                 WHERE login = $1 AND password = $2;`,
-                [login, CryptoJS.SHA256(password).toString()]
+                [login, password]
             );
             // Если пользователь найден и обновлен успешно, вернуть его данные
             if (result.rows.length > 0) {

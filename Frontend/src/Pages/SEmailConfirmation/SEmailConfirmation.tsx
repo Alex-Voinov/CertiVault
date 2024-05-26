@@ -37,7 +37,16 @@ const SEmailConfirmation: FC = () => {
         <section className={styles.wrapper}>
             <Header visibleAuthLogo={false} wrapperStyles={{ backgroundColor: 'transparent' }} />
             <div className={styles.content} style={{ '--h': correctness ? '16.66667vw' : '18.85417vw' } as CSSProperties}>
-                <img src="/img/svg/formClose.svg" alt="close" />
+                <img
+                    src="/img/svg/formClose.svg"
+                    alt="close"
+                    onClick={
+                        () => {
+                            if (window.history.length > 2) navigate(-1);
+                            else navigate('/')
+                        }
+                    }
+                />
                 <h1>{
                     correctness
                         ? <>

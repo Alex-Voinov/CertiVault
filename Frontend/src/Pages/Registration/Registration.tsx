@@ -1,7 +1,7 @@
 import { CSSProperties, FC, useEffect, useRef, useState, Dispatch, SetStateAction, Fragment, useContext } from 'react'
 import styles from './Registration.module.css'
 import Header from '../../Components/Header/Header'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import UserService from '../../Servies/UserServise';
 import checkPassword from '../../Utilities/password';
 import { GlobalData } from '../..';
@@ -61,8 +61,12 @@ enum UniqeData {
 
 const Registration: FC = () => {
     const { store } = useContext(GlobalData);
+    const location = useLocation();
     const navigate = useNavigate();
     const usernamesUsed = useRef<[string[], string[]]>([[], []]);
+    const searchParams = new URLSearchParams(location.search);
+    const activate = searchParams.get('activate');
+    const key = searchParams.get('key');
     const inputsSet = Array(inputsData.length).fill('').map(useState) as [string, Dispatch<SetStateAction<string>>][];
     const [activateAccaunt, setActivateAccaunt] = useState(false);
     const [editModeEmail, setEditModeEmail] = useState(false);
@@ -87,6 +91,15 @@ const Registration: FC = () => {
             () => { setLoading(false) }
         )
     }, []);
+
+    useEffect(() => {
+        if (activate && store.user.email && store.user.login && key) {
+            inputsSet[InputRow.login][1](store.user.login);
+            inputsSet[InputRow.mail][1](store.user.email);
+            setEditEmail(store.user.email);
+            setActivateAccaunt(true);
+        }
+    }, [store.user, store.isAuth])
 
     const defineUncorectnessStauts = (text: string, indexRow: number): [string, string] | undefined => {
         if (!text)
@@ -267,7 +280,13 @@ const Registration: FC = () => {
                                             'Указанная почта уже используется.'
                                         );
                                     }
-                                    UserService.editEmail(inputsSet[InputRow.login][0], inputsSet[InputRow.password][0], editEmail).then(
+                                    UserService.editEmail(
+                                        inputsSet[InputRow.login][0],
+                                        editEmail,
+                                        key
+                                            ? key
+                                            : CryptoJS.SHA256(inputsSet[InputRow.password][0]).toString()
+                                    ).then(
                                         () => {
                                             inputsSet[InputRow.mail][1](editEmail);
                                             store.setNotification("Успешно", `Проверьте новую почту: ${editEmail}`);
@@ -296,11 +315,22 @@ const Registration: FC = () => {
                                 e.preventDefault();
                                 UserService.checkConfirmEmail(
                                     inputsSet[InputRow.login][0],
-                                    inputsSet[InputRow.password][0]
+                                    key
+                                        ? key
+                                        : CryptoJS.SHA256(inputsSet[InputRow.password][0]).toString()
                                 ).then(
                                     response => {
                                         const { accessToken, refreshToken } = response.data;
-                                        navigate(`/successful_email_confirmation/?name=${inputsSet[InputRow.name][0]}&surName=${inputsSet[InputRow.surName][0]}&accessToken=${accessToken}&refreshToken=${refreshToken}`)
+                                        navigate(
+                                            `/successful_email_confirmation/?name=${activate
+                                                ? store.user.name
+                                                : inputsSet[InputRow.name][0]
+                                            }&surName=${activate
+                                                ? store.user.surName
+                                                : inputsSet[InputRow.surName][0]
+                                            }&accessToken=${accessToken
+                                            }&refreshToken=${refreshToken
+                                            }`)
                                     }
                                 ).catch(
                                     error => {
