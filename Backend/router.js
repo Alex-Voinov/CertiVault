@@ -10,6 +10,7 @@ router.get('/check_confirm_email',  userControllers.checkConfirmEmail)
 router.get('/activate/:link', userControllers.activate);
 router.get('/login', userControllers.login);
 router.get('/verify', authMiddleware, userControllers.verify);
+router.get('/get_all_names_sig', authMiddleware, dataBaseController.getAllSignNames);
 
 router.post('/create_user', dataBaseController.createUser)
 router.post('/edit_email', dataBaseController.editEmail)

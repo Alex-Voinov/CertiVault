@@ -12,6 +12,10 @@ export default class UserService {
         return $api.get<ISigFiels>('/fetch_sig_fiels')
     }
 
+    static getAllNameSigFiels(): Promise<AxiosResponse<string[]>>{
+        return $api.get<string[]>('/get_all_names_sig')
+    }
+
     static createUser(data: string[]) {
         return $api.post('/create_user', {
             name: data[1],
@@ -69,6 +73,4 @@ export default class UserService {
             }
         )
     }
-
-
 }

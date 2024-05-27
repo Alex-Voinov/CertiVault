@@ -18,7 +18,8 @@ export default class Store {
     refreshToken: string = Cookies.get('refreshToken') || '';
     currentStruct: { [key: string]: any } = {}
     sigFiles: { [key: string]: File } = {}
-    
+    sigFileNames: string[] = []
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -30,6 +31,20 @@ export default class Store {
 
     verificate() {
         this.isAuth = true;
+    }
+
+    makeErNtf(title: string, er: any) {
+        runInAction(() => {
+            if (er.response) {
+                const errorMessage = er.response.data.message || "Неизвестная ошибка";
+                this.setNotification(title, errorMessage);
+            } else if (er.request) {
+                this.setNotification('Сервер не отвечает', 'Попробуйте cделать запрос позже');
+            } else {
+                this.setNotification('Неизвестная ошибка', '...');
+                console.log(er);
+            }
+        })
     }
 
     async verify() {
@@ -70,17 +85,7 @@ export default class Store {
                 return LoginStauts.unsuccessfully;
             }
         ).catch(error => {
-            runInAction(() => {
-                if (error.response) {
-                    const errorMessage = error.response.data.message || "Неизвестная ошибка";
-                    this.setNotification("Ошибка авторизации", errorMessage);
-                } else if (error.request) {
-                    this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
-                } else {
-                    this.setNotification("Произошла неизвестная ошибка", '...');
-                    console.log(error);
-                }
-            })
+            this.makeErNtf('Ошибка авторизации', error)
             return LoginStauts.unsuccessfully;
         }
         )
@@ -90,15 +95,7 @@ export default class Store {
         return UserService.createUser(data).then(
             () => true
         ).catch(error => {
-            if (error.response) {
-                const errorMessage = error.response.data.message || "Неизвестная ошибка";
-                this.setNotification("Ошибка регистрации", errorMessage);
-            } else if (error.request) {
-                this.setNotification("Сервер не отвечает", 'Попробуйте cделать запрос позже');
-            } else {
-                this.setNotification("Произошла неизвестная ошибка", '...');
-                console.log(error);
-            }
+            this.makeErNtf('Ошибка регистрации', error)
             return false;
         });
     }
@@ -123,8 +120,18 @@ export default class Store {
         return true;
     }
 
-    getOldSigFiles() {
-
+    async getAllNameSigFiels() {
+        if (!this.sigFileNames.length) {
+            return UserService.getAllNameSigFiels().then(
+                response => (response ? response.data : []) as string[]
+            ).catch(
+                er => {
+                    this.makeErNtf('Ошибка sigNames', er)
+                    return [] as string[]
+                }
+            )
+        }
+        return this.sigFileNames
     }
 
     setValueByPath(path: string[], nameKey: string, value: any): void {

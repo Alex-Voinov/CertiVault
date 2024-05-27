@@ -257,6 +257,21 @@ class DataBaseController {
         const res = await pool.query(queryText, [login, name]);
         return `${login}-${res.rows[0].id}-${name}`
     }
+
+    async getAllSignNames(req, res) {
+        try {
+            const { user } = req;
+            if (!user) throw new Error('Не авторизованный пользователь пытается получить sig-данные.')
+            const queryText = `
+        SELECT name
+        FROM "sig"
+        WHERE login = $1`
+            const findName = await pool.query(queryText, [user.login]);
+            res.status(200).send(findName)
+        } catch (er) {
+            res.status(404).message(er.message)
+        }
+    }
 }
 
 module.exports = new DataBaseController();

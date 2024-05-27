@@ -5,12 +5,46 @@
     cursor: pointer;
 
     &:hover .interactionBlock,
-    &:hover .nextStep {
+    &:hover .nextStep,
+    &:hover .oldFiels {
         opacity: 1;
     }
 
     &:hover .signatureLogo {
         filter: blur(min(0.20833vw, 0.37037vh));
+    }
+}
+
+.oldFiels {
+    z-index: 5;
+    position: absolute;
+    overflow: hidden;
+    opacity: 0;
+    left: -0.05208vw;
+    top: 11.2037vh;
+    width: 0vw;
+    height: 10.92593vh;
+    border: #015470 solid 0.05208vw;
+    border-left-color: #D9E5F0;
+    background-color: transparent;
+    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+    &>div {
+        width: 13.02083vw;
+        height: 100%;
+    }
+
+    &>.unAuth {
+        display: flex;
+        align-items: center;
+        padding-left: 0.41667vw;
+
+        &>p {
+            font-weight: 400;
+            font-size: min(0.9375vw, 1.66667vh);
+            color: #015470;
+            width: 90%;
+        }
     }
 }
 

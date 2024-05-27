@@ -1,6 +1,7 @@
-import { FC, useState, ChangeEvent, useContext, useRef } from 'react'
+import { FC, useState, ChangeEvent, useContext, useRef, useEffect } from 'react'
 import { GlobalData } from '../../..';
 import styles from './Signature.module.css'
+import { observer } from 'mobx-react-lite';
 
 interface ISignature {
     path: string[];
@@ -13,13 +14,28 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
     const [isActive, setActive] = useState(false);
     const [fileName, setFileName] = useState('');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [downloadedFiels, setDownloadedFiels] = useState<string[]>([]);
+    useEffect(() => {
+        if (store.isAuth) {
+            const nameReq = store.getAllNameSigFiels();
+            nameReq.then(
+                names => setDownloadedFiels(names)
+            )    
+        }
+    }, [store.isAuth])
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
             if (file.name.endsWith('.sig')) {
                 setSignature(file);
-                store.uploadSigFiles(fileName, file)
-                store.setValueByPath(path, nameKey, '123');
+                store.uploadSigFiles(fileName, file).then(
+                    ()=>{
+                        setDownloadedFiels([...downloadedFiels, file.name])
+                    }
+                ).catch(
+                    er => store.makeErNtf('Не удачно', er)
+                )
+                //store.setValueByPath(path, nameKey, '123');
             }
             else store.setNotification(
                 'Недопустимый файл',
@@ -89,10 +105,28 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                         }}
                     />
                 </div>
-                <div className={styles.oldFiels}>
+                <div
+                    className={styles.oldFiels}
+                    style={
+                        isActive
+                            ? {
+                                width: '13.02083vw',
+                                backgroundColor: '#D9E5F0'
+                            }
+                            : {
+                                borderRightColor: 'transparent'
+                            }
+                    }
+                >
                     {store.isAuth
-                        ? <div>OP</div>
-                        : <div>Авторизуйтесь, чтобы иметь доступ к ранее загруженным файлам.</div>
+                        ? <div className={styles.setOldFiels}>
+                            OP
+                        </div>
+                        : <div className={styles.unAuth}>
+                            <p>
+                                Авторизуйтесь, чтобы иметь доступ к ранее загруженным файлам.
+                            </p>
+                        </div>
                     }
                 </div>
                 <input
@@ -116,4 +150,4 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
     )
 }
 
-export default Signature
+export default observer(Signature)
