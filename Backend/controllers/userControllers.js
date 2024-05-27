@@ -28,6 +28,7 @@ const storageSigFiles = multer.diskStorage({
             }
             const uniqueName = await dataBaseController.addSig(login, initialFileName);
             cb(null, uniqueName);
+            req.fileName = uniqueName;
         } catch (er) {
             console.log(er)
         }
@@ -73,7 +74,7 @@ class UserController {
                     console.log(err);
                     return res.status(400).json({ error: 'File upload failed' });
                 }
-                return res.status(200).json({ message: 'File uploaded successfully' });
+                return res.status(200).json({ fileName: req.fileName });
             });
         } catch (error) {
             console.log(error);

@@ -104,7 +104,6 @@ export default class Store {
         if (this.sigFiles.hasOwnProperty(name)) { //файл с таким именем уже загружен
             return false
         }
-        this.sigFiles.name = file; // создаем этот файл в сторе у пользователя
         try { // пытаемся отправить его на сервер
             const renamedFile = new File([file], `${name}.sig`, {
                 type: file.type,
@@ -112,8 +111,11 @@ export default class Store {
             });
             const formData = new FormData();
             formData.append('file', renamedFile);
-            await UserService.uploadSigFiels(formData);
-            console.log('File uploaded successfully!');
+            await UserService.uploadSigFiels(formData).then(
+                response => {
+                    this.sigFiles.name = response.data.fileName; // создаем этот файл в сторе у пользователя
+                }
+            )
         } catch (error) {
             console.error('Error uploading file:', error);
         }
