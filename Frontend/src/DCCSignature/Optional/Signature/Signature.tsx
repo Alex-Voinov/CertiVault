@@ -9,13 +9,16 @@ interface ISignature {
     nameKey?: string;
 }
 
-const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
+const NUMBER_NEW_FILE = 1;
+
+const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     const { store } = useContext(GlobalData);
     const [signature, setSignature] = useState<File | null>(null);
     const [isActive, setActive] = useState(false);
     const [fileName, setFileName] = useState('');
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [downloadedFiels, setDownloadedFiels] = useState<string[]>([]);
+    const [selectedFile, setSelectedFile] = useState(0);
     useEffect(() => {
         if (store.isAuth) {
             const nameReq = store.getAllNameSigFiels();
@@ -31,7 +34,8 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                 setSignature(file);
                 store.uploadSigFiles(fileName, file).then(
                     () => {
-                        setDownloadedFiels([`${fileName}.sig`, ...downloadedFiels ])
+                        setDownloadedFiels([`${fileName}.sig`, ...downloadedFiels]);
+                        setSelectedFile(NUMBER_NEW_FILE);
                     }
                 ).catch(
                     er => store.makeErNtf('Не удачно', er)
@@ -94,7 +98,12 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                             e => {
                                 e.stopPropagation();
                                 if (fileName)
-                                    fileInputRef.current?.click();
+                                    if (!downloadedFiels.includes(fileName + '.sig'))
+                                        fileInputRef.current?.click();
+                                    else store.setNotification(
+                                        'Пожалуйста',
+                                        'Введите уникальное имя для файла.'
+                                    )
                                 else store.setNotification(
                                     'Пожалуйста',
                                     'Введите название файла до его загрузки.'
@@ -122,15 +131,25 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                     {downloadedFiels.length > 0
                         ? <div className={styles.filesBar}>
                             {downloadedFiels.map(
-                                fName => <div className={styles.filesBarRow}>
+                                (fName, number) => <div
+                                    className={styles.filesBarRow}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        setSelectedFile(number + NUMBER_NEW_FILE);
+                                    }}
+                                >
                                     <h2>{fName}</h2>
-                                    <img src="/img/svg/oldFileLogo.svg" alt="old file" />
+                                    {
+                                        number === selectedFile - NUMBER_NEW_FILE
+                                            ? <img src="/img/svg/selectedFileLogo.svg" alt="selected file" />
+                                            : <img src="/img/svg/oldFileLogo.svg" alt="old file" />
+                                    }
                                 </div>
                             )}
                         </div>
                         : store.isAuth
                             ? <div className={styles.setOldFiels}>
-                                OP
+                                <p>{store.user.name}, тут будут отображаться все ранее загруженные вами файлы</p>
                             </div>
                             : <div className={styles.unAuth}>
                                 <p>
@@ -158,6 +177,11 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                 <h2>{isActive ? 'Сохранить' : 'Заполнить'}</h2>
                 <img src="/img/svg/bluePointerTransition.svg" alt="next" />
             </div>
+            {Boolean(selectedFile) && <img
+                src="/img/svg/selectedFileLogo.svg"
+                alt="correct"
+                className={styles.correctnessStatus}
+            />}
         </section>
     )
 }

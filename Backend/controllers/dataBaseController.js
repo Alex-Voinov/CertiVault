@@ -267,7 +267,8 @@ class DataBaseController {
         FROM "sig"
         WHERE login = $1`
             const findName = await pool.query(queryText, [user.login]);
-            res.status(200).send(findName)
+            const names = findName.rows.map(row => row.name);
+            res.status(200).send(names)
         } catch (er) {
             res.status(404).message(er.message)
         }
