@@ -34,6 +34,31 @@
         height: 100%;
     }
 
+    & > .filesBar{
+        overflow: auto;
+        & > .filesBarRow{
+            width: 100%;
+            margin-top: 0.74074vh;
+            display: flex;
+            height: 2.22222vh;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 0.41667vw;
+            padding-right: 0.41667vw;
+            overflow: visible;
+            &>h2{
+                color: #015470;
+                font-weight: 400;
+                font-size: min(0.9375vw, 1.66667vh);
+            }
+            &>img{
+                height: 100%;
+                object-position: center center;
+                object-fit: contain;
+            }
+        }
+    }
+
     &>.unAuth {
         display: flex;
         align-items: center;
@@ -44,6 +69,15 @@
             font-size: min(0.9375vw, 1.66667vh);
             color: #015470;
             width: 90%;
+
+            &>a {
+                text-decoration: underline;
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                    color: #54a8ac;
+                }
+            }
         }
     }
 }

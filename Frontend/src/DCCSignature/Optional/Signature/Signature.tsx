@@ -2,6 +2,7 @@ import { FC, useState, ChangeEvent, useContext, useRef, useEffect } from 'react'
 import { GlobalData } from '../../..';
 import styles from './Signature.module.css'
 import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
 
 interface ISignature {
     path: string[];
@@ -20,7 +21,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
             const nameReq = store.getAllNameSigFiels();
             nameReq.then(
                 names => setDownloadedFiels(names)
-            )    
+            )
         }
     }, [store.isAuth])
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,8 +30,8 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
             if (file.name.endsWith('.sig')) {
                 setSignature(file);
                 store.uploadSigFiles(fileName, file).then(
-                    ()=>{
-                        setDownloadedFiels([...downloadedFiels, file.name])
+                    () => {
+                        setDownloadedFiels([`${fileName}.sig`, ...downloadedFiels ])
                     }
                 ).catch(
                     er => store.makeErNtf('Не удачно', er)
@@ -118,15 +119,26 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'ds:Signature' }) => {
                             }
                     }
                 >
-                    {store.isAuth
-                        ? <div className={styles.setOldFiels}>
-                            OP
+                    {downloadedFiels.length > 0
+                        ? <div className={styles.filesBar}>
+                            {downloadedFiels.map(
+                                fName => <div className={styles.filesBarRow}>
+                                    <h2>{fName}</h2>
+                                    <img src="/img/svg/oldFileLogo.svg" alt="old file" />
+                                </div>
+                            )}
                         </div>
-                        : <div className={styles.unAuth}>
-                            <p>
-                                Авторизуйтесь, чтобы иметь доступ к ранее загруженным файлам.
-                            </p>
-                        </div>
+                        : store.isAuth
+                            ? <div className={styles.setOldFiels}>
+                                OP
+                            </div>
+                            : <div className={styles.unAuth}>
+                                <p>
+                                    <Link to='/authorization/'>
+                                        Авторизуйтесь
+                                    </Link>, чтобы иметь доступ к ранее загруженным файлам.
+                                </p>
+                            </div>
                     }
                 </div>
                 <input
