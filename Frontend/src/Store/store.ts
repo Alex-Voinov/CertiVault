@@ -63,21 +63,13 @@ export default class Store {
 
     logout() {
         Cookies.remove('refreshToken');
-        this.user.login = '' 
+        this.user.login = ''
         this.user = {} as IUser;
         this.isAuth = false;
         this.accessToken = '';
         this.refreshToken = '';
         return UserService.logout().then(
-            () => {
-                localStorage.removeItem('accessToken');
-                return true;
-            }
-        ).catch(
-            er => {
-                this.makeErNtf('Ошибка очистки', er);
-                return false;
-            }
+            () => { localStorage.removeItem('accessToken'); }
         )
     }
 

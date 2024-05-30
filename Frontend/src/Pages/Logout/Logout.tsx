@@ -39,9 +39,8 @@ const Logout: FC = () => {
                                 e.preventDefault();
                                 setProcessLogout(true)
                                 store.logout().then(
-                                    (result) => {
-                                        if (result) navigate('/');
-                                        setProcessLogout(false);
+                                    () => {
+                                        navigate('/')  
                                     }
                                 );
                             }

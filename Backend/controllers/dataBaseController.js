@@ -59,7 +59,12 @@ class DataBaseController {
             VALUES ($1, $2, $3)
             RETURNING *;
         `;
-            await pool.query(createJWTQuery, [login, accessToken, refreshToken])
+            await pool.query(createJWTQuery, [login, accessToken, refreshToken]);
+            const createUploudingRecord = `
+        INSERT INTO "unloading" (username, last_upload_date)
+        VALUES ($1, $2)
+    `;
+            await pool.query(createUploudingRecord, [login, new Date()]);
             res.status(200).send("User created successfully");
         } catch (error) {
             res.status(400).json({ message: error.message });
