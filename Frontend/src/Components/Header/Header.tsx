@@ -1,22 +1,50 @@
-import { CSSProperties, FC, useContext } from 'react'
+import { CSSProperties, FC, useContext, useState, useEffect, useRef } from 'react'
 import styles from './Header.module.css'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { GlobalData } from '../..'
+import { motion, AnimatePresence } from 'framer-motion'
 
 
 interface IHeader {
     visibleAuthLogo?: boolean;
+    visibleModalGround?: boolean;
     wrapperStyles?: CSSProperties;
 }
 
-const Header: FC<IHeader> = ({ wrapperStyles = {}, visibleAuthLogo = true }) => {
+
+const Header: FC<IHeader> = ({ wrapperStyles = {}, visibleAuthLogo = true, visibleModalGround = true }) => {
     const { store } = useContext(GlobalData);
+    const [hasFocus, setFocus] = useState<boolean>(false);
+    const modalWindow = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (modalWindow.current && !modalWindow.current.contains(event.target as Node)) {
+                setFocus(false)
+            }
+        };
+
+        if (hasFocus) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [hasFocus]);
     return (
         <header className={styles.mainHeader} style={wrapperStyles}>
             <h1>DCC CERTIFICATE</h1>
             {visibleAuthLogo && (store.user.name
-                ? <div className={styles.authLabel}>
+                ? <div
+                    className={styles.authLabel}
+                    onClick={
+                        () => {
+                            setFocus(!hasFocus);
+                        }
+                    }
+                >
                     <h1>{store.user.name}</h1>
                     <img src="/img/svg/authUserLogo.svg" alt="authorization user" />
                 </div>
@@ -34,6 +62,42 @@ const Header: FC<IHeader> = ({ wrapperStyles = {}, visibleAuthLogo = true }) => 
                     </svg>
                 </Link>
             )}
+            <AnimatePresence>
+                {hasFocus && <motion.div
+                    className={styles.modalWindow}
+                    ref={modalWindow}
+                    initial={{
+                        height: '0vh',
+                    }}
+                    animate={{
+                        height: '7.68519vh'
+                    }}
+                    exit={{
+                        height: '0vh',
+                    }}
+                    transition={{
+                        delay: 0.3
+                    }}
+                    style={
+                        !visibleModalGround
+                            ? { backgroundImage: 'none', borderColor: 'transparent' }
+                            : {}
+                    }
+                >
+                    <div className={styles.modalInnerWrapper}>
+                        <h2>
+                            <Link to='/authorization/'>
+                                Сменить аккаунт
+                            </Link>
+                        </h2>
+                        <h2>
+                            <Link to='/logout/'>
+                                Выйти
+                            </Link>
+                        </h2>
+                    </div>
+                </motion.div>}
+            </AnimatePresence>
         </header>
     )
 }

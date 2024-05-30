@@ -61,6 +61,26 @@ export default class Store {
         }
     }
 
+    logout() {
+        Cookies.remove('refreshToken');
+        this.user.login = '' 
+        this.user = {} as IUser;
+        this.isAuth = false;
+        this.accessToken = '';
+        this.refreshToken = '';
+        return UserService.logout().then(
+            () => {
+                localStorage.removeItem('accessToken');
+                return true;
+            }
+        ).catch(
+            er => {
+                this.makeErNtf('Ошибка очистки', er);
+                return false;
+            }
+        )
+    }
+
     async login(logOrEmail: string, pass: string): Promise<number> {
         return UserService.login(logOrEmail, pass).then(
             response => {

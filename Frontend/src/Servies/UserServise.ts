@@ -73,4 +73,8 @@ export default class UserService {
             }
         )
     }
+
+    static logout() {
+        return $api.post('/logout')
+    }
 }

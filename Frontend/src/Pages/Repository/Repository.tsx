@@ -6,7 +6,7 @@ import Header from '../../Components/Header/Header';
 const Repository: FC = () => {
     return (
         <section className={styles.wrapper}>
-            <Header wrapperStyles={{ backgroundColor: 'transparent' }} />
+            <Header wrapperStyles={{ backgroundColor: 'transparent' }} visibleModalGround={false}/>
             <section className={styles.tabletWrapper}>
                 <RepositoryTable />
             </section>

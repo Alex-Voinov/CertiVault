@@ -273,6 +273,31 @@ class DataBaseController {
             res.status(404).message(er.message)
         }
     }
+    async logout(req, res) {
+        try {
+            const { user } = req;
+            if (!user) throw new Error('Нет данных для удаления')
+            const userTokenClear = `
+            UPDATE "user"
+            SET accesstoken = '', 
+            refreshtoken = ''  
+            WHERE login = $1
+            RETURNING *;`
+            const jwtTokenClear = `
+            UPDATE "jwt"
+            SET accesstoken = '', 
+            refreshtoken = ''  
+            WHERE login = $1
+            RETURNING *;`
+            await pool.query(userTokenClear, [user.login]);
+            await pool.query(jwtTokenClear, [user.login]);
+            res.clearCookie('refreshToken');
+            res.status(200).send('clear')
+        } catch (er) {
+            console.log(er)
+            res.status(400).send('not successful')
+        }
+    }
 }
 
 module.exports = new DataBaseController();

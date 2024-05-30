@@ -11,6 +11,7 @@ import Notification from "./Components/Notification/Notification";
 import { AnimatePresence } from "framer-motion";
 import SEmailConfirmation from "./Pages/SEmailConfirmation/SEmailConfirmation";
 import NonExisten from "./Pages/NonExisten/NonExisten";
+import Logout from "./Pages/Logout/Logout";
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<StartPage />} />
           <Route path="/authorization/" element={<Authorization />} />
+          <Route path="/logout/" element={<Logout />} />
           <Route path="/registration/" element={<Registration />} />
           <Route path="/repository/" element={<Repository />} />
           <Route path="/repository/create/" element={<GeneratorDCC />} />

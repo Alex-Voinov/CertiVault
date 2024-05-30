@@ -1,0 +1,73 @@
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(144deg, #0d5872 0%, #207796 100%);
+    position: relative;
+
+    &>svg {
+        --size: 24.69167vh;
+        height: var(--size);
+        width: var(--size);
+        top: calc(50% - var(--size) / 2);
+        right: 14.66979vw;
+        position: absolute;
+        object-fit: contain;
+        object-position: center center;
+        overflow: visible;
+    }
+}
+
+.confirmBlock {
+    position: absolute;
+    width: 26.04167vw;
+    height: 24.81481vh;
+    left: 36.979165vw;
+    top: 37.592595vh;
+    border: #E7EDF3 solid min(0.05208vw, 0.09259vh);
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: min(0.41667vw, 0.74074vh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: min(0.72917vw, 1.2963vh);
+    &>img{
+        align-self: flex-end;
+        object-fit: contain;
+        object-position: center center;
+        overflow: visible;
+        width: min(1.5625vw, 2.77778vh);
+        cursor: pointer;
+    }
+    &>h1{
+        margin-top: 0.18519vh;
+        color: #fff;
+        font-size: min(1.5625vw, 2.77778vh);
+        font-weight: 700;
+    }
+    &>p{
+        margin-top: 3.61111vh;
+        color: #fff;
+        font-size: min(1.04167vw, 1.85185vh);
+        font-weight: 400;
+    }
+    &>div{
+        margin-top: 3.61111vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 4.62963vh;
+        width: 18.125vw;
+        &>button{
+            width: 8.33333vw;
+            height: 100%;
+            border: #D6E2EA solid min(0.05208vw, 0.09259vh);
+            border-radius: min(0.41667vw, 0.74074vh);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D6E2EA;
+            font-weight: 700;
+            font-size: min(0.9375vw, 1.66667vh);
+        }
+    }
+}

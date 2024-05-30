@@ -40,7 +40,7 @@ const StartPage = () => {
                     transition={{ duration: 0.8 }}
                     className={styles.mainSlaise}
                 >
-                    <Header wrapperStyles={{ backgroundColor: 'transparent' }} />
+                    <Header wrapperStyles={{ backgroundColor: 'transparent' }} visibleModalGround={false}/>
                     <img
                         src="/img/svg/tile.svg"
                         alt="tile-background"

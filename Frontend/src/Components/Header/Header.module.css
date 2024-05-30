@@ -1,4 +1,4 @@
-.mainHeader{
+.mainHeader {
     width: 100vw;
     height: 7.40741vh;
     background-color: #00536F;
@@ -9,14 +9,14 @@
     padding-right: 4.16667vw;
 }
 
-.mainHeader >h1{
+.mainHeader>h1 {
     font-weight: 500;
     color: #E7EDF3;
     font-size: min(1.66667vw, 2.96296vh);
     text-shadow: 0 0.37037vh min(0.20833vw, 0.37037vh) rgba(0, 0, 0, 0.35);
 }
 
-.authLogo{
+.authLogo {
     object-fit: contain;
     object-position: center center;
     overflow: visible;
@@ -24,7 +24,7 @@
     width: min(1.97917vw, 3.51852vh);
 }
 
-.authLabel{
+.authLabel {
     display: flex;
     align-items: center;
     min-width: 10.41667vw;
@@ -32,7 +32,8 @@
     overflow: visible;
 }
 
-.authLabel > h1{
+.authLabel>h1 {
+    cursor: pointer;
     white-space: nowrap;
     text-align: right;
     margin-right: 0.10417vw;
@@ -41,9 +42,42 @@
     font-size: min(1.04167vw, 1.85185vh);
 }
 
-.authLabel > svg{
+.authLabel>svg {
     width: 1.97917vw;
     object-fit: contain;
     object-position: center center;
     overflow: visible;
+}
+
+.modalWindow {
+    overflow: hidden;
+    position: absolute;
+    z-index: 6;
+    right: 0;
+    top: 7.40741vh;
+    background-image: linear-gradient(360deg, #116785 0%, #00536f 100%);
+    width: 16.66667vw;
+    border-bottom: #D9E5F0 solid min(0.15625vw, 0.27778vh);
+    border-left: #D9E5F0 solid min(0.15625vw, 0.27778vh);
+}
+
+.modalInnerWrapper{
+    width: 100%;
+    height: 7.68519vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.83333vh;
+    padding-top: 0.83333vh;
+    &>h2{
+        cursor: pointer;
+        color: #fff;
+        font-weight: 500;
+        font-size: min(1.04167vw, 1.85185vh);
+        transition: color 0.3s ease-in-out;
+        &:hover{
+            color: #2AFFD9;
+        }
+    }
 }
