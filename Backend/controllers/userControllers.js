@@ -6,7 +6,7 @@ const tokenService = require('../servise/tokenService');
 
 const storageSigFiles = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads/sigFiles'); // Folder to save files
+        cb(null, './uploads/sig'); // Folder to save files
     },
     filename: async function (req, file, cb) {
         try {
@@ -35,10 +35,21 @@ const storageSigFiles = multer.diskStorage({
     }
 });
 
+const storageCommentFiles = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/comment'); // Folder to save files
+    }
+})
+
 const uploadStorageSigFiles = multer({
     storage: storageSigFiles,
     fileFilter: sigResolution
 }).single('file');
+
+const uploadStorageCommentFiles = multer({
+    storage: storageCommentFiles,
+}).single('file');
+
 
 class UserController {
 
@@ -81,6 +92,24 @@ class UserController {
             return res.status(500).json({ error: 'Internal server error' });
         }
     }
+
+    async uploadCommentFiels(req, res) {
+        try {
+            uploadStorageCommentFiles(req, res, function (err) {
+                if (err) {
+                    // Handle error
+                    console.log(err);
+                    return res.status(400).json({ error: 'File upload failed' });
+                }
+                return res.status(200).json({ fileName: req.fileName });
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+
 
     async activate(req, res) {
         try {

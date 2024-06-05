@@ -45,15 +45,19 @@ const FileFields: FC<ISignature> = ({
     }, [store.isAuth])
 
     return (
-        <section className={styles.wrapper} onClick={
-            () => {
-                if (!(isActive && fileName && !signature)) setActive(!isActive)
-                else store.setNotification(
-                    'Данные не сохранены',
-                    'Вы задали имя, но не прикрепили файл. Нажмите на скрепку и выбирите файл.'
-                )
+        <section
+            key={titleField}
+            className={styles.wrapper}
+            onClick={
+                () => {
+                    if (!(isActive && fileName && !signature)) setActive(!isActive)
+                    else store.setNotification(
+                        'Данные не сохранены',
+                        'Вы задали имя, но не прикрепили файл. Нажмите на скрепку и выбирите файл.'
+                    )
+                }
             }
-        }>
+        >
             <h1 className={styles.title}>
                 {titleField}
             </h1>

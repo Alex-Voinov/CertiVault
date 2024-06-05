@@ -23,22 +23,16 @@ const Comment: FC<IComment> = ({ path }) => {
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
-            if (file.name.endsWith('.sig')) {
-                setCommentFile(file);
-                store.uploadCommentFiles(fileName, file).then(
-                    () => {
-                        setDownloadedFiels([fileName, ...downloadedFiels]);
-                        setSelectedFile(NUMBER_NEW_FILE);
-                    }
-                ).catch(
-                    er => store.makeErNtf('Не удачно', er)
-                )
-                //store.setValueByPath(path, nameKey, '123');
-            }
-            else store.setNotification(
-                'Недопустимый файл',
-                'Поддерживаемый формат ввода: .sig'
+            setCommentFile(file);
+            store.uploadCommentFiles(fileName, file).then(
+                () => {
+                    setDownloadedFiels([fileName, ...downloadedFiels]);
+                    setSelectedFile(NUMBER_NEW_FILE);
+                }
+            ).catch(
+                er => store.makeErNtf('Не удачно', er)
             )
+            //store.setValueByPath(path, nameKey, '123');
         }
     }
 

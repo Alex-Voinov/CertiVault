@@ -15,6 +15,7 @@ router.get('/get_all_names_sig', authMiddleware, dataBaseController.getAllSignNa
 router.post('/create_user', dataBaseController.createUser)
 router.post('/edit_email', dataBaseController.editEmail)
 router.post('/upload_sig_fiels',  userControllers.uploadSigFiels)
+router.post('/upload_comment_fiels', authMiddleware, userControllers.uploadCommentFiels)
 router.post('/logout',  authMiddleware, dataBaseController.logout)
 
 
