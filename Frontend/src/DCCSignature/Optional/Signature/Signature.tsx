@@ -44,7 +44,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     return (
         <FileFields
             titleField = 'Цифровая подпись'
-            imgName='paperClip'
+            imgName='signatureFileLogo'
             handleFileInputChange={handleFileInputChange}
             fieldState={signatureState}
             selectedFileState={selectedFileState}

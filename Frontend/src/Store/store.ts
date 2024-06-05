@@ -148,6 +148,20 @@ export default class Store {
         return this.sigFileNames
     }
 
+    async getAllNameCommentFiels() {
+        if (this.sigFileNames.length === 0) {
+            return UserService.getAllNameSigFiels().then(
+                response => (response ? response.data : []) as string[]
+            ).catch(
+                er => {
+                    this.makeErNtf('Ошибка sigNames', er)
+                    return [] as string[]
+                }
+            )
+        }
+        return this.sigFileNames
+    }
+
     setValueByPath(path: string[], nameKey: string, value: any): void {
         let currentLink = this.currentStruct;
         path.forEach(

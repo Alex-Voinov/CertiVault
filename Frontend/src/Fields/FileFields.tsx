@@ -85,7 +85,7 @@ const FileFields: FC<ISignature> = ({
                         }
                     />
                     <img
-                        src={`/img/svg/${imgName}.svg`}
+                        src='/img/svg/paperClip.svg'
                         alt="upload"
                         onClick={
                             e => {
@@ -162,7 +162,7 @@ const FileFields: FC<ISignature> = ({
                 />
             </div>
             <img
-                src="/img/svg/signatureFileLogo.svg"
+                src={`/img/svg/${imgName}.svg`}
                 alt="signature logo"
                 className={styles.signatureLogo}
             />
