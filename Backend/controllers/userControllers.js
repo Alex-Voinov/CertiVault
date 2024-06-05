@@ -2,6 +2,7 @@ const multer = require('multer');
 const sigResolution = require('../middlewere/sigResolution');
 const dataBaseController = require('./dataBaseController');
 const tokenService = require('../servise/tokenService');
+const fs = require('fs');
 
 
 const storageSigFiles = multer.diskStorage({
@@ -38,6 +39,9 @@ const storageSigFiles = multer.diskStorage({
 const storageCommentFiles = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/comment'); // Folder to save files
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Сохраняем файл с оригинальным именем
     }
 })
 
@@ -48,6 +52,7 @@ const uploadStorageSigFiles = multer({
 
 const uploadStorageCommentFiles = multer({
     storage: storageCommentFiles,
+    limits: 100 * 1024 * 1024,
 }).single('file');
 
 
@@ -95,13 +100,24 @@ class UserController {
 
     async uploadCommentFiels(req, res) {
         try {
-            uploadStorageCommentFiles(req, res, function (err) {
+            uploadStorageCommentFiles(req, res, err => {
                 if (err) {
                     // Handle error
                     console.log(err);
                     return res.status(400).json({ error: 'File upload failed' });
                 }
-                return res.status(200).json({ fileName: req.fileName });
+                if (req.file.size > 1000) {
+                    fs.unlink(req.file.path, (unlinkErr) => {
+                        if (unlinkErr) {
+                            // Если возникла ошибка при удалении файла, обработайте её
+                            console.error('Error deleting file:', unlinkErr);
+                        } else {
+                            console.log('File deleted successfully.');
+                        }
+                    });
+                    return res.status(400).json({ error: 'File size exceeds limit' });
+                }
+                return res.status(200).json({ fileName: req.file.filename });
             });
         } catch (error) {
             console.log(error);
