@@ -16,9 +16,9 @@ export default class Store {
     isAuth: boolean = false;
     accessToken: string = localStorage.getItem('accessToken') || '';
     refreshToken: string = Cookies.get('refreshToken') || '';
-    currentStruct: { [key: string]: any } = {}
-    sigFiles: { [key: string]: File } = {}
-    sigFileNames: string[] = []
+    currentStruct: { [key: string]: any } = {};
+    sigFiles: { [key: string]: File } = {};
+    sigFileNames: string[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -135,7 +135,7 @@ export default class Store {
     }
 
     async getAllNameSigFiels() {
-        if (!this.sigFileNames.length) {
+        if (this.sigFileNames.length === 0) {
             return UserService.getAllNameSigFiels().then(
                 response => (response ? response.data : []) as string[]
             ).catch(

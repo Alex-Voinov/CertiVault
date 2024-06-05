@@ -1,32 +1,24 @@
-import { FC, useState, ChangeEvent, useContext, useRef, useEffect } from 'react'
+import { FC, useState, ChangeEvent, useContext} from 'react'
 import { GlobalData } from '../../..';
-import styles from './Signature.module.css'
 import { observer } from 'mobx-react-lite';
-import { Link } from 'react-router-dom';
+import FileFields, { NOT_SELECTED, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 
 interface ISignature {
     path: string[];
     nameKey?: string;
 }
 
-const NUMBER_NEW_FILE = 1;
+
 
 const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     const { store } = useContext(GlobalData);
-    const [signature, setSignature] = useState<File | null>(null);
-    const [isActive, setActive] = useState(false);
-    const [fileName, setFileName] = useState('');
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const signatureState = useState<File | null>(null);
+    const setSignature = signatureState[1];
+    const fileNameState = useState('');
+    const fileName = fileNameState[0];
     const [downloadedFiels, setDownloadedFiels] = useState<string[]>([]);
-    const [selectedFile, setSelectedFile] = useState(0);
-    useEffect(() => {
-        if (store.isAuth) {
-            const nameReq = store.getAllNameSigFiels();
-            nameReq.then(
-                names => setDownloadedFiels(names)
-            )
-        }
-    }, [store.isAuth])
+    const selectedFileState = useState(NOT_SELECTED);
+    const setSelectedFile = selectedFileState[1];
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
@@ -50,139 +42,15 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     };
 
     return (
-        <section className={styles.wrapper} onClick={
-            () => {
-                if (!(isActive && fileName && !signature)) setActive(!isActive)
-                else store.setNotification(
-                    'Данные не сохранены',
-                    'Вы задали имя, но не прикрепили файл. Нажмите на скрепку и выбирите файл.'
-                )
-            }
-        }>
-            <h1 className={styles.title}>
-                Цифровая подпись
-            </h1>
-            <div className={styles.interactionBlock}>
-                <div className={styles.fileNameWrapper}
-                    style={
-                        isActive
-                            ? {
-                                width: '13.02083vw',
-                                backgroundColor: '#D9E5F0'
-                            }
-                            : {
-                                borderRightColor: 'transparent'
-                            }
-                    }
-                >
-                    <input
-                        type="text"
-                        value={fileName}
-                        placeholder='Введите имя файла'
-                        onClick={e => e.stopPropagation()}
-                        onChange={
-                            (e) => {
-                                if (/^[a-zA-Z0-9_]{0,20}$/.test(e.target.value))
-                                    setFileName(e.target.value);
-                                else store.setNotification(
-                                    'Недопустимое имя',
-                                    'Введите до 20 латинских букв, цифр или _.',
-                                )
-                            }
-                        }
-                    />
-                    <img
-                        src="/img/svg/paperClip.svg"
-                        alt="upload"
-                        onClick={
-                            e => {
-                                e.stopPropagation();
-                                if (fileName)
-                                    if (!downloadedFiels.includes(fileName + '.sig'))
-                                        fileInputRef.current?.click();
-                                    else store.setNotification(
-                                        'Пожалуйста',
-                                        'Введите уникальное имя для файла.'
-                                    )
-                                else store.setNotification(
-                                    'Пожалуйста',
-                                    'Введите название файла до его загрузки.'
-                                )
-                            }
-                        }
-                        style={{
-                            cursor: fileName ? 'pointer' : 'not-allowed'
-                        }}
-                    />
-                </div>
-                <div
-                    className={styles.oldFiels}
-                    style={
-                        isActive
-                            ? {
-                                width: '13.02083vw',
-                                backgroundColor: '#D9E5F0'
-                            }
-                            : {
-                                borderRightColor: 'transparent'
-                            }
-                    }
-                >
-                    {downloadedFiels.length > 0
-                        ? <div className={styles.filesBar}>
-                            {downloadedFiels.map(
-                                (fName, number) => <div
-                                    className={styles.filesBarRow}
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        setSelectedFile(number + NUMBER_NEW_FILE);
-                                    }}
-                                >
-                                    <h2>{fName}</h2>
-                                    {
-                                        number === selectedFile - NUMBER_NEW_FILE
-                                            ? <img src="/img/svg/selectedFileLogo.svg" alt="selected file" />
-                                            : <img src="/img/svg/oldFileLogo.svg" alt="old file" />
-                                    }
-                                </div>
-                            )}
-                        </div>
-                        : store.isAuth
-                            ? <div className={styles.setOldFiels}>
-                                <p>{store.user.name}, тут будут отображаться все ранее загруженные вами файлы</p>
-                            </div>
-                            : <div className={styles.unAuth}>
-                                <p>
-                                    <Link to='/authorization/'>
-                                        Авторизуйтесь
-                                    </Link>, чтобы иметь доступ к ранее загруженным файлам.
-                                </p>
-                            </div>
-                    }
-                </div>
-                <input
-                    onClick={e => e.stopPropagation()}
-                    type="file"
-                    className={styles.fileData}
-                    onChange={handleFileInputChange}
-                    ref={fileInputRef}
-                />
-            </div>
-            <img
-                src="/img/svg/signatureFileLogo.svg"
-                alt="signature logo"
-                className={styles.signatureLogo}
-            />
-            <div className={styles.nextStep}>
-                <h2>{isActive ? 'Сохранить' : 'Заполнить'}</h2>
-                <img src="/img/svg/bluePointerTransition.svg" alt="next" />
-            </div>
-            {Boolean(selectedFile) && <img
-                src="/img/svg/selectedFileLogo.svg"
-                alt="correct"
-                className={styles.correctnessStatus}
-            />}
-        </section>
+        <FileFields
+            titleField = 'Цифровая подпись'
+            imgName='paperClip'
+            handleFileInputChange={handleFileInputChange}
+            fieldState={signatureState}
+            selectedFileState={selectedFileState}
+            fetchOldFiels={store.getAllNameSigFiels.bind(store)}
+            fileNameState={fileNameState}
+        />
     )
 }
 

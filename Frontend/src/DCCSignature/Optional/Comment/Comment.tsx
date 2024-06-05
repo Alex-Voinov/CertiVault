@@ -6,7 +6,9 @@ interface IComment{
 
 const Comment: FC<IComment> = ({path}) => {
     return (
-        <div>Comment</div>
+        <div>
+            Comment
+        </div>
     )
 }
 
