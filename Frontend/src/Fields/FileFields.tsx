@@ -10,7 +10,8 @@ interface ISignature {
     handleFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
     fieldState: [File | null, Dispatch<SetStateAction<File | null>>];
     selectedFileState: [number, Dispatch<SetStateAction<number>>];
-    fileNameState: [string, React.Dispatch<React.SetStateAction<string>>]
+    fileNameState: [string, React.Dispatch<React.SetStateAction<string>>];
+    downloadFielsState: [string[], Dispatch<SetStateAction<string[]>>];
     fetchOldFiels: () => Promise<string[]>;
 }
 
@@ -24,14 +25,15 @@ const FileFields: FC<ISignature> = ({
     fieldState,
     selectedFileState,
     fetchOldFiels,
-    fileNameState
+    fileNameState,
+    downloadFielsState
 }) => {
     const { store } = useContext(GlobalData);
     const [signature, setSignature] = fieldState;
     const [isActive, setActive] = useState(false);
     const [fileName, setFileName] = fileNameState;
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [downloadedFiels, setDownloadedFiels] = useState<string[]>([]);
+    const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const [selectedFile, setSelectedFile] = selectedFileState;
     useEffect(() => {
         if (store.isAuth) {

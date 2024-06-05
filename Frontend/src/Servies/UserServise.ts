@@ -16,6 +16,10 @@ export default class UserService {
         return $api.get<string[]>('/get_all_names_sig')
     }
 
+    static getAllNameComment(): Promise<AxiosResponse<string[]>>{
+        return $api.get<string[]>('/get_all_names_comment')
+    }
+
     static createUser(data: string[]) {
         return $api.post('/create_user', {
             name: data[1],
@@ -65,6 +69,18 @@ export default class UserService {
     static uploadSigFiels(formData: FormData) {
         return $api.post(
             '/upload_sig_fiels',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        )
+    }
+
+    static uploadCommentFiels(formData: FormData) {
+        return $api.post(
+            '/upload_comment_fiels',
             formData,
             {
                 headers: {

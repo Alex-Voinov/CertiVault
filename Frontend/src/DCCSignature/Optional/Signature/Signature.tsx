@@ -16,7 +16,8 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     const setSignature = signatureState[1];
     const fileNameState = useState('');
     const fileName = fileNameState[0];
-    const [downloadedFiels, setDownloadedFiels] = useState<string[]>([]);
+    const downloadFielsState = useState<string[]>([]);
+    const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const selectedFileState = useState(NOT_SELECTED);
     const setSelectedFile = selectedFileState[1];
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +51,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
             selectedFileState={selectedFileState}
             fetchOldFiels={store.getAllNameSigFiels.bind(store)}
             fileNameState={fileNameState}
+            downloadFielsState={downloadFielsState}
         />
     )
 }

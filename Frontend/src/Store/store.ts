@@ -18,7 +18,9 @@ export default class Store {
     refreshToken: string = Cookies.get('refreshToken') || '';
     currentStruct: { [key: string]: any } = {};
     sigFiles: { [key: string]: File } = {};
+    commentFiles: { [key: string]: File } = {};
     sigFileNames: string[] = [];
+    commentFileNames: string[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -134,6 +136,28 @@ export default class Store {
         return true;
     }
 
+    async uploadCommentFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл
+        if (this.commentFiles.hasOwnProperty(name)) { //файл с таким именем уже загружен
+            return false
+        }
+        try { // пытаемся отправить его на сервер
+            const renamedFile = new File([file], name, {
+                type: file.type,
+                lastModified: file.lastModified
+            });
+            const formData = new FormData();
+            formData.append('file', renamedFile);
+            await UserService.uploadCommentFiels(formData).then(
+                response => {
+                    this.commentFiles.name = response.data.fileName; // создаем этот файл в сторе у пользователя
+                }
+            )
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+        return true;
+    }
+
     async getAllNameSigFiels() {
         if (this.sigFileNames.length === 0) {
             return UserService.getAllNameSigFiels().then(
@@ -149,17 +173,17 @@ export default class Store {
     }
 
     async getAllNameCommentFiels() {
-        if (this.sigFileNames.length === 0) {
-            return UserService.getAllNameSigFiels().then(
+        if (this.commentFileNames.length === 0) {
+            return UserService.getAllNameComment().then(
                 response => (response ? response.data : []) as string[]
             ).catch(
                 er => {
-                    this.makeErNtf('Ошибка sigNames', er)
+                    this.makeErNtf('Ошибка commentNames', er)
                     return [] as string[]
                 }
             )
         }
-        return this.sigFileNames
+        return this.commentFileNames
     }
 
     setValueByPath(path: string[], nameKey: string, value: any): void {
