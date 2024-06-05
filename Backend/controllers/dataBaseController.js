@@ -61,7 +61,7 @@ class DataBaseController {
         `;
             await pool.query(createJWTQuery, [login, accessToken, refreshToken]);
             const createUploudingRecord = `
-        INSERT INTO "unloading" (username, last_upload_date)
+        INSERT INTO "unloading" (login, last_upload_date)
         VALUES ($1, $2)
     `;
             await pool.query(createUploudingRecord, [login, new Date()]);
@@ -302,6 +302,35 @@ class DataBaseController {
             console.log(er)
             res.status(400).send('not successful')
         }
+    }
+    async usedCommentSpace(login) {
+        const queryText = `
+    SELECT usage_count
+    FROM "unloading"
+    WHERE login = $1
+    `;
+        try {
+            const queryResult = await pool.query(queryText, [login]);
+            // Check if a result was returned
+            if (queryResult.rows.length === 0) {
+                return null;  // or any other appropriate default value
+            }
+            return queryResult.rows[0].usage_count;
+        } catch (error) {
+            console.error('Database query error:', error);
+        }
+    }
+    async changeDaylyLimit(login, fileSize) {
+        try {
+            const queryText = `
+        UPDATE "unloading"
+        SET usage_count = usage_count + $2
+        WHERE login = $1`
+            await pool.query(queryText, [login, fileSize]);
+        } catch (er) {
+            console.log(er)
+        }
+
     }
 }
 

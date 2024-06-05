@@ -51,7 +51,7 @@ const createTableQueries = [
   {
     query: `
       CREATE TABLE IF NOT EXISTS "unloading" (
-        username TEXT PRIMARY KEY,
+        login TEXT PRIMARY KEY,
         usage_count INTEGER DEFAULT 0,
         last_upload_date DATE
       )
