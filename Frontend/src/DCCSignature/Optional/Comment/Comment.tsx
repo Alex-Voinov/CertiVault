@@ -23,10 +23,12 @@ const Comment: FC<IComment> = ({ path }) => {
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
+            const originalFileName = file.name;
+            const extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
             setCommentFile(file);
-            store.uploadCommentFiles(fileName, file).then(
+            store.uploadCommentFiles(`${fileName}.${extension}`, file).then(
                 () => {
-                    setDownloadedFiels([fileName, ...downloadedFiels]);
+                    setDownloadedFiels([`${fileName}.${extension}`, ...downloadedFiels]);
                     setSelectedFile(NUMBER_NEW_FILE);
                 }
             ).catch(
