@@ -155,6 +155,8 @@ export default class Store {
                         `Оставшейся дневной лимит: ${(Number(response.data.daylyLimit) / 1024 / 1024).toFixed(2)}Mб`
                     )
                 }
+            ).catch(
+                er => this.makeErNtf('Неудачно', er)
             )
         } catch (error) {
             console.error('Error uploading file:', error);

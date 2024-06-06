@@ -102,11 +102,11 @@ class UserController {
         try {
             const login = req.user.login;
             const daylyLimit = process.env.DAYLY_LIMIT - await dataBaseController.usedCommentSpace(login);
-            if (daylyLimit <= 0) return res.status(400).json({ error: 'Вы превысили дневной лимит загрузок' });
+            if (daylyLimit <= 0) return res.status(400).json({ message: 'Вы превысили дневной лимит загрузок' });
             uploadStorageCommentFiles(req, res, async err => {
                 if (err) {
                     // Handle error
-                    return res.status(400).json({ error: 'Неудачная загрузка файла' });
+                    return res.status(400).json({ message: 'Неудачная загрузка файла' });
                 }
                 const fileSize = req.file.size;
                 if (fileSize > daylyLimit) {
@@ -118,7 +118,7 @@ class UserController {
                             console.log('File deleted successfully.');
                         }
                     });
-                    return res.status(400).json({ error: 'Выбранный файл превышает ваш дневной лимит загрузки.' });
+                    return res.status(400).json({ message: 'Выбранный файл превышает ваш дневной лимит загрузки.' });
                 }
                 await dataBaseController.changeDaylyLimit(login, fileSize);
                 return res.status(200).json({
