@@ -150,6 +150,10 @@ export default class Store {
             await UserService.uploadCommentFiels(formData).then(
                 response => {
                     this.commentFiles.name = response.data.fileName; // создаем этот файл в сторе у пользователя
+                    this.setNotification(
+                        'Успешно',
+                        `Оставшейся дневной лимит: ${(Number(response.data.daylyLimit) / 1024 / 1024).toFixed(2)}Mб`
+                    )
                 }
             )
         } catch (error) {

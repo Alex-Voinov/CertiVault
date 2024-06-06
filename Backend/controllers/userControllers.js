@@ -121,7 +121,10 @@ class UserController {
                     return res.status(400).json({ error: 'Выбранный файл превышает ваш дневной лимит загрузки.' });
                 }
                 await dataBaseController.changeDaylyLimit(login, fileSize);
-                return res.status(200).json({ fileName: req.file.filename });
+                return res.status(200).json({
+                    fileName: req.file.filename,
+                    daylyLimit: daylyLimit - fileSize
+                });
             });
         } catch (error) {
             console.log(error);
