@@ -125,15 +125,16 @@ export default class Store {
             });
             const formData = new FormData();
             formData.append('file', renamedFile);
-            await UserService.uploadSigFiels(formData).then(
+            return UserService.uploadSigFiels(formData).then(
                 response => {
                     this.sigFiles.name = response.data.fileName; // создаем этот файл в сторе у пользователя
+                    return true;
                 }
             )
         } catch (error) {
             console.error('Error uploading file:', error);
+            return false;
         }
-        return true;
     }
 
     async uploadCommentFiles(name: string, file: File): Promise<boolean> { // загрузить новый файл
@@ -147,16 +148,20 @@ export default class Store {
             });
             const formData = new FormData();
             formData.append('file', renamedFile);
-            await UserService.uploadCommentFiels(formData).then(
+            return UserService.uploadCommentFiels(formData).then(
                 response => {
                     this.commentFiles.name = response.data.fileName; // создаем этот файл в сторе у пользователя
                     this.setNotification(
                         'Успешно',
                         `Оставшейся дневной лимит: ${(Number(response.data.daylyLimit) / 1024 / 1024).toFixed(2)}Mб`
                     )
+                    return true
                 }
             ).catch(
-                er => this.makeErNtf('Неудачно', er)
+                er => {
+                    this.makeErNtf('Неудачно', er);
+                    return false;
+                }
             )
         } catch (error) {
             console.error('Error uploading file:', error);

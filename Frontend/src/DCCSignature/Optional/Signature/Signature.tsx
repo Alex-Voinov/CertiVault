@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent, useContext} from 'react'
+import { FC, useState, ChangeEvent, useContext } from 'react'
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
 import FileFields, { NOT_SELECTED, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
@@ -15,7 +15,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     const signatureState = useState<File | null>(null);
     const setSignature = signatureState[1];
     const fileNameState = useState('');
-    const fileName = fileNameState[0];
+    const [fileName, setFileName] = fileNameState;
     const downloadFielsState = useState<string[]>([]);
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const selectedFileState = useState(NOT_SELECTED);
@@ -26,9 +26,12 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
             if (file.name.endsWith('.sig')) {
                 setSignature(file);
                 store.uploadSigFiles(fileName, file).then(
-                    () => {
-                        setDownloadedFiels([`${fileName}.sig`, ...downloadedFiels]);
-                        setSelectedFile(NUMBER_NEW_FILE);
+                    (result) => {
+                        if (result) {
+                            setDownloadedFiels([`${fileName}.sig`, ...downloadedFiels]);
+                            setSelectedFile(NUMBER_NEW_FILE);
+                            setFileName('');
+                        }
                     }
                 ).catch(
                     er => store.makeErNtf('Не удачно', er)
@@ -44,7 +47,7 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
 
     return (
         <FileFields
-            titleField = 'Цифровая подпись'
+            titleField='Цифровая подпись'
             imgName='signatureFileLogo'
             handleFileInputChange={handleFileInputChange}
             fieldState={signatureState}

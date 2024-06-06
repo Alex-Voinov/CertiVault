@@ -17,7 +17,7 @@ const Comment: FC<IComment> = ({ path }) => {
     const downloadFielsState = useState<string[]>([]);
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const fileNameState = useState<string>('');
-    const fileName = fileNameState[0];
+    const [fileName, setFileName] = fileNameState;
 
 
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +27,12 @@ const Comment: FC<IComment> = ({ path }) => {
             const extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
             setCommentFile(file);
             store.uploadCommentFiles(`${fileName}.${extension}`, file).then(
-                () => {
-                    setDownloadedFiels([`${fileName}.${extension}`, ...downloadedFiels]);
-                    setSelectedFile(NUMBER_NEW_FILE);
+                (result) => {
+                    if (result) {
+                        setDownloadedFiels([`${fileName}.${extension}`, ...downloadedFiels]);
+                        setSelectedFile(NUMBER_NEW_FILE);
+                        setFileName('');
+                    }
                 }
             ).catch(
                 er => store.makeErNtf('Не удачно', er)
