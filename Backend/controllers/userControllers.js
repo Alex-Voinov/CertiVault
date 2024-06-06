@@ -102,7 +102,6 @@ class UserController {
         try {
             const login = req.user.login;
             const daylyLimit = process.env.DAYLY_LIMIT - await dataBaseController.usedCommentSpace(login);
-            console.log(daylyLimit)
             if (daylyLimit <= 0) return res.status(400).json({ error: 'Вы превысили дневной лимит загрузок' });
             uploadStorageCommentFiles(req, res, async err => {
                 if (err) {

@@ -97,7 +97,11 @@ const FileFields: FC<ISignature> = ({
                             e => {
                                 e.stopPropagation();
                                 if (fileName)
-                                    if (!downloadedFiels.includes(fileName + '.sig'))
+                                    if (
+                                        !downloadedFiels.map(
+                                            fileWithExtensions => fileWithExtensions.substring(0, fileWithExtensions.lastIndexOf('.'))
+                                        ).includes(fileName)
+                                    )
                                         fileInputRef.current?.click();
                                     else store.setNotification(
                                         'Пожалуйста',
