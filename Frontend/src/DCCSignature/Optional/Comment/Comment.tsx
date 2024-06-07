@@ -1,15 +1,11 @@
-import { FC, useState, useContext, ChangeEvent } from 'react'
+import { useState, useContext, ChangeEvent, useEffect } from 'react'
 import FileFields, { NOT_SELECTED_SET, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
 
 
-interface IComment {
-    path: string[];
-}
-
-const Comment: FC<IComment> = ({ path }) => {
-    const { store } = useContext(GlobalData);
+const Comment = ({ }) => {
+    const { store, dcc } = useContext(GlobalData);
     const commentState = useState<File | null>(null);
     const setCommentFile = commentState[1];
     const selectedFileState = useState<number[]>(NOT_SELECTED_SET);
@@ -19,6 +15,11 @@ const Comment: FC<IComment> = ({ path }) => {
     const fileNameState = useState<string>('');
     const [fileName, setFileName] = fileNameState;
 
+    useEffect(() => {
+        if (selectedFiels.length > NOT_SELECTED_SET.length)
+            dcc.initial['comment'] = selectedFiels.map(numFile => downloadedFiels[numFile - NUMBER_NEW_FILE]);
+        else delete dcc.initial.comment
+    }, [selectedFiels])
 
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];

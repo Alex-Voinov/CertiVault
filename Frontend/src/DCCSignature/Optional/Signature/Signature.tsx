@@ -1,17 +1,11 @@
-import { FC, useState, ChangeEvent, useContext } from 'react'
+import { useState, ChangeEvent, useContext, useEffect } from 'react'
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
 import FileFields, { NOT_SELECTED, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 
-interface ISignature {
-    path: string[];
-    nameKey?: string;
-}
 
-
-
-const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
-    const { store } = useContext(GlobalData);
+const Signature= () => {
+    const { store, dcc } = useContext(GlobalData);
     const signatureState = useState<File | null>(null);
     const setSignature = signatureState[1];
     const fileNameState = useState('');
@@ -19,7 +13,11 @@ const Signature: FC<ISignature> = ({ path, nameKey = 'dss:Signature' }) => {
     const downloadFielsState = useState<string[]>([]);
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const selectedFileState = useState(NOT_SELECTED);
-    const setSelectedFile = selectedFileState[1];
+    const [selectedFile, setSelectedFile] = selectedFileState;
+    useEffect(() => {
+        if (selectedFile !== NOT_SELECTED) dcc.initial['sig'] = downloadedFiels[selectedFile - NUMBER_NEW_FILE];
+        else delete dcc.initial.sig
+    }, [selectedFile])
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {

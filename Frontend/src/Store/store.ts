@@ -16,7 +16,6 @@ export default class Store {
     isAuth: boolean = false;
     accessToken: string = localStorage.getItem('accessToken') || '';
     refreshToken: string = Cookies.get('refreshToken') || '';
-    currentStruct: { [key: string]: any } = {};
     sigFiles: { [key: string]: File } = {};
     commentFiles: { [key: string]: File } = {};
     sigFileNames: string[] = [];
@@ -195,23 +194,5 @@ export default class Store {
             )
         }
         return this.commentFileNames
-    }
-
-    setValueByPath(path: string[], nameKey: string, value: any): void {
-        let currentLink = this.currentStruct;
-        path.forEach(
-            intermediateKey => {
-                if (!currentLink.hasOwnProperty(intermediateKey)) {
-                    currentLink.intermediateKey = {};
-                }
-                currentLink = currentLink.intermediateKey
-            }
-        )
-        if (Array.isArray(value) && value.length === 2 && value[0] === 'array') {
-            if (!currentLink[nameKey]) currentLink[nameKey] = [];
-            currentLink[nameKey].push(value)
-        } else {
-            currentLink[nameKey] = value;
-        }
     }
 }
