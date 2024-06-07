@@ -51,6 +51,8 @@ const Comment: FC<IComment> = ({ path }) => {
             fileNameState={fileNameState}
             downloadFielsState={downloadFielsState}
             fetchOldFiels={store.getAllNameCommentFiels.bind(store)}
+            multiSelect={true}
+            authModified={true}
         />
     )
 }

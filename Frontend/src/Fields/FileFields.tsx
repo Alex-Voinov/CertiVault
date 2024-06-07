@@ -13,6 +13,8 @@ interface ISignature {
     fileNameState: [string, React.Dispatch<React.SetStateAction<string>>];
     downloadFielsState: [string[], Dispatch<SetStateAction<string[]>>];
     fetchOldFiels: () => Promise<string[]>;
+    multiSelect?: boolean;
+    authModified?: boolean;
 }
 
 export const NOT_SELECTED = 0;
@@ -26,7 +28,9 @@ const FileFields: FC<ISignature> = ({
     selectedFileState,
     fetchOldFiels,
     fileNameState,
-    downloadFielsState
+    downloadFielsState,
+    multiSelect = false,
+    authModified = false,
 }) => {
     const { store } = useContext(GlobalData);
     const [signature, setSignature] = fieldState;
@@ -50,6 +54,11 @@ const FileFields: FC<ISignature> = ({
             className={styles.wrapper}
             onClick={
                 () => {
+                    if (authModified && !store.isAuth)
+                        return store.setNotification(
+                            'Авторизуйтесь',
+                            'Данное поле доступно только авторизованным пользователям.'
+                        )
                     if (!(isActive && fileName && !signature)) setActive(!isActive)
                     else store.setNotification(
                         'Данные не сохранены',
