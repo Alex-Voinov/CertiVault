@@ -288,6 +288,23 @@ class DataBaseController {
             res.status(404).message(er.message)
         }
     }
+
+    async getAllCommentNames(req, res) {
+        try {
+            const { user } = req;
+            if (!user) throw new Error('Не авторизованный пользователь пытается получить comment-данные.')
+            const queryText = `
+        SELECT name
+        FROM "comment"
+        WHERE login = $1`
+            const findName = await pool.query(queryText, [user.login]);
+            const names = findName.rows.map(row => row.name);
+            res.status(200).send(names)
+        } catch (er) {
+            res.status(404).message(er.message)
+        }
+    }
+
     async logout(req, res) {
         try {
             const { user } = req;
@@ -315,28 +332,45 @@ class DataBaseController {
     }
     async usedCommentSpace(login) {
         const queryText = `
-    SELECT usage_count
-    FROM "unloading"
-    WHERE login = $1
-    `;
+            WITH updated AS (
+                UPDATE unloading
+                SET usage_count = CASE
+                    WHEN last_upload_date != DATE('now') THEN 0
+                    ELSE usage_count
+                END,
+                last_upload_date = CASE
+                    WHEN last_upload_date != DATE('now') THEN DATE('now')
+                    ELSE last_upload_date
+                END
+                WHERE login = $1
+                RETURNING usage_count, last_upload_date
+            )
+            SELECT 
+                CASE
+                    WHEN last_upload_date != DATE('now') THEN 0
+                    ELSE usage_count
+                END as result_usage_count
+            FROM updated;
+        `;
         try {
             const queryResult = await pool.query(queryText, [login]);
-            // Check if a result was returned
             if (queryResult.rows.length === 0) {
-                return null;  // or any other appropriate default value
+                return null;
             }
-            return queryResult.rows[0].usage_count;
+            return queryResult.rows[0].result_usage_count;
         } catch (error) {
             console.error('Database query error:', error);
         }
     }
+
     async changeDaylyLimit(login, fileSize) {
         try {
             const queryText = `
         UPDATE "unloading"
-        SET usage_count = usage_count + $2
+        SET usage_count = usage_count + $2,
+            last_upload_date = $3
         WHERE login = $1`
-            await pool.query(queryText, [login, fileSize]);
+            await pool.query(queryText, [login, fileSize, new Date()]);
         } catch (er) {
             console.log(er)
         }
