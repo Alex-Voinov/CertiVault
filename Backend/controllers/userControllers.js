@@ -40,8 +40,22 @@ const storageCommentFiles = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/comment'); // Folder to save files
     },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname); // Сохраняем файл с оригинальным именем
+    filename: async function (req, file, cb) {
+        try {
+            const initialFileName = file.originalname;
+            if (
+                !/^(?=[a-zA-Z0-9_]{1,19}\.[a-zA-Z0-9_]{1,19}$)[a-zA-Z0-9_.]{1,20}$/.test(initialFileName)
+                || initialFileName.toLowerCase().includes('user')
+                || initialFileName.toLowerCase().includes('anonimus')
+            )
+                throw new Error('Некорректное имя файла')
+            const login = req.user.login;
+            const uniqueName = await dataBaseController.addComment(login, initialFileName);
+            cb(null, uniqueName);
+            req.fileName = uniqueName;
+        } catch (er) {
+            console.log(er)
+        }
     }
 })
 

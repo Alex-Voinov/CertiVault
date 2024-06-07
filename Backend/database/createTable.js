@@ -25,7 +25,7 @@ const createTableQueries = [
         linkActivate VARCHAR DEFAULT ''
       )
     `,
-    name: 'user'
+    name: 'пользователей'
   },
   {
     query: `
@@ -36,7 +36,7 @@ const createTableQueries = [
         FOREIGN KEY (login) REFERENCES "user" (login)
       )
     `,
-    name: 'jwt'
+    name: 'токенов доступа'
   },
   {
     query: `
@@ -46,7 +46,17 @@ const createTableQueries = [
         name VARCHAR NOT NULL
       )
     `,
-    name: 'sig'
+    name: 'электронных подписей'
+  },
+  {
+    query: `
+      CREATE TABLE IF NOT EXISTS "comment" (
+        id SERIAL PRIMARY KEY,
+        login VARCHAR,
+        name VARCHAR NOT NULL
+      )
+    `,
+    name: 'файлов комментариев'
   },
   {
     query: `
@@ -56,19 +66,22 @@ const createTableQueries = [
         last_upload_date DATE
       )
     `,
-    name: 'unloading'
+    name: 'лимитов загрузок'
   }
 ];
 
 const createTables = async () => {
+  let noException = true;
   try {
     for (const { query, name } of createTableQueries) {
       await pool.query(query);
-      console.log(`Таблица "${name}" успешно создана`);
+      console.log(`База ${name} успешно загружена...`);
     }
   } catch (err) {
-    console.error('Ошибка при создании таблицы:', err);
-  } 
+    console.error(`Ошибка при создании базы ${name}:`, err);
+    noException = false;
+  }
+  if (noException) console.log('Сервер готов к работе.')
 };
 
 createTables();

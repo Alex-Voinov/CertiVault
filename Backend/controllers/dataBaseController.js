@@ -263,6 +263,16 @@ class DataBaseController {
         return `${login}-${res.rows[0].id}-${name}`
     }
 
+    async addComment(login, name) {
+        const queryText = `
+      INSERT INTO "comment" (login, name)
+      VALUES  ($1, $2)
+      RETURNING id;
+    `;
+        const res = await pool.query(queryText, [login, name]);
+        return `${login}-${res.rows[0].id}-${name}`
+    }
+
     async getAllSignNames(req, res) {
         try {
             const { user } = req;
