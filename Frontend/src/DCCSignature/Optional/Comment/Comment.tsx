@@ -1,5 +1,5 @@
 import { FC, useState, useContext, ChangeEvent } from 'react'
-import FileFields, { NOT_SELECTED, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
+import FileFields, { NOT_SELECTED_SET, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
 
@@ -12,8 +12,8 @@ const Comment: FC<IComment> = ({ path }) => {
     const { store } = useContext(GlobalData);
     const commentState = useState<File | null>(null);
     const setCommentFile = commentState[1];
-    const selectedFileState = useState<number>(NOT_SELECTED);
-    const setSelectedFile = selectedFileState[1];
+    const selectedFileState = useState<number[]>(NOT_SELECTED_SET);
+    const [selectedFiels, setSelectedFile] = selectedFileState;
     const downloadFielsState = useState<string[]>([]);
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const fileNameState = useState<string>('');
@@ -30,7 +30,7 @@ const Comment: FC<IComment> = ({ path }) => {
                 (result) => {
                     if (result) {
                         setDownloadedFiels([`${fileName}.${extension}`, ...downloadedFiels]);
-                        setSelectedFile(NUMBER_NEW_FILE);
+                        setSelectedFile([...selectedFiels, NUMBER_NEW_FILE]);
                         setFileName('');
                     }
                 }

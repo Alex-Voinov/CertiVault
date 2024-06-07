@@ -9,8 +9,8 @@ interface ISignature {
     imgName: string;
     handleFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
     fieldState: [File | null, Dispatch<SetStateAction<File | null>>];
-    selectedFileState: [number, Dispatch<SetStateAction<number>>];
-    fileNameState: [string, React.Dispatch<React.SetStateAction<string>>];
+    selectedFileState: [number, Dispatch<SetStateAction<number>>] | [number[], Dispatch<SetStateAction<number[]>>];
+    fileNameState: [string, Dispatch<SetStateAction<string>>];
     downloadFielsState: [string[], Dispatch<SetStateAction<string[]>>];
     fetchOldFiels: () => Promise<string[]>;
     multiSelect?: boolean;
@@ -18,6 +18,7 @@ interface ISignature {
 }
 
 export const NOT_SELECTED = 0;
+export const NOT_SELECTED_SET = [];
 export const NUMBER_NEW_FILE = 1;
 
 const FileFields: FC<ISignature> = ({
@@ -146,13 +147,23 @@ const FileFields: FC<ISignature> = ({
                                 (fName, number) => <div
                                     className={styles.filesBarRow}
                                     onClick={(e) => {
-                                        e.stopPropagation()
-                                        setSelectedFile(number + NUMBER_NEW_FILE);
+                                        e.stopPropagation();
+                                        const addedNumber = number + NUMBER_NEW_FILE;
+                                        if (!multiSelect)
+                                            if (addedNumber !== selectedFile)
+                                                (setSelectedFile as Dispatch<SetStateAction<number>>)(addedNumber)
+                                            else
+                                                (setSelectedFile as Dispatch<SetStateAction<number>>)(NOT_SELECTED)
+                                        else
+                                            if ((selectedFile as number[]).includes(addedNumber))
+                                                (setSelectedFile as Dispatch<SetStateAction<number[]>>)((selectedFile as number[]).filter(oldNum => oldNum !== addedNumber))
+                                            else (setSelectedFile as Dispatch<SetStateAction<number[]>>)([...selectedFile as number[], addedNumber])
                                     }}
                                 >
                                     <h2>{fName}</h2>
                                     {
-                                        number === selectedFile - NUMBER_NEW_FILE
+                                        !multiSelect && number === (selectedFile as number) - NUMBER_NEW_FILE
+                                            || multiSelect && (selectedFile as number[]).includes(number + NUMBER_NEW_FILE)
                                             ? <img src="/img/svg/selectedFileLogo.svg" alt="selected file" />
                                             : <img src="/img/svg/oldFileLogo.svg" alt="old file" />
                                     }
@@ -189,11 +200,16 @@ const FileFields: FC<ISignature> = ({
                 <h2>{isActive ? 'Сохранить' : 'Заполнить'}</h2>
                 <img src="/img/svg/bluePointerTransition.svg" alt="next" />
             </div>
-            {Boolean(selectedFile) && <img
-                src="/img/svg/selectedFileLogo.svg"
-                alt="correct"
-                className={styles.correctnessStatus}
-            />}
+            {
+                (!multiSelect
+                    && (selectedFile as number) > 0
+                    || multiSelect
+                    && (selectedFile as number[]).length > 0
+                ) && <img
+                    src="/img/svg/selectedFileLogo.svg"
+                    alt="correct"
+                    className={styles.correctnessStatus}
+                />}
         </section>
     )
 }
