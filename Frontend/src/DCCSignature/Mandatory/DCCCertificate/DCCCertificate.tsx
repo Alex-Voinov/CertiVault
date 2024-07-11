@@ -7,7 +7,7 @@ import Signature from '../../Optional/Signature/Signature'
 import Comment from '../../Optional/Comment/Comment'
 
 interface IDCCCertificate {
-    toStep: Dispatch<SetStateAction<JSX.Element>>
+    toStep: (stepName: string, stepElement: JSX.Element) => void;
     path?: string[];
 }
 
@@ -16,7 +16,7 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
         <div className={styles.wrapper}>
             <div className={styles.row}>
                 <div className={styles.mandatoryWrapper} onClick={
-                    () => toStep(<AdministrativeData />)}
+                    () => toStep('Административная информация', <AdministrativeData />)}
                 >
                     <h1>Административная информация</h1>
                     <div className={styles.content}>
@@ -34,7 +34,7 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                     </div>
                 </div>
                 <div className={styles.mandatoryWrapper} onClick={
-                    () => toStep(<MeasurementResults />)}
+                    () => toStep('Результаты измерений', <MeasurementResults />)}
                 >
                     <h1>Результаты измерений</h1>
                     <div className={styles.content}>

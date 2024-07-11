@@ -2,6 +2,8 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { IUser } from "../Models/User";
 import UserService from "../Servies/UserServise";
 import Cookies from 'js-cookie';
+import { Dispatch, SetStateAction } from "react";
+
 
 export enum LoginStauts {
     unsuccessfully,
@@ -20,6 +22,9 @@ export default class Store {
     commentFiles: { [key: string]: File } = {};
     sigFileNames: string[] = [];
     commentFileNames: string[] = [];
+    currentPosition: [string, JSX.Element][] = []
+    navigateFunc: Dispatch<SetStateAction<JSX.Element>> | null = null;
+    initialDCCElement: JSX.Element | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -46,6 +51,50 @@ export default class Store {
                 console.log(er);
             }
         })
+    }
+
+    setupNewPositionMap = (
+        navigateFunc: Dispatch<SetStateAction<JSX.Element>>,
+        initialElement: JSX.Element
+    ) => {
+        this.navigateFunc = navigateFunc;
+        this.initialDCCElement = initialElement;
+        this.currentPosition = [];
+    }
+
+    activeNavigatePoint = (stepName: string) => {
+        if (this.navigateFunc && this.getPositionMap().includes(stepName)) {
+            console.log(JSON.stringify(this.currentPosition.at(-1)))
+            while (this.currentPosition.length > 0 && this.currentPosition.at(-1)![0] !== stepName) {
+                this.currentPosition.pop();
+            }
+            this.navigateFunc(this.currentPosition.at(-1)![1])
+        }
+    }
+
+    getPositionMap = () => this.currentPosition.map(recordPoint => recordPoint[0])
+
+    addNavigatePoint = (stepName: string, stepElement: JSX.Element) => {
+        const currentNavigateName = this.getPositionMap();
+        let uniqeName = stepName;
+        if (currentNavigateName.includes(stepName)) {
+            let i = 2;
+            while (currentNavigateName.includes(`${stepName}${i}`)) {
+                i++;
+            }
+            uniqeName = `${stepName}${i}`;
+        }
+        this.currentPosition.push([uniqeName, stepElement]);
+    }
+
+    backStep = () => {
+        this.currentPosition.pop();
+        const newCurrentPoint = this.currentPosition.at(-1);
+        if (this.navigateFunc)
+            if (newCurrentPoint && newCurrentPoint[1]) this.navigateFunc(newCurrentPoint[1])
+            else if (this.initialDCCElement) {
+                this.navigateFunc(this.initialDCCElement);
+            }
     }
 
     async verify() {
