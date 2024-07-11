@@ -82,7 +82,7 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                     </div>
                     <img src="/img/svg/documentLogo.svg" alt="document logo" />
                     <div className={styles.nextStep}>
-                        <h1>Заполнить</h1>
+                        <h1>Открыть</h1>
                         <img src="/img/svg/bluePointerTransition.svg" alt="transition" />
                     </div>
                 </div>

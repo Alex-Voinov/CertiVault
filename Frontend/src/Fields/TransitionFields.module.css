@@ -1,0 +1,45 @@
+.skin {
+    position: relative;
+    height: 100%;
+    border-radius: min(0.20833vw, 0.37037vh);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    &.optional {
+        background-color: #D9E5F0;
+        border: #1D728F solid min(0.15625vw, 0.27778vh);
+        color: #1D728F;
+    }
+
+    &.mandatory {
+        background-color: #1D728F;
+        color: #E7EDF3;
+    }
+
+    &>h1 {
+        position: absolute;
+        left: min(1.04167vw, 1.85185vh);
+        top: min(1.04167vw, 1.85185vh);
+        font-size: min(1.30208vw, 2.31481vh);
+        font-weight: bold;
+        max-width: 18.22917vw;
+        text-align: left;
+    }
+
+    &>img{
+        right: min(1.04167vw, 1.85185vh);       
+        position: absolute;
+        object-fit: contain;
+        pointer-events: none;
+        width: 8.02083vw;
+        filter: blur(0);
+        transition: filter 0.3s ease-in-out;
+    }
+
+    &:hover{
+        &>img{
+            filter: blur(min(0.20833vw, 0.37037vh));
+        }
+    }
+}
