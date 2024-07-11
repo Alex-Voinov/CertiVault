@@ -97,6 +97,18 @@ export default class Store {
             }
     }
 
+    navigateNewPoint = (
+        stepName: string,
+        stepElement: JSX.Element
+    ) => {
+        if (!this.addNavigatePoint || !this.navigateFunc) return;
+        this.addNavigatePoint(
+            stepName,
+            stepElement
+        )
+        this.navigateFunc(stepElement);
+    }
+
     async verify() {
         try {
             const response = await UserService.verify();

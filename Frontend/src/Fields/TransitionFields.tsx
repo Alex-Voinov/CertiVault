@@ -1,5 +1,6 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import styles from './TransitionFields.module.css'
+import { GlobalData } from '..';
 
 
 interface ITransitionFields {
@@ -21,8 +22,15 @@ const TransitionFields: FC<ITransitionFields> = (
         isOptional = false,
     }
 ) => {
+    const { store } = useContext(GlobalData);
     return (
         <section
+            onClick={() => {
+                store.navigateNewPoint(
+                    title,
+                    toField
+                );
+            }}
             className={`
                 ${styles.skin}
                  ${isOptional ? styles.optional : styles.mandatory}
