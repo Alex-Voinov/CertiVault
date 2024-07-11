@@ -33,8 +33,14 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                         <img src="/img/svg/transition.svg" alt="transition" />
                     </div>
                 </div>
-                <div className={styles.mandatoryWrapper} onClick={
-                    () => toStep('Результаты измерений', <MeasurementResults />)}
+                <div
+                    className={styles.mandatoryWrapper}
+                    onClick={
+                        () => toStep(
+                            'Результаты измерений',
+                            <MeasurementResults />
+                        )
+                    }
                 >
                     <h1>Результаты измерений</h1>
                     <div className={styles.content}>
@@ -53,14 +59,38 @@ const DCCCertificate: FC<IDCCCertificate> = ({ path = [], toStep }) => {
                 </div>
             </div>
             <div className={styles.row}>
-                <div className={styles.optionalWrapper}>
-                    <Comment />
+                <div
+                    className={`
+                        ${styles.optionalWrapper}
+                        ${styles.document}                   
+                    `}
+                    onClick={
+                        () => toStep(
+                            'Документ',
+                            <Document path={path} />
+                        )
+                    }
+                >
+                    <h1>Документ</h1>
+                    <div className={styles.content}>
+                        <div className={styles.animateLine} />
+                        <h1>Описание предмета файла</h1>
+                        <h1>Содержание файла</h1>
+                        <h1>Указание MME-типа файла</h1>
+                        <h1>Файл в кодировке Base64</h1>
+                        <h1>...</h1>
+                    </div>
+                    <img src="/img/svg/documentLogo.svg" alt="document logo" />
+                    <div className={styles.nextStep}>
+                        <h1>Заполнить</h1>
+                        <img src="/img/svg/bluePointerTransition.svg" alt="transition" />
+                    </div>
                 </div>
                 <div className={styles.optionalWrapper}>
                     <Signature />
                 </div>
                 <div className={styles.optionalWrapper}>
-                    <Document path={path} />
+                    <Comment />
                 </div>
             </div>
         </div>
