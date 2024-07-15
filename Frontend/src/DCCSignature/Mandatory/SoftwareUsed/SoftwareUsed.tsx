@@ -33,7 +33,12 @@ const SoftwareUsed: FC = () => {
                 />
                 <TransitionFields
                     title='Описание программного обеспечения'
-                    content={[]}
+                    content={[
+                        'Наименование элемента',
+                        'Дополнительное описание элемента',
+                        'Файлы',
+                        'Формулы',
+                    ]}
                     isOptional={true}
                     pliteWidth='42.70833vw'
                     imageName='softwareDescription'
@@ -41,6 +46,7 @@ const SoftwareUsed: FC = () => {
                     toField={<div />}
                     imageMarginRight='min(3.02083vw, 5.37037vh)'
                     imageSide='min(10.72917vw, 19.07407vh)'
+                    contentHeight='30vh'
                 />
             </div>
         </div>

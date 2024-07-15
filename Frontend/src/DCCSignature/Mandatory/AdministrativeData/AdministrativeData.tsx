@@ -13,28 +13,53 @@ const AdministrativeData: FC<IAdministrativeData> = ({ path = ['dcc:administrati
             <div className={styles.row}>
                 <TransitionFields
                     title='Основные данные калибровки'
-                    content={[]}
+                    content={[
+                        'Государство',
+                        'Идентификатор',
+                        'Дата начала',
+                        'Дата окончания',
+                        '...',
+                    ]}
+                    contentHeight='30vh'
                     imageName='mainDataField'
                     toField={<div />}
 
                 />
                 <TransitionFields
                     title='Идентификация заказчика калибровки'
-                    content={[]}
+                    content={[
+                        'Наименование',
+                        'Локация',
+                        'Электронная почта',
+                        'Номер телефона',
+                        '...',
+                    ]}
                     imageName='personalcard'
                     toField={<div />}
 
                 />
                 <TransitionFields
                     title='Идентификация калибровочной лаборатории'
-                    content={[]}
+                    content={[
+                        'Идентификатор',            
+                        'Метка времени',
+                        'Контакты',
+                        'Подпись',
+                        'Печать',
+                    ]}
                     imageName='defineLib'
                     toField={<div />}
 
                 />
                 <TransitionFields
                     title='Идентификация лиц отвечающих за калибровку'
-                    content={[]}
+                    content={[
+                        'Контакты и информация',
+                        'Ответственное лицо',
+                        'Роль или должность',
+                        'Описание',
+                        '...',
+                    ]}
                     imageName='defineFace'
                     toField={<div />}
 
@@ -43,27 +68,51 @@ const AdministrativeData: FC<IAdministrativeData> = ({ path = ['dcc:administrati
             <div className={styles.row}>
                 <TransitionFields
                     title='Утверждения'
-                    content={[]}
+                    content={[
+                        'Допустимый диапазон',
+                        'Список статусов',
+                        'Соответсвие',
+                        'Прослеживаемость',
+                        '...',
+                    ]}
                     imageName='statements'
                     toField={<div />}
                     isOptional={true}
+                    contentHeight='30vh'
                 />
                 <TransitionFields
                     title='Идентификация элементов калибровки'
-                    content={[]}
+                    content={[
+                        'Калибровочный элемент',
+                        'Наименование системы',
+                        'Производитель',
+                        'Владелец',
+                        '...',
+                    ]}
                     imageName='questionField'
                     toField={<div />}
                 />
                 <TransitionFields
                     title='Используемое программное обеспечение'
-                    content={[]}
+                    content={[
+                        'Наименование ПО',
+                        'Описание ПО',
+                        'Версия ПО',
+                        'Тип ПО',
+                    ]}
                     imageName='pkWithSearchLoupe'
                     toField={<SoftwareUsed />}
                 />
                 <TransitionFields
-                    title='Основные данные калибровки'
-                    content={[]}
-                    imageName='statements'
+                    title='Спецификация типов ссылок используемых в DCC'
+                    content={[
+                        'Именное пространство',
+                        'Тип ссылки',
+                        'Ссылка',
+                        'Выпуск',
+                        '...',
+                    ]}
+                    imageName='linkLogoField'
                     toField={<div />}
                     isOptional={true}
                 />

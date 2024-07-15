@@ -10,11 +10,27 @@
         background-color: #D9E5F0;
         border: #1D728F solid min(0.15625vw, 0.27778vh);
         color: #1D728F;
+
+        &>.animatedLine {
+            background-image: linear-gradient(180deg, #FFFFFF00 0%, #00536F 25%, #00536F 75%, #FFFFFF00 100%);
+        }
+
+        &>.nextStep path {
+            fill: #1D728F;
+        }
     }
 
     &.mandatory {
         background-color: #1D728F;
         color: #E7EDF3;
+
+        &>.animatedLine {
+            background-image: linear-gradient(180deg, #FFFFFF00 0%, #ffffff 25%, #ffffff 75%, #FFFFFF00 100%);
+        }
+
+        &>.nextStep path {
+            fill: #E7EDF3;
+        }
     }
 
     &>h1 {
@@ -26,7 +42,33 @@
         text-align: left;
     }
 
-    &>img{       
+    &>.contentMap {
+        opacity: 0;
+        position: absolute;
+        left: min(2.08333vw, 3.7037vh);
+        bottom: min(1.04167vw, 1.85185vh);
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        transition: opacity 0.3s ease-in-out;
+
+        &>h2 {
+            font-size: min(0.9375vw, 1.66667vh);
+            font-weight: 400;
+        }
+    }
+
+    &>.animatedLine {
+        opacity: 0;
+        width: 0.05208vw;
+        position: absolute;
+        bottom: min(1.04167vw, 1.85185vh);
+        left: min(1.04167vw, 1.85185vh);
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    &>img {
         position: absolute;
         object-fit: contain;
         pointer-events: none;
@@ -34,9 +76,35 @@
         transition: filter 0.3s ease-in-out;
     }
 
-    &:hover{
-        &>img{
+    &>.nextStep {
+        position: absolute;
+        opacity: 0;
+        right: min(1.04167vw, 1.85185vh);
+        bottom: min(1.04167vw, 1.85185vh);
+        display: flex;
+        align-items: center;
+        
+        transition: opacity 0.3s ease-in-out;
+        
+        &>h1{
+            font-size: min(1.04167vw, 1.85185vh);
+            font-weight: 400;
+        }
+
+        &>svg{
+            width: min(1.04167vw, 1.85185vh);
+        }
+    }
+
+    &:hover {
+        &>img {
             filter: blur(min(0.20833vw, 0.37037vh));
+        }
+
+        &>.animatedLine,
+        &>.contentMap,
+        &>.nextStep {
+            opacity: 1;
         }
     }
 }
