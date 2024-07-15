@@ -1,10 +1,10 @@
-import { useState, ChangeEvent, useContext, useEffect } from 'react'
+import { useState, ChangeEvent, useContext, useEffect, useRef } from 'react'
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
 import FileFields, { NOT_SELECTED, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 
 
-const Signature= () => {
+const Signature = () => {
     const { store, dcc } = useContext(GlobalData);
     const signatureState = useState<File | null>(null);
     const setSignature = signatureState[1];
@@ -14,10 +14,28 @@ const Signature= () => {
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const selectedFileState = useState(NOT_SELECTED);
     const [selectedFile, setSelectedFile] = selectedFileState;
+    const hasMounted = useRef<boolean>(false);
     useEffect(() => {
-        if (selectedFile !== NOT_SELECTED) dcc.initial['sig'] = downloadedFiels[selectedFile - NUMBER_NEW_FILE];
-        else delete dcc.initial.sig
+        if (hasMounted.current)
+            if (selectedFile !== NOT_SELECTED) dcc.initial['sig'] = downloadedFiels[selectedFile - NUMBER_NEW_FILE];
+            else delete dcc.initial.sig
     }, [selectedFile])
+
+    useEffect(() => {
+        if (!hasMounted.current) {
+            const selectedFileName = dcc.initial['sig'];
+            if (selectedFileName && selectedFileName.length > 0) {
+                store.getAllNameSigFiels.bind(store)().then(
+                    fileNameSet => {
+                        const selectedNumber = fileNameSet.indexOf(selectedFileName) + NUMBER_NEW_FILE;
+                        setSelectedFile(selectedNumber);
+                    }
+                );
+            }
+        }
+        hasMounted.current = true;
+    }, [])
+
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
