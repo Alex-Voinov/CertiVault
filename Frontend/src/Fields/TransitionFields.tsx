@@ -9,6 +9,9 @@ interface ITransitionFields {
     imageName: string;
     toField: JSX.Element;
     pliteWidth?: string;
+    maxWidthTitle?: string;
+    imageMarginRight?: string;
+    imageSide?: string;
     isOptional?: boolean;
 }
 
@@ -19,7 +22,10 @@ const TransitionFields: FC<ITransitionFields> = (
         content,
         toField,
         pliteWidth = '20.3125vw',
+        maxWidthTitle = '18.22917vw',
+        imageMarginRight = 'min(1.04167vw, 1.85185vh)',
         isOptional = false,
+        imageSide = '8.02083vw',
     }
 ) => {
     const { store } = useContext(GlobalData);
@@ -42,8 +48,21 @@ const TransitionFields: FC<ITransitionFields> = (
                 width: pliteWidth,
             }}
         >
-            <h1>{title}</h1>
-            <img src={`/img/svg/${imageName}.svg`} alt="field-logo" />
+            <h1
+                style={{
+                    maxWidth: maxWidthTitle,
+                }}
+            >
+                {title}
+            </h1>
+            <img
+                src={`/img/svg/${imageName}.svg`}
+                alt="field-logo"
+                style={{
+                    right: imageMarginRight,
+                    width: imageSide,
+                }}
+            />
         </section>
     )
 }

@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import styles from './AdministrativeData.module.css'
 import TransitionFields from '../../../Fields/TransitionFields';
+import SoftwareUsed from '../SoftwareUsed/SoftwareUsed';
 
 interface IAdministrativeData {
     path?: string[];
@@ -57,7 +58,7 @@ const AdministrativeData: FC<IAdministrativeData> = ({ path = ['dcc:administrati
                     title='Используемое программное обеспечение'
                     content={[]}
                     imageName='pkWithSearchLoupe'
-                    toField={<div />}
+                    toField={<SoftwareUsed />}
                 />
                 <TransitionFields
                     title='Основные данные калибровки'

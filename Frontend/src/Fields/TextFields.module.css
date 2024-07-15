@@ -1,32 +1,31 @@
 .skin {
-    position: relative;
     height: 100%;
+    position: relative;
     border-radius: min(0.20833vw, 0.37037vh);
     cursor: pointer;
     display: flex;
     align-items: center;
-
-    &.optional {
-        background-color: #D9E5F0;
-        border: #1D728F solid min(0.15625vw, 0.27778vh);
-        color: #1D728F;
-    }
 
     &.mandatory {
         background-color: #1D728F;
         color: #E7EDF3;
     }
 
-    &>h1 {
-        position: absolute;
-        left: min(1.04167vw, 1.85185vh);
-        top: min(1.04167vw, 1.85185vh);
-        font-size: min(1.30208vw, 2.31481vh);
-        font-weight: bold;
-        text-align: left;
+    &.optional {
+        background-color: #D9E5F0;
+        border: solid min(0.15625vw, 0.27778vh) #1D728F;
+        color: #1D728F;
     }
 
-    &>img{       
+    &>h1 {
+        position: absolute;
+        top: min(1.04167vw, 1.85185vh);
+        left: min(1.04167vw, 1.85185vh);
+        font-size: min(1.30208vw, 2.31481vh);
+        font-weight: 700;
+    }
+
+    &>img {
         position: absolute;
         object-fit: contain;
         pointer-events: none;
