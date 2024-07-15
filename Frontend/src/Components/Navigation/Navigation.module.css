@@ -22,6 +22,7 @@
         font-weight: 700;
         text-decoration: none;
 
+        transition: text-decoration 0.3s ease-in-out, color 0.3s ease-in-out;
         &:first-of-type,
         &.initialPoint {
             cursor: default;
@@ -33,7 +34,6 @@
             &:hover {
                 text-decoration: underline;
                 color: #009aad;
-                transition: text-decoration 0.3s ease-in-out, color 0.3s ease-in-out;
             }
         }
     }
@@ -46,6 +46,17 @@
         width: 1.04167vw;
         margin-left: 0.36458vw;
         margin-right: 0.36458vw;
+    }
+}
+
+.activeLink{
+    text-decoration: none;
+    transition: text-decoration 0.3s ease-in-out, color 0.3s ease-in-out;
+    cursor: pointer!important;
+
+    &:hover {
+        text-decoration: underline;
+        color: #009aad;
     }
 }
 

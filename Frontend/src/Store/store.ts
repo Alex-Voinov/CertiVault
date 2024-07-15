@@ -62,9 +62,14 @@ export default class Store {
         this.currentPosition = [];
     }
 
+    navigateToStartPoint = () => {
+        if (!this.navigateFunc || !this.initialDCCElement) return;
+        this.currentPosition = [];
+        this.navigateFunc(this.initialDCCElement);
+    }
+
     activeNavigatePoint = (stepName: string) => {
         if (this.navigateFunc && this.getPositionMap().includes(stepName)) {
-            console.log(JSON.stringify(this.currentPosition.at(-1)))
             while (this.currentPosition.length > 0 && this.currentPosition.at(-1)![0] !== stepName) {
                 this.currentPosition.pop();
             }

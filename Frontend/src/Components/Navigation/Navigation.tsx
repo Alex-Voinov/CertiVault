@@ -35,7 +35,17 @@ const Navigation: FC = () => {
     return (
         <section className={styles.wrapper}>
             <div className={styles.skin}>
-                <h2>Заполнение сертификата</h2>
+                <h2
+                    className={currentPosition.length > 0 ? styles.activeLink : ''}
+                    onClick={
+                        () => {
+                            if (currentPosition.length > 0)
+                                store.navigateToStartPoint();
+                        }
+                    }
+                >
+                    Заполнение сертификата
+                </h2>
                 {
                     generateNavigatePoint(
                         currentPosition.length > 0

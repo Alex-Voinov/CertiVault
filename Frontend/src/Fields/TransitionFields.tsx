@@ -33,7 +33,10 @@ const TransitionFields: FC<ITransitionFields> = (
             }}
             className={`
                 ${styles.skin}
-                 ${isOptional ? styles.optional : styles.mandatory}
+                 ${isOptional
+                    ? styles.optional
+                    : styles.mandatory
+                }
                  `}
             style={{
                 width: pliteWidth,

@@ -1,4 +1,4 @@
-import { useState, useContext, ChangeEvent, useEffect } from 'react'
+import { useState, useContext, ChangeEvent, useEffect, useRef } from 'react'
 import FileFields, { NOT_SELECTED_SET, NUMBER_NEW_FILE } from '../../../Fields/FileFields';
 import { GlobalData } from '../../..';
 import { observer } from 'mobx-react-lite';
@@ -14,12 +14,29 @@ const Comment = ({ }) => {
     const [downloadedFiels, setDownloadedFiels] = downloadFielsState;
     const fileNameState = useState<string>('');
     const [fileName, setFileName] = fileNameState;
+    const hasMounted = useRef<boolean>(false);
 
     useEffect(() => {
-        if (selectedFiels.length > NOT_SELECTED_SET.length)
-            dcc.initial['comment'] = selectedFiels.map(numFile => downloadedFiels[numFile - NUMBER_NEW_FILE]);
-        else delete dcc.initial.comment
+        if (hasMounted.current) // если сброс значений выбранных файлов не вызван новым монтированием
+            if (selectedFiels.length > NOT_SELECTED_SET.length)
+                dcc.initial['comment'] = selectedFiels.map(numFile => downloadedFiels[numFile - NUMBER_NEW_FILE]);
+            else delete dcc.initial.comment
     }, [selectedFiels])
+
+    useEffect(() => {
+        if (!hasMounted.current) {
+            const selectedFileName = dcc.initial['comment'];
+            if (selectedFileName && selectedFileName.length > 0) {
+                store.getAllNameCommentFiels.bind(store)().then(
+                    fileNameSet => {
+                        const selectedNumber = selectedFileName.map(fileName => fileNameSet.indexOf(fileName) + NUMBER_NEW_FILE);
+                        setSelectedFile(selectedNumber);
+                    }
+                );
+            }
+        }
+        hasMounted.current = true;
+    }, [])
 
     const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
@@ -38,7 +55,6 @@ const Comment = ({ }) => {
             ).catch(
                 er => store.makeErNtf('Не удачно', er)
             )
-            //store.setValueByPath(path, nameKey, '123');
         }
     }
 
