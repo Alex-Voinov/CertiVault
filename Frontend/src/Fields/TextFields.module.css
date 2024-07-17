@@ -9,12 +9,28 @@
     &.mandatory {
         background-color: #1D728F;
         color: #E7EDF3;
+
+        &>.animatedLine {
+            background-image: linear-gradient(180deg, #FFFFFF00 0%, #ffffff 25%, #ffffff 75%, #FFFFFF00 100%);
+        }
+
+        & > input{
+            border-color: #D9E5F0;   
+        }
     }
 
     &.optional {
         background-color: #D9E5F0;
         border: solid min(0.15625vw, 0.27778vh) #1D728F;
         color: #1D728F;
+
+        &>.animatedLine {
+            background-image: linear-gradient(180deg, #FFFFFF00 0%, #00536F 25%, #00536F 75%, #FFFFFF00 100%);
+        }
+
+        & > input{
+            border-color: #1D728F;   
+        }
     }
 
     &>h1 {
@@ -33,9 +49,41 @@
         transition: filter 0.3s ease-in-out;
     }
 
-    &:hover{
-        &>img{
+    &>.animatedLine {
+        opacity: 0;
+        width: 0.05208vw;
+        position: absolute;
+        bottom: min(1.04167vw, 1.85185vh);
+        left: min(1.04167vw, 1.85185vh);
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    &>.content {
+        position: absolute;
+        left: min(2.08333vw, 3.7037vh);
+        bottom: min(2.08333vw, 3.7037vh);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: min(1.04167vw, 1.85185vh);
+        font-weight: 400;
+
+        &>p:first-of-type {
+            text-align: justify;
+        }
+
+        &>input {
+            border-bottom: 0.09259vh solid;
+        }
+    }
+
+    &:not(.hasFocus):hover {
+        &>img {
             filter: blur(min(0.20833vw, 0.37037vh));
+        }
+
+        &>.animatedLine {
+            opacity: 1;
         }
     }
 }
